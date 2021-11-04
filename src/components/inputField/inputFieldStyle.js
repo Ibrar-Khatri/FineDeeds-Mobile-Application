@@ -39,6 +39,7 @@ export default StyleSheet.create({
     iconStyle: {
         marginRight: 5,
         alignSelf: 'center',
+        color:'#6c757d'
     }
     ,
     invalidInput: {

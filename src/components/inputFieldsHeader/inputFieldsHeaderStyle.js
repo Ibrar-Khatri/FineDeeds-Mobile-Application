@@ -4,7 +4,9 @@ import { heightPercentageToDP as vh, widthPercentageToDP as vw } from '../../res
 export default StyleSheet.create({
     mianView: {
         display: 'flex',
-        alignItems: 'center'
+        alignItems: 'center',
+        marginLeft: vw(7),
+        marginRight: vw(7),
     },
     fineDeedsLogo: {
         height: 50,

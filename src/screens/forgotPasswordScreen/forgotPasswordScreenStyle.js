@@ -13,7 +13,9 @@ export default StyleSheet.create({
         marginRight: 10,
     },
     inputFieldsView: {
-        marginTop: 30
+        marginTop: 30,
+        marginLeft: vw(7),
+        marginRight: vw(7),
     },
     forgotPwsdText: {
         color: '#f06d06',

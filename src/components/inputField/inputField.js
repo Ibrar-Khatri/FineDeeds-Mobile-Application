@@ -1,15 +1,17 @@
 import { Input } from 'native-base'
 import React, { useState } from 'react'
 import { View, Text, TextInput } from 'react-native'
-import Icon from 'react-native-vector-icons/AntDesign';
+import Icon from 'react-native-vector-icons/Entypo';
 import style from './inputFieldStyle';
 
 
 
 export default function InputField(props) {
     let [isfocus, setIsFoucs] = useState(false)
+    let [showPassword, setShowPassword] = useState(false)
 
-    let { value, setValue, type, secureTextEntry, placeholder } = props
+    let { value, setValue, type, secureTextEntry, placeholder, invalidInput, autoCapitalize } = props
+
 
     return <View style={style.inputView}>
 
@@ -23,12 +25,19 @@ export default function InputField(props) {
                 placeholderTextColor='#7f858b'
                 onFocus={() => setIsFoucs(true)}
                 onBlur={() => setIsFoucs(false)}
-                secureTextEntry={secureTextEntry}
+                autoCapitalize={autoCapitalize}
+                secureTextEntry={secureTextEntry && !showPassword}
             />
             {
-                type === 'password' && <Icon name='eye' color='black' size={20} style={style.iconStyle} />
+                type === 'password' &&
+                (showPassword ?
+                    <Icon name='eye-with-line' size={20} style={style.iconStyle} onPress={() => setShowPassword(false)} /> :
+                    <Icon name='eye' size={20} style={style.iconStyle} onPress={() => setShowPassword(true)} />
+                )
             }
         </View>
-        {/* <Text style={style.invalidInput}>Invalid Email</Text> */}
+        {
+            invalidInput && <Text style={style.invalidInput}>{invalidInput}</Text>
+        }
     </View>
 }
