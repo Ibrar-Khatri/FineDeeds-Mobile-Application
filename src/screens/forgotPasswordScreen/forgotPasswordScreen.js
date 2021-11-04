@@ -3,10 +3,10 @@ import { View, Text, ScrollView } from 'react-native'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
 import style from './forgotPasswordScreenStyle'
-import InputFieldsHeader from '../../components/inputFieldsHeader/inputFieldsHeader'
-import InputField from '../../components/inputField/inputField'
-import CustomButton from '../../components/button/button'
-import NavigationLink from '../../components/navigationLink/navigationLink'
+import InputFieldsHeader from '../../components/commonComponents/inputFieldsHeader/inputFieldsHeader'
+import InputField from '../../components/commonComponents/inputField/inputField'
+import CustomButton from '../../components/commonComponents/button/button'
+import NavigationLink from '../../components/commonComponents/navigationLink/navigationLink'
 
 export default function ForgotPasswordScreen({ navigation }) {
     const loginValidationSchema = yup.object().shape({

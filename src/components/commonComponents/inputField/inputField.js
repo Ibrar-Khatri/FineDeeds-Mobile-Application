@@ -2,6 +2,7 @@ import { Input } from 'native-base'
 import React, { useState } from 'react'
 import { View, Text, TextInput } from 'react-native'
 import Icon from 'react-native-vector-icons/Entypo';
+import InvalidInput from '../invalidInput/invalidInput';
 import style from './inputFieldStyle';
 
 
@@ -31,13 +32,13 @@ export default function InputField(props) {
             {
                 type === 'password' &&
                 (showPassword ?
-                    <Icon name='eye-with-line' size={20} style={style.iconStyle} onPress={() => setShowPassword(false)} /> :
-                    <Icon name='eye' size={20} style={style.iconStyle} onPress={() => setShowPassword(true)} />
+                    <Icon name='eye' size={20} style={style.iconStyle} onPress={() => setShowPassword(false)} /> :
+                    <Icon name='eye-with-line' size={20} style={style.iconStyle} onPress={() => setShowPassword(true)} />
                 )
             }
         </View>
         {
-            invalidInput && <Text style={style.invalidInput}>{invalidInput}</Text>
+            invalidInput && <InvalidInput error={invalidInput} />
         }
     </View>
 }

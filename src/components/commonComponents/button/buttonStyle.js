@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { widthPercentageToDP } from "../../responsive/responsive";
+import { heightPercentageToDP as vh, widthPercentageToDP as vw } from "../../../responsive/responsive";
 
 
 export default StyleSheet.create({
@@ -9,7 +9,7 @@ export default StyleSheet.create({
     },
     buttonText: {
         color: '#fff',
-        fontSize: widthPercentageToDP(5),
+        fontSize: vw(5),
         fontWeight: '600',
     }
 })

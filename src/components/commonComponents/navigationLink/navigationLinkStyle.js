@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { widthPercentageToDP as vw, heightPercentageToDP as vh } from "../../responsive/responsive";
+import { heightPercentageToDP as vh, widthPercentageToDP as vw } from "../../../responsive/responsive";
 
 export default StyleSheet.create({
     linkView: {

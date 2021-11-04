@@ -39,7 +39,7 @@ export default StyleSheet.create({
         height: vh(3),
         width: vh(3),
         borderRadius: 4,
-        marginRight: 5,
+        marginRight: 8,
         borderWidth: 1,
         borderColor: '#ced4da'
     },

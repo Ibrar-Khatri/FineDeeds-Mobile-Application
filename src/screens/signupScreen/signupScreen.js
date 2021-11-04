@@ -3,11 +3,12 @@ import { View, Text, ScrollView, TouchableOpacity } from 'react-native'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
 import style from './signupScreenStyle'
-import CustomButton from '../../components/button/button'
-import InputField from '../../components/inputField/inputField'
-import InputFieldsHeader from '../../components/inputFieldsHeader/inputFieldsHeader'
+import CustomButton from '../../components/commonComponents/button/button'
+import InputField from '../../components/commonComponents/inputField/inputField'
+import InputFieldsHeader from '../../components/commonComponents/inputFieldsHeader/inputFieldsHeader'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
-import NavigationLink from '../../components/navigationLink/navigationLink'
+import NavigationLink from '../../components/commonComponents/navigationLink/navigationLink'
+import InvalidInput from '../../components/commonComponents/invalidInput/invalidInput'
 
 export default function SignupScreen({ navigation }) {
 
@@ -86,7 +87,7 @@ export default function SignupScreen({ navigation }) {
                         </Text>
                     </View>
                     {
-                        showInvalidInput && !acceptTermsAndCond && <Text style={style.invalidInput}>Accept Term Of Service is required</Text>
+                        showInvalidInput && !acceptTermsAndCond && <InvalidInput error='Accept Term Of Service is required' />
                     }
                 </View>
                 <CustomButton buttonText="SIGNUP" onClick={formik.handleSubmit} setShowInvalidInput={setShowInvalidInput} />

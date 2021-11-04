@@ -6,7 +6,7 @@ import style from './inputFieldsHeaderStyle'
 export default function InputFieldsHeader(props) {
     let { title, subTitle } = props
     return <View style={style.mianView}>
-        <Image source={require('../../assets/fineDeedLogo.png')}
+        <Image source={require('../../../assets/fineDeedLogo.png')}
             style={style.fineDeedsLogo}
             resizeMode='cover'
         />

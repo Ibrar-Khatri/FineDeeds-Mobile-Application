@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { heightPercentageToDP as vh, widthPercentageToDP as vw } from "../../responsive/responsive";
+import { heightPercentageToDP as vh, widthPercentageToDP as vw } from "../../../responsive/responsive";
 
 
 let inputStyle = {
@@ -39,12 +39,6 @@ export default StyleSheet.create({
     iconStyle: {
         marginRight: 5,
         alignSelf: 'center',
-        color:'#6c757d'
-    }
-    ,
-    invalidInput: {
-        color: 'red',
-        paddingLeft: 8,
-        paddingTop: 2
+        color: '#6c757d'
     }
 })
