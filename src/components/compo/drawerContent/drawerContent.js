@@ -71,7 +71,6 @@ export default function DrawerContent(props) {
       initialRouteName: 'signup',
       isUserAuthenticated: false,
     },
-
     {
       lable: 'About',
       screenName: 'drawer',
