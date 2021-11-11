@@ -1,8 +1,20 @@
 import { StyleSheet } from "react-native";
-import { heightPercentageToDP as vh, widthPercentageToDP as vw } from "../../../responsive/responsive";
+import { widthPercentageToDP as vw } from "../../../responsive/responsive";
 
 export default StyleSheet.create({
-    linkView: {
+    mianView: {
+        display: 'flex',
+        alignItems: 'center',
+        flexDirection: 'column',
+        marginTop: 'auto',
+        marginBottom: 'auto',
+    },
+    inputFieldsView: {
+        marginTop: 30,
+        marginLeft: vw(7),
+        marginRight: vw(7),
+    },
+    textView: {
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'center',

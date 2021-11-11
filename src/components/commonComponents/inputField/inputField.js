@@ -11,7 +11,7 @@ export default function InputField(props) {
     let [isfocus, setIsFoucs] = useState(false)
     let [showPassword, setShowPassword] = useState(false)
 
-    let { value, setValue, type, secureTextEntry, placeholder, invalidInput, autoCapitalize } = props
+    let { value, setValue, type, secureTextEntry, placeholder, invalidInput, autoCapitalize,keyboardType } = props
 
 
     return <View style={style.inputView}>
@@ -21,7 +21,7 @@ export default function InputField(props) {
                 value={value}
                 onChangeText={text => setValue(text)}
                 style={style.input}
-                keyboardType='default'
+                keyboardType={keyboardType}
                 placeholder={placeholder}
                 placeholderTextColor='#7f858b'
                 onFocus={() => setIsFoucs(true)}

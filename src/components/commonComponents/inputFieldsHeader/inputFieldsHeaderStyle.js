@@ -18,6 +18,7 @@ export default StyleSheet.create({
         fontFamily: 'Merriweather-Bold',
         paddingTop: 20,
         paddingBottom: 20,
+        textAlign:'center'
     },
     subTitle: {
         color: '#212529',
