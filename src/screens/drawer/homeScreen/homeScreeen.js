@@ -12,9 +12,9 @@ import {isLoggedIn} from '../../../services/sharedFunctions/authentication';
 import Slick from 'react-native-slick';
 import style from './homeScreenStyle';
 import SliderCard from '../../../components/commonComponents/sliderCard/sliderCard';
-import Auth from '@ baws-amplify/auth';
+import Auth from '@aws-amplify/auth';
 
-export default function LandingScreen({navigation}) {
+export default function HomeScreen({navigation}) {
   let [isUserAutheticated, setIsUserAuthenticated] = useState(false);
 
   useEffect(() => {
@@ -26,6 +26,12 @@ export default function LandingScreen({navigation}) {
         setIsUserAuthenticated(false);
       });
   }, [Auth]);
+
+  function onPressRegisterNow() {
+    navigation.navigate('authentication-screen', {
+      initialRouteName: 'signup',
+    });
+  }
 
   let sideDetail1 = [
     {
@@ -162,15 +168,10 @@ export default function LandingScreen({navigation}) {
                 of operations.
               </Text>
               <View style={style.registerNowButtonView}>
-                <CustomButton
-                  buttonText="Register Now"
-                  // onClick={}
-                  // setShowInvalidInput={setShowInvalidInput}
-                />
+                <CustomButton buttonText="Register Now" />
               </View>
             </View>
           </ImageBackground>
-
           <Slick
             style={style.slickView}
             showsButtons={false}
@@ -178,8 +179,9 @@ export default function LandingScreen({navigation}) {
             activeDotStyle={style.activeDotStyle}
             autoplay={true}
             autoplayTimeout={5}>
-            {sliderContent.map(item => (
+            {sliderContent.map((item, i) => (
               <SliderCard
+                index={i}
                 image={item.image}
                 name={item.name}
                 quote={item.quote}

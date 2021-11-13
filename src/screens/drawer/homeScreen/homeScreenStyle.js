@@ -50,27 +50,26 @@ export default StyleSheet.create({
   joinAsNonProfitTitle: {
     color: '#fff',
     fontFamily: 'Montserrat-Bold',
-    fontSize: vh(4),
+    fontSize: vw(6.6),
     marginBottom: 15,
   },
   joinAsNonProfitText: {
     color: '#fff',
     fontFamily: 'Montserrat-Regular',
-    fontSize: vh(2),
+    fontSize: vw(3.5),
     marginBottom: 20,
   },
   registerNowButtonView: {
     width: 200,
   },
   slickView: {
-    height: vw(130),
     marginTop: 50,
-    // backgroundColor: 'yellow',
+    height: vw(145),
   },
   slickDotStyle: {
     display: 'none',
   },
-  activeDotStyle:{
-      display:'none'
-  }
+  activeDotStyle: {
+    display: 'none',
+  },
 });

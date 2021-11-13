@@ -30,7 +30,7 @@ export default function DrawerContent(props) {
   }, [isUserAuthenticated]);
 
   function darwerItemPress(item) {
-    if (item === 'logout') {
+    if (item.lable === 'Logout') {
       logout()
         .then(res => {
           navigation.dispatch(DrawerActions.closeDrawer());
@@ -39,10 +39,11 @@ export default function DrawerContent(props) {
         .catch(err => {
           setIsUserAuthenticated(true);
         });
-    } else if (!item.isUserAuthenticated) {
-      navigation.navigate(item.screenName, {
-        initialRouteName: item.initialRouteName,
-      });
+    } else {
+      item.initialRouteName &&
+        navigation.navigate(item.screenName, {
+          initialRouteName: item.initialRouteName,
+        });
     }
   }
 
@@ -55,8 +56,8 @@ export default function DrawerContent(props) {
     },
     {
       lable: 'Nonprofit login',
-      screenName: 'authentication-screen',
-      initialRouteName: 'login',
+      screenName: '',
+      initialRouteName: '',
       isUserAuthenticated: false,
     },
     {
@@ -67,26 +68,26 @@ export default function DrawerContent(props) {
     },
     {
       lable: 'Register a non-profit',
-      screenName: 'authentication-screen',
-      initialRouteName: 'signup',
+      screenName: '',
+      initialRouteName: '',
       isUserAuthenticated: false,
     },
     {
       lable: 'About',
-      screenName: 'drawer',
-      initialRouteName: '',
+      screenName: 'static-screen',
+      initialRouteName: 'about',
       isUserAuthenticated: true,
     },
     {
       lable: 'Stories',
-      screenName: 'drawer',
+      screenName: '',
       initialRouteName: '',
       isUserAuthenticated: true,
     },
     {
       lable: 'How It Works',
-      screenName: '',
-      initialRouteName: '',
+      screenName: 'static-screen',
+      initialRouteName: 'howItWorks',
       alwaysShown: true,
     },
     {
@@ -94,6 +95,10 @@ export default function DrawerContent(props) {
       screenName: '',
       initialRouteName: '',
       isUserAuthenticated: false,
+    },
+    {
+      lable: 'Logout',
+      isUserAuthenticated: true,
     },
   ];
 
@@ -126,7 +131,7 @@ export default function DrawerContent(props) {
             />
           ),
       )}
-      {isUserAuthenticated && (
+      {/* {isUserAuthenticated && (
         <DrawerItem
           label="Logout"
           drawerActiveTintColor={style.drawerActiveTintColor}
@@ -136,7 +141,7 @@ export default function DrawerContent(props) {
           labelStyle={style.drawerLabelStyle}
           onPress={() => darwerItemPress('logout')}
         />
-      )}
+      )} */}
     </DrawerContentScrollView>
   );
 }

@@ -1,24 +1,26 @@
 import {StyleSheet} from 'react-native';
-import {heightPercentageToDP as vh} from '../../../responsive/responsive';
+import {
+  heightPercentageToDP as vh,
+  widthPercentageToDP as vw,
+} from '../../../responsive/responsive';
 
 export default StyleSheet.create({
   drawerActiveTintColor: 'red',
   drawerInactiveTintColor: 'blue',
-  //   drawerActiveBackgroundColor: 'black',
-  //   drawerInActiveBackgroundColor: 'pink',
   drawerLabelStyle: {
     color: '#212529',
   },
   nameText: {
     color: 'black',
-    fontWeight: '500',
-    fontSize: vh(2.5),
+    fontFamily: 'Montserrat-Bold',
+    fontSize: vw(4),
     margin: 5,
   },
   roleText: {
     color: '#212529',
     fontWeight: '300',
-    fontSize: vh(2.5),
+    fontSize: vw(3.5),
+    fontFamily: 'Montserrat-Regular',
   },
   profileView: {
     display: 'flex',

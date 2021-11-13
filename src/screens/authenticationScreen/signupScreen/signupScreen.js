@@ -6,11 +6,11 @@ import {signupValidationSchema} from '../../../services/validation/authenticatio
 import CustomButton from '../../../components/commonComponents/button/button';
 import InputField from '../../../components/commonComponents/inputField/inputField';
 import InputFieldsHeader from '../../../components/commonComponents/inputFieldsHeader/inputFieldsHeader';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import NavigationLink from '../../../components/commonComponents/navigationLink/navigationLink';
 import InvalidInput from '../../../components/commonComponents/invalidInput/invalidInput';
 import {signup} from '../../../services/sharedFunctions/authentication';
 import {useToast} from 'native-base';
+import CustomCheckBox from '../../../components/commonComponents/customCheckBox/customCheckBox';
 
 export default function SignupScreen({navigation}) {
   let [acceptTermsAndCond, setAcceptTermsAndCond] = useState(false);
@@ -88,20 +88,10 @@ export default function SignupScreen({navigation}) {
           />
           <View style={style.termsAndCondView}>
             <View style={style.checkBoxAndTextView}>
-              <TouchableOpacity
-                style={
-                  acceptTermsAndCond ? style.focusCheckBox : style.blurCheckBox
-                }
-                onPress={() =>
-                  acceptTermsAndCond
-                    ? setAcceptTermsAndCond(false)
-                    : setAcceptTermsAndCond(true)
-                }>
-                {acceptTermsAndCond && (
-                  <FontAwesome name="check" size={15} color="#fff" />
-                )}
-              </TouchableOpacity>
-
+              <CustomCheckBox
+                isChecked={acceptTermsAndCond}
+                setIsChecked={setAcceptTermsAndCond}
+              />
               <NavigationLink
                 text="I Accept The Finedeeds"
                 displayName="Terms Of Service"

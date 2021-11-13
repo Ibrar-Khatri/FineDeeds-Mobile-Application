@@ -20,7 +20,7 @@ export default StyleSheet.create({
     color: '#D0D3D4',
   },
   toastText: {
-    fontSize: vh(2),
+    fontSize: vw(4),
     marginLeft: 10,
     lineHeight: 15,
     color: '#D0D3D4',

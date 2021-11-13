@@ -4,11 +4,11 @@ import style from './buttonStyle';
 import {Text} from 'react-native';
 
 export default function CustomButton(props) {
-  const {buttonText, onClick, setShowInvalidInput, isLoading} = props;
+  const {buttonText, onClick, setShowInvalidInput, isLoading, icon} = props;
 
   function butttonPressed() {
-    onClick();
-    setShowInvalidInput(true);
+    onClick && onClick();
+    setShowInvalidInput && setShowInvalidInput(true);
   }
 
   return (
@@ -16,7 +16,7 @@ export default function CustomButton(props) {
       style={style.buttonStyle}
       onPress={butttonPressed}
       isLoading={isLoading}>
-      <Text style={style.buttonText}>{buttonText}</Text>
+      {buttonText ? <Text style={style.buttonText}>{buttonText}</Text> : icon}
     </Button>
   );
 }

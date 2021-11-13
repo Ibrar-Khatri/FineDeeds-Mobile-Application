@@ -6,9 +6,7 @@ import {
 
 export default StyleSheet.create({
   sliderCardView: {
-    // backgroundColor: 'red',
     display: 'flex',
-    // width:vw(90)
   },
   imageStyle: {
     height: vw(85),
@@ -23,13 +21,13 @@ export default StyleSheet.create({
   leftQuote: {
     marginRight: 15,
     alignSelf: 'flex-end',
-    marginBottom:10
+    marginBottom: 10,
   },
   quote: {
     margin: 15,
     fontFamily: 'Montserrat-SemiBold',
     color: 'rgba(0,0,0,.5)',
-    fontSize: vh(2),
+    fontSize: vw(3.5),
     letterSpacing: 1,
   },
   name: {
@@ -37,7 +35,7 @@ export default StyleSheet.create({
     alignSelf: 'flex-end',
     fontFamily: 'Montserrat-Bold',
     color: 'rgba(0,0,0,.5)',
-    fontSize: vh(3),
+    fontSize: vw(4),
     letterSpacing: 1,
   },
 });

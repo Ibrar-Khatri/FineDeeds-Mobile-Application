@@ -11,7 +11,7 @@ export default StyleSheet.create({
     },
     inputFieldsView: {
         marginTop: 30,
-        marginLeft: vw(7),
-        marginRight: vw(7),
+        paddingLeft: vw(7),
+        paddingRight: vw(7),
     },
 })
