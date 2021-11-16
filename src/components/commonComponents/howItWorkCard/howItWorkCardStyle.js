@@ -6,12 +6,10 @@ import {
 
 export default StyleSheet.create({
   cardView: {
-    // backgroundColor: 'red',
     marginTop: 40,
     width: vw(85),
     alignSelf: 'center',
     display: 'flex',
-    // overflow:'hidden'
   },
   title: {
     fontSize: vw(5),
@@ -25,7 +23,6 @@ export default StyleSheet.create({
     textAlign: 'center',
     marginTop: 10,
     marginBottom: 10,
-    backgroundColor:'pink'
   },
   imageView: {
     width: vw(80),

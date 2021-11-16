@@ -5,7 +5,7 @@ import style from './howItWorkCardStyle';
 export default function HowItWorksCard(props) {
   let {index, title, about, image} = props;
   return (
-    <View key={index} style={style.cardView}>
+    <View style={style.cardView}>
       <Text style={style.title}> {index + 1 + '. ' + title}</Text>
       <Text style={style.about}>{about}</Text>
       <View style={style.imageView}>

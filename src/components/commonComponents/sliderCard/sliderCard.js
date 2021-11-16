@@ -4,9 +4,9 @@ import {Image} from 'native-base';
 import style from './sliderCardStyle';
 
 export default function SliderCard(props) {
-  let {name, image, quote, index} = props;
+  let {name, image, quote} = props;
   return (
-    <View style={style.sliderCardView} key={index}>
+    <View style={style.sliderCardView}>
       <Image
         source={image}
         alt={name}

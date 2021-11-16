@@ -1,32 +1,85 @@
-import {View} from 'native-base';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   FlatList,
-  ImageBackground,
   ScrollView,
   Text,
   TouchableOpacity,
-  TouchableOpacityComponent,
+  View,
+  Image,
 } from 'react-native';
-import {Image} from 'native-base';
-import style from './profileScreenStyle';
+import {Actionsheet} from 'native-base';
 import {isLoggedIn} from '../../../services/sharedFunctions/authentication';
-import {useEffect} from 'react/cjs/react.development';
-import EntypoIcon from 'react-native-vector-icons/Entypo';
-import AntDesign from 'react-native-vector-icons/AntDesign';
+import Iocn1 from 'react-native-vector-icons/Entypo';
+import Icon2 from 'react-native-vector-icons/AntDesign';
+import Icon3 from 'react-native-vector-icons/MaterialIcons';
+import ImagePicker from 'react-native-image-crop-picker';
+import {
+  Permission,
+  PERMISSION_TYPE,
+} from '../../../appPermissions/appPermissions';
 import CustomButton from '../../../components/commonComponents/button/button';
 import ProfileScreenCardWrapper from '../../../components/commonComponents/profileScreenCardWrapper/profileScreenCardWrapper';
 import ItemsSelectorCard from '../../../components/commonComponents/itemsSelectorCard/itemsSelectorCard';
+import ProductCard from '../../../components/commonComponents/productCard/productCard';
+import style from './profileScreenStyle';
 
 export default function ProfileScreen() {
   let [user, setUser] = useState();
+  let [isActionSheetOpen, setIsActionSheetOpen] = useState(false);
+  let [image, setImage] = useState();
   useEffect(() => {
     isLoggedIn()
       .then(res => {
         setUser(res.attributes);
       })
-      .catch(err => {});
+      .catch(err => {
+        console.log(err);
+      });
   }, []);
+
+  let selectImage = async type => {
+    setIsActionSheetOpen(false);
+    await Permission.requestMultiple([
+      PERMISSION_TYPE.photo,
+      PERMISSION_TYPE.camera,
+    ]);
+    switch (type) {
+      case 'camera': {
+        ImagePicker.openCamera({
+          width: 300,
+          height: 400,
+          cropping: true,
+        })
+          .then(img => {
+            setImage(img.path);
+            console.log(image);
+          })
+          .catch(err => {
+            console.log(err);
+          });
+        break;
+      }
+      case 'library': {
+        ImagePicker.openPicker({
+          width: 300,
+          height: 400,
+          cropping: true,
+        })
+          .then(image => {
+            setImage(image.path);
+            console.log(image);
+          })
+          .catch(err => {
+            console.log(err);
+          });
+        break;
+      }
+      case 'removeImage': {
+        setImage();
+        break;
+      }
+    }
+  };
 
   let userFollowersDet = [
     {
@@ -73,6 +126,32 @@ export default function ProfileScreen() {
       postedBy: 'Rameer and b posted',
     },
   ];
+  let charityProducts = [
+    {
+      image: require('../../../assets/images/dynamicImages/charity_product_image_1.png'),
+      title: 'Playstation 5',
+      pickUp: 'Karachi, Pakistan',
+      price: 600,
+    },
+    {
+      image: require('../../../assets/images/dynamicImages/charity_product_image_2.png'),
+      title: 'Toy for kids',
+      pickUp: 'Khokhar Maira, Pakistan',
+      price: 15,
+    },
+    {
+      image: require('../../../assets/images/dynamicImages/charity_product_image_3.png'),
+      title: 'Jeans',
+      pickUp: 'Islamabad, Pakistan',
+      price: 33,
+    },
+    {
+      image: require('../../../assets/images/dynamicImages/charity_product_image_4.png'),
+      title: 'Rolex Watch',
+      pickUp: 'Karachi, Pakistan',
+      price: 5,
+    },
+  ];
 
   return (
     <ScrollView>
@@ -84,18 +163,31 @@ export default function ProfileScreen() {
           resizeMode="cover"
         />
         <View style={style.profileImageView}>
-          <Image
-            alt="profile image"
-            source={require('../../../assets/images/no-img-event-card.png')}
-            resizeMode="cover"
-            style={style.profileImageStyle}
-          />
+          <TouchableOpacity
+            activeOpacity={0.5}
+            onPress={() => setIsActionSheetOpen(true)}>
+            {image ? (
+              <Image
+                alt="profile image"
+                source={{uri: image}}
+                resizeMode="cover"
+                style={style.profileImageStyle}
+              />
+            ) : (
+              <Image
+                alt="profile image"
+                source={require('../../../assets/images/no-img-event-card.png')}
+                resizeMode="cover"
+                style={style.profileImageStyle}
+              />
+            )}
+          </TouchableOpacity>
         </View>
         <Text style={style.userNameStyle}>{user?.name}</Text>
         <View>
           <Text style={style.userLocationStyle}>
-            <EntypoIcon name="location-pin" color="#f06d06" size={20} /> Johr
-            Mor up and b, Belgium
+            <Iocn1 name="location-pin" color="#f06d06" size={20} /> Johr Mor up
+            and b, Belgium
           </Text>
         </View>
         <View style={style.userFollowersView}>
@@ -110,10 +202,10 @@ export default function ProfileScreen() {
           <View style={style.buttonView}>
             <CustomButton buttonText="Follow" />
             <CustomButton
-              icon={<AntDesign name="message1" color="#fff" size={20} />}
+              icon={<Icon2 name="message1" color="#fff" size={20} />}
             />
             <CustomButton
-              icon={<EntypoIcon name="thumbs-up" color="#fff" size={20} />}
+              icon={<Iocn1 name="thumbs-up" color="#fff" size={20} />}
             />
           </View>
         </View>
@@ -158,7 +250,7 @@ export default function ProfileScreen() {
         />
       </ProfileScreenCardWrapper>
 
-      {/* <ProfileScreenCardWrapper>
+      <ProfileScreenCardWrapper>
         <View style={style.titleAndLinkView}>
           <Text style={style.titleStyle}>Products in charity store</Text>
           <TouchableOpacity>
@@ -166,18 +258,40 @@ export default function ProfileScreen() {
           </TouchableOpacity>
         </View>
         <FlatList
-          data={activities}
+          data={charityProducts}
           horizontal={true}
           showsHorizontalScrollIndicator={false}
           renderItem={({item, index}) => (
-            <TouchableOpacity
-              key={index}
-              style={style.productCardMainView}>
-                  <Image  />
-              </TouchableOpacity>
+            <ProductCard key={index} productDetail={item} />
           )}
         />
-      </ProfileScreenCardWrapper> */}
+      </ProfileScreenCardWrapper>
+      <Actionsheet isOpen={isActionSheetOpen} onClose={setIsActionSheetOpen}>
+        <Actionsheet.Content>
+          <Actionsheet.Item
+            onPress={() => selectImage('camera')}
+            startIcon={<Iocn1 name="camera" color="#f06d06" size={30} />}>
+            Take a photo
+          </Actionsheet.Item>
+          <Actionsheet.Item
+            onPress={() => selectImage('library')}
+            startIcon={
+              <Icon3 name="photo-library" color="#f06d06" size={30} />
+            }>
+            Choose from Library
+          </Actionsheet.Item>
+          <Actionsheet.Item
+            onPress={() => selectImage('removeImage')}
+            startIcon={<Icon3 name="delete" color="red" size={30} />}>
+            Remove image
+          </Actionsheet.Item>
+          <Actionsheet.Item
+            onPress={selectImage}
+            style={style.actionsheetItemCancelText}>
+            Cancel
+          </Actionsheet.Item>
+        </Actionsheet.Content>
+      </Actionsheet>
     </ScrollView>
   );
 }

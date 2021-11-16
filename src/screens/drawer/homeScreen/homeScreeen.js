@@ -130,7 +130,7 @@ export default function HomeScreen({navigation}) {
             <View style={style.sideDetailCardView}>
               {sideDetail1.map((item, i) => (
                 <SideDetailCard
-                  index={i}
+                  key={i}
                   imageSource={item.image}
                   title={item.title}
                   detail={item.detail}
@@ -143,7 +143,7 @@ export default function HomeScreen({navigation}) {
           <Text style={style.whatDoWeOffertEXT}>WHAT DO WE OFFER</Text>
           {whatDoWeOffer.map((item, i) => (
             <SideDetailCard
-              index={i}
+              key={i}
               imageSource={item.image}
               title={item.title}
               detail={item.detail}
@@ -181,7 +181,7 @@ export default function HomeScreen({navigation}) {
             autoplayTimeout={5}>
             {sliderContent.map((item, i) => (
               <SliderCard
-                index={i}
+                key={i}
                 image={item.image}
                 name={item.name}
                 quote={item.quote}

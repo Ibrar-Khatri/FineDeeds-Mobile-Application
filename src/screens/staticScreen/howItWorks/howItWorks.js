@@ -81,6 +81,7 @@ export default function HowItWorks() {
       {isVolunteer &&
         volunteer.map((item, i) => (
           <HowItWorksCard
+            key={i}
             index={i}
             image={item.image}
             title={item.title}
@@ -99,7 +100,7 @@ export default function HowItWorks() {
       {isOganization &&
         organization.map((item, i) => (
           <HowItWorksCard
-            index={i}
+            key={i}
             image={item.image}
             title={item.title}
             about={item.about}
