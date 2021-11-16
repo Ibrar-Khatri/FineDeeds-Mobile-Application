@@ -12,22 +12,9 @@ export default StyleSheet.create({
     },
     shadowOpacity: 0.48,
     shadowRadius: 11.95,
-
     elevation: 18,
   },
   finededLogo: {
     marginRight: 20,
   },
-  drawerStyle: {
-    // backgroundColor: 'red',
-  },
-  drawerLabelStyle: {
-    color: '#212529',
-  },
-  // drawerActiveTintColor: {
-  // },
-  drawerActiveTintColor: 'black',
-  drawerInactiveTintColor: 'blue',
-  drawerActiveBackgroundColor: '#fff',
-  drawerInActiveBackgroundColor: 'black',
 });

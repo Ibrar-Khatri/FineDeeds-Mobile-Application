@@ -8,8 +8,12 @@ export default StyleSheet.create({
   drawerActiveTintColor: 'red',
   drawerInactiveTintColor: 'blue',
   drawerLabelStyle: {
-    color: '#212529',
+    fontFamily: 'Montserrat-SemiBold',
   },
+  activeTintColor: '#f06d06',
+  inactiveTintColor: '#212529',
+  activeBackgroundColor: '#fff',
+  pressColor: '#fff',
   nameText: {
     color: 'black',
     fontFamily: 'Montserrat-Bold',

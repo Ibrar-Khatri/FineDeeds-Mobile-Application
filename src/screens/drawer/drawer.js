@@ -22,11 +22,6 @@ export default function DrawerNavigation({navigation}) {
           />
         ),
         drawerType: 'front',
-        drawerActiveTintColor: style.drawerActiveTintColor,
-        drawerInactiveTintColor: style.drawerInactiveTintColor,
-        drawerActiveBackgroundColor: style.drawerActiveBackgroundColor,
-        drawerInActiveBackgroundColor: style.drawerInActiveBackgroundColor,
-        drawerLabelStyle: style.drawerLabelStyle,
       }}
       drawerContent={props => <DrawerContent {...props} />}>
       <Drawer.Screen

@@ -12,7 +12,8 @@ export default StyleSheet.create({
     alignItems: 'center',
   },
   backgroungImage: {
-    height: vw(60),
+    height: vw(45),
+    width: vw(95),
     borderRadius: 20,
     overflow: 'hidden',
   },

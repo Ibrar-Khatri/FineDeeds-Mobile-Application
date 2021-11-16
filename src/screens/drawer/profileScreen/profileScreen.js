@@ -22,15 +22,26 @@ import ProfileScreenCardWrapper from '../../../components/commonComponents/profi
 import ItemsSelectorCard from '../../../components/commonComponents/itemsSelectorCard/itemsSelectorCard';
 import ProductCard from '../../../components/commonComponents/productCard/productCard';
 import style from './profileScreenStyle';
+import {FinedeedsAppClient} from '../../../../aws_credentials/graphql-client';
+import {getVolunteerById} from '../../../../graphql/queries';
+import {useLazyQuery} from '@apollo/client';
 
 export default function ProfileScreen() {
-  let [user, setUser] = useState();
   let [isActionSheetOpen, setIsActionSheetOpen] = useState(false);
+  let [volunteer, setVolunteer] = useState();
   let [image, setImage] = useState();
+  let [getVolunteerBy, volunteerData] = useLazyQuery(getVolunteerById);
+
+  useEffect(() => {
+    setVolunteer(volunteerData?.data?.getVolunteerById);
+  }, [volunteerData?.data]);
+
   useEffect(() => {
     isLoggedIn()
       .then(res => {
-        setUser(res.attributes);
+        getVolunteerBy({
+          variables: {volunteerId: res.attributes.sub},
+        });
       })
       .catch(err => {
         console.log(err);
@@ -183,11 +194,11 @@ export default function ProfileScreen() {
             )}
           </TouchableOpacity>
         </View>
-        <Text style={style.userNameStyle}>{user?.name}</Text>
+        <Text style={style.userNameStyle}>{volunteer?.volunteerName}</Text>
         <View>
           <Text style={style.userLocationStyle}>
-            <Iocn1 name="location-pin" color="#f06d06" size={20} /> Johr Mor up
-            and b, Belgium
+            <Iocn1 name="location-pin" color="#f06d06" size={20} />
+            {volunteer?.city + ', ' + volunteer?.country}
           </Text>
         </View>
         <View style={style.userFollowersView}>
@@ -213,14 +224,10 @@ export default function ProfileScreen() {
 
       <ProfileScreenCardWrapper>
         <Text style={style.aboutTitle}>About</Text>
-        <Text style={style.aboutText}>
-          This is a about me 22222This is a about me 22222This is a about me
-          22222This is a about me 22222This is a about me 22222This is a about
-          me 22222This is a about me 22222 up upper b
-        </Text>
+        <Text style={style.aboutText}>{volunteer?.aboutMe}</Text>
       </ProfileScreenCardWrapper>
-      <ItemsSelectorCard items={skills} title="Skills" />
-      <ItemsSelectorCard items={causes} title="Causes" />
+      <ItemsSelectorCard items={volunteer?.skills} title="Skills" />
+      <ItemsSelectorCard items={volunteer?.causes} title="Causes" />
 
       <ProfileScreenCardWrapper>
         <View style={style.titleAndLinkView}>

@@ -1,7 +1,7 @@
 import React from 'react';
 import {TouchableOpacity, Text, View} from 'react-native';
 import Icon from 'react-native-vector-icons/Octicons';
-import { styles } from 'styled-system';
+import {styles} from 'styled-system';
 import ProfileScreenCardWrapper from '../profileScreenCardWrapper/profileScreenCardWrapper';
 import style from './itemsSelectorCardStyle';
 export default function ItemsSelectorCard(props) {
@@ -15,7 +15,7 @@ export default function ItemsSelectorCard(props) {
         </TouchableOpacity>
       </View>
       <View style={style.itemMainView}>
-        {items.map((item, i) => (
+        {items?.map((item, i) => (
           <View key={i} style={style.itemView}>
             <Text style={style.itemText}>{item}</Text>
           </View>

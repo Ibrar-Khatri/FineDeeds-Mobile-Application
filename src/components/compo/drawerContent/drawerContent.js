@@ -16,6 +16,7 @@ import style from './drawerContentStyle';
 export default function DrawerContent(props) {
   let [isUserAuthenticated, setIsUserAuthenticated] = useState(false);
   let [user, setUser] = useState();
+  let [index, setIndex] = useState();
   let navigation = useNavigation();
 
   useEffect(() => {
@@ -29,7 +30,85 @@ export default function DrawerContent(props) {
       });
   }, [isUserAuthenticated]);
 
-  function darwerItemPress(item) {
+  let arry = [
+    {
+      lable: 'Login',
+      isFocused: false,
+      screenName: 'authentication-screen',
+      initialRouteName: 'login',
+      isUserAuthenticated: false,
+    },
+    {
+      lable: 'Nonprofit login',
+      isFocused: false,
+      screenName: '',
+      initialRouteName: '',
+      isUserAuthenticated: false,
+    },
+    {
+      lable: 'Become a volunteer',
+      isFocused: false,
+      screenName: 'authentication-screen',
+      initialRouteName: 'signup',
+      isUserAuthenticated: false,
+    },
+    {
+      lable: 'Register a non-profit',
+      isFocused: false,
+      screenName: '',
+      initialRouteName: '',
+      isUserAuthenticated: false,
+    },
+    {
+      lable: 'Home',
+      isFocused: false,
+      screenName: 'landing-screen',
+      initialRouteName: 'about',
+      isUserAuthenticated: true,
+    },
+    {
+      lable: 'Profile',
+      isFocused: false,
+      screenName: 'profile-screen',
+      initialRouteName: 'about',
+      isUserAuthenticated: true,
+    },
+    {
+      lable: 'About',
+      isFocused: false,
+      screenName: 'static-screen',
+      initialRouteName: 'about',
+      isUserAuthenticated: true,
+    },
+    {
+      lable: 'Stories',
+      isFocused: false,
+      screenName: '',
+      initialRouteName: '',
+      isUserAuthenticated: true,
+    },
+    {
+      lable: 'How It Works',
+      isFocused: false,
+      screenName: 'static-screen',
+      initialRouteName: 'howItWorks',
+      alwaysShown: true,
+    },
+    {
+      lable: 'Request A Demo',
+      isFocused: false,
+      screenName: '',
+      initialRouteName: '',
+      isUserAuthenticated: false,
+    },
+    {
+      lable: 'Logout',
+      isFocused: false,
+      isUserAuthenticated: true,
+    },
+  ];
+  function darwerItemPress(item, ind) {
+    setIndex(ind);
     if (item.lable === 'Logout') {
       logout()
         .then(res => {
@@ -40,67 +119,15 @@ export default function DrawerContent(props) {
           setIsUserAuthenticated(true);
         });
     } else {
-      item.initialRouteName &&
-        navigation.navigate(item.screenName, {
-          initialRouteName: item.initialRouteName,
-        });
+      item.screenName && item.initialRouteName
+        ? navigation.navigate(item.screenName, {
+            initialRouteName: item.initialRouteName,
+          })
+        : item.screenName && navigation.navigate(item.screenName);
     }
   }
 
-  let arry = [
-    {
-      lable: 'Login',
-      screenName: 'authentication-screen',
-      initialRouteName: 'login',
-      isUserAuthenticated: false,
-    },
-    {
-      lable: 'Nonprofit login',
-      screenName: '',
-      initialRouteName: '',
-      isUserAuthenticated: false,
-    },
-    {
-      lable: 'Become a volunteer',
-      screenName: 'authentication-screen',
-      initialRouteName: 'signup',
-      isUserAuthenticated: false,
-    },
-    {
-      lable: 'Register a non-profit',
-      screenName: '',
-      initialRouteName: '',
-      isUserAuthenticated: false,
-    },
-    {
-      lable: 'About',
-      screenName: 'static-screen',
-      initialRouteName: 'about',
-      isUserAuthenticated: true,
-    },
-    {
-      lable: 'Stories',
-      screenName: '',
-      initialRouteName: '',
-      isUserAuthenticated: true,
-    },
-    {
-      lable: 'How It Works',
-      screenName: 'static-screen',
-      initialRouteName: 'howItWorks',
-      alwaysShown: true,
-    },
-    {
-      lable: 'Request A Demo',
-      screenName: '',
-      initialRouteName: '',
-      isUserAuthenticated: false,
-    },
-    {
-      lable: 'Logout',
-      isUserAuthenticated: true,
-    },
-  ];
+  arry[index].isFocused = arry[index].isFocused ? false : true;
 
   return (
     <DrawerContentScrollView {...props}>
@@ -111,8 +138,7 @@ export default function DrawerContent(props) {
           <Text style={style.roleText}>Volunteer</Text>
         </View>
       )}
-
-      {isUserAuthenticated && <DrawerItemList {...props} />}
+      {/* {isUserAuthenticated && <DrawerItemList {...props} />} */}
       {arry.map(
         (item, i) =>
           (item.alwaysShown ||
@@ -120,14 +146,13 @@ export default function DrawerContent(props) {
             <DrawerItem
               key={i}
               label={item.lable}
-              drawerActiveTintColor={style.drawerActiveTintColor}
-              drawerActiveBackgroundColor={style.drawerActiveBackgroundColor}
-              drawerInactiveTintColor={style.drawerInactiveTintColor}
-              drawerInActiveBackgroundColor={
-                style.drawerInActiveBackgroundColor
-              }
+              activeTintColor={style.activeTintColor}
+              inactiveTintColor={style.inactiveTintColor}
+              activeBackgroundColor={style.activeBackgroundColor}
+              focused={item.isFocused}
               labelStyle={style.drawerLabelStyle}
-              onPress={() => darwerItemPress(item)}
+              onPress={() => darwerItemPress(item, i)}
+              pressColor={style.pressColor}
             />
           ),
       )}
