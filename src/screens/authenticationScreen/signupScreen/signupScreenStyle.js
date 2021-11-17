@@ -18,7 +18,7 @@ export default StyleSheet.create({
     marginRight: vw(7),
   },
   termsAndCondView: {
-    height: 45,
+    height: 60,
     marginBottom: 10,
   },
   checkBoxAndTextView: {

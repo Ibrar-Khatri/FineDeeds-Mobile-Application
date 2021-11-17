@@ -4,19 +4,17 @@ import {
   DrawerItem,
   DrawerItemList,
 } from '@react-navigation/drawer';
-import {Image, Text, View} from 'react-native';
-import {
-  isLoggedIn,
-  logout,
-} from '../../../services/sharedFunctions/authentication';
+import {BackHandler, Image, Text, View} from 'react-native';
+import {isLoggedIn, logout} from '../../../shared/services/authServices';
 import {useNavigation} from '@react-navigation/core';
 import {DrawerActions} from '@react-navigation/native';
 import style from './drawerContentStyle';
+import {useRoute} from '@react-navigation/native';
 
 export default function DrawerContent(props) {
   let [isUserAuthenticated, setIsUserAuthenticated] = useState(false);
   let [user, setUser] = useState();
-  let [index, setIndex] = useState();
+  let [index, setIndex] = useState(0);
   let navigation = useNavigation();
 
   useEffect(() => {
@@ -28,9 +26,22 @@ export default function DrawerContent(props) {
       .catch(err => {
         setIsUserAuthenticated(false);
       });
+    console.log(props);
   }, [isUserAuthenticated]);
 
+  BackHandler.addEventListener('hardwareBackPress', () => {
+    setIndex(0);
+    navigation.dispatch(DrawerActions.closeDrawer());
+  });
+
   let arry = [
+    {
+      lable: 'Home',
+      isFocused: false,
+      screenName: 'landing-screen',
+      initialRouteName: 'about',
+      alwaysShown: true,
+    },
     {
       lable: 'Login',
       isFocused: false,
@@ -58,13 +69,6 @@ export default function DrawerContent(props) {
       screenName: '',
       initialRouteName: '',
       isUserAuthenticated: false,
-    },
-    {
-      lable: 'Home',
-      isFocused: false,
-      screenName: 'landing-screen',
-      initialRouteName: 'about',
-      isUserAuthenticated: true,
     },
     {
       lable: 'Profile',
@@ -113,6 +117,7 @@ export default function DrawerContent(props) {
       logout()
         .then(res => {
           navigation.dispatch(DrawerActions.closeDrawer());
+          navigation.navigate('landing-screen');
           setIsUserAuthenticated(false);
         })
         .catch(err => {

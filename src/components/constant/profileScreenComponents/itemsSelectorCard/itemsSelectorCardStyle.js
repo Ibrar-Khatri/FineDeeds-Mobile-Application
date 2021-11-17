@@ -2,7 +2,7 @@ import {StyleSheet} from 'react-native';
 import {
   heightPercentageToDP as vh,
   widthPercentageToDP as vw,
-} from '../../../responsive/responsive';
+} from '../../../../responsive/responsive';
 
 export default StyleSheet.create({
   titleAndIconView: {
@@ -36,5 +36,15 @@ export default StyleSheet.create({
     color: 'rgba(0,0,0,.6)',
     fontFamily: 'Montserrat-SemiBold',
     fontSize: vw(3.5),
+  },
+  checkBoxAndTextView: {
+    display: 'flex',
+    flexDirection: 'row',
+    margin: 10,
+    alignItems: 'center',
+  },
+  checkBoxText: {
+    color: 'rgba(0,0,0,.6)',
+    fontSize: vw(3.3),
   },
 });

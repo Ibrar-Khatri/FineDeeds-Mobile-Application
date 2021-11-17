@@ -1,14 +1,14 @@
 import React, {useState} from 'react';
-import {View, Text, ScrollView, TouchableOpacity} from 'react-native';
+import {View, ScrollView} from 'react-native';
 import {useFormik} from 'formik';
-import style from './resetPasswordStyle';
-import {resetPasswordValidationSchema} from '../../../services/validation/authentication/authValidation';
-import CustomButton from '../../../components/commonComponents/button/button';
-import InputField from '../../../components/commonComponents/inputField/inputField';
-import InputFieldsHeader from '../../../components/commonComponents/inputFieldsHeader/inputFieldsHeader';
-import {confirmNewPassword} from '../../../services/sharedFunctions/authentication';
 import {useToast} from 'native-base';
-import CustomToast from '../../../components/commonComponents/customToast/customToast';
+import style from './resetPasswordStyle';
+import {resetPasswordValidationSchema} from '../../../shared/validation/authValidation';
+import CustomButton from '../../../components/common/button/button';
+import InputField from '../../../components/common/inputField/inputField';
+import InputFieldsHeader from '../../../components/common/inputFieldsHeader/inputFieldsHeader';
+import {confirmNewPassword} from '../../../shared/services/authServices';
+import CustomToast from '../../../components/common/customToast/customToast';
 
 export default function ResetPassword({navigation, route}) {
   let {email} = route.params;

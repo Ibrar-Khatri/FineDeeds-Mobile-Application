@@ -1,17 +1,14 @@
 import React, {useState} from 'react';
 import {View, Text, ScrollView} from 'react-native';
 import {useFormik} from 'formik';
-import {emailConfirmationValidationSchema} from '../../../services/validation/authentication/authValidation';
-import style from './emailConfirmationStyle';
-import InputFieldsHeader from '../../../components/commonComponents/inputFieldsHeader/inputFieldsHeader';
-import InputField from '../../../components/commonComponents/inputField/inputField';
-import CustomButton from '../../../components/commonComponents/button/button';
-import {
-  confirm,
-  resendSignUp,
-} from '../../../services/sharedFunctions/authentication';
 import {useToast} from 'native-base';
-import CustomToast from '../../../components/commonComponents/customToast/customToast';
+import {emailConfirmationValidationSchema} from '../../../shared/validation/authValidation';
+import style from './emailConfirmationStyle';
+import InputFieldsHeader from '../../../components/common/inputFieldsHeader/inputFieldsHeader';
+import InputField from '../../../components/common/inputField/inputField';
+import CustomButton from '../../../components/common/button/button';
+import CustomToast from '../../../components/common/customToast/customToast';
+import {confirm, resendSignUp} from '../../../shared/services/authServices';
 
 export default function ConfirmationEmail({navigation, route}) {
   const {user} = route.params;

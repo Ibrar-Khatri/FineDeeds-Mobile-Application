@@ -14,13 +14,13 @@ export default function SliderCard(props) {
         resizeMode="contain"
       />
       <Image
-        source={require('../../../assets/images/right-quote.png')}
+        source={require('../../../../assets/images/right-quote.png')}
         alt="right-quote"
         style={style.rightQuote}
       />
       <Text style={style.quote}>{quote}</Text>
       <Image
-        source={require('../../../assets/images/left-quote.png')}
+        source={require('../../../../assets/images/left-quote.png')}
         alt="left-quote"
         style={style.leftQuote}
       />

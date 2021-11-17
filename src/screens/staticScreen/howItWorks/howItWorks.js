@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
-import {ScrollView, Text, TouchableOpacity, View} from 'react-native';
-import {styles} from 'styled-system';
-import HowItWorksCard from '../../../components/commonComponents/howItWorkCard/howItWorkCard';
+import {ScrollView, Text, TouchableOpacity} from 'react-native';
+import HowItWorksCard from '../../../components/constant/howItWorkScreenComponents/howItWorkCard/howItWorkCard';
 import style from './howItWorksStyle';
 
 export default function HowItWorks() {

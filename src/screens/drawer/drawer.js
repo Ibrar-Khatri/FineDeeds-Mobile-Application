@@ -2,9 +2,9 @@ import React, {useEffect, useState} from 'react';
 import {Image} from 'react-native';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import HomeScreen from './homeScreen/homeScreeen';
-import DrawerContent from '../../components/compo/drawerContent/drawerContent';
-import style from './drawerStyle';
+import DrawerContent from '../../components/constant/drawerContent/drawerContent';
 import ProfileScreen from './profileScreen/profileScreen';
+import style from './drawerStyle';
 
 const Drawer = createDrawerNavigator();
 
@@ -23,6 +23,7 @@ export default function DrawerNavigation({navigation}) {
         ),
         drawerType: 'front',
       }}
+      backBehavior="firstRoute"
       drawerContent={props => <DrawerContent {...props} />}>
       <Drawer.Screen
         name="landing-screen"

@@ -1,18 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  ImageBackground,
-} from 'react-native';
-import CustomButton from '../../../components/commonComponents/button/button';
-import SideDetailCard from '../../../components/commonComponents/sideDetailCard/sideDetailCard';
-import {isLoggedIn} from '../../../services/sharedFunctions/authentication';
+import {View, Text, ScrollView, ImageBackground} from 'react-native';
 import Slick from 'react-native-slick';
-import style from './homeScreenStyle';
-import SliderCard from '../../../components/commonComponents/sliderCard/sliderCard';
 import Auth from '@aws-amplify/auth';
+import CustomButton from '../../../components/common/button/button';
+import SideDetailCard from '../../../components/constant/homeScreenComponents/sideDetailCard/sideDetailCard';
+import {isLoggedIn} from '../../../shared/services/authServices';
+import SliderCard from '../../../components/constant/homeScreenComponents/sliderCard/sliderCard';
+import style from './homeScreenStyle';
 
 export default function HomeScreen({navigation}) {
   let [isUserAutheticated, setIsUserAuthenticated] = useState(false);
@@ -25,13 +19,8 @@ export default function HomeScreen({navigation}) {
       .catch(err => {
         setIsUserAuthenticated(false);
       });
-  }, [Auth]);
+  }, []);
 
-  function onPressRegisterNow() {
-    navigation.navigate('authentication-screen', {
-      initialRouteName: 'signup',
-    });
-  }
 
   let sideDetail1 = [
     {

@@ -7,8 +7,8 @@ export default function CustomButton(props) {
   const {buttonText, onClick, setShowInvalidInput, isLoading, icon} = props;
 
   function butttonPressed() {
-    onClick && onClick();
     setShowInvalidInput && setShowInvalidInput(true);
+    onClick && onClick();
   }
 
   return (

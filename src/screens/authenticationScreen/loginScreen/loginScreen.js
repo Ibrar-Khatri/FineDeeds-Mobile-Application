@@ -1,15 +1,15 @@
 import React, {useState} from 'react';
 import {View, ScrollView} from 'react-native';
 import {useFormik} from 'formik';
-import {loginValidationSchema} from '../../../services/validation/authentication/authValidation';
-import style from './loginScreenStyle';
-import InputFieldsHeader from '../../../components/commonComponents/inputFieldsHeader/inputFieldsHeader';
-import InputField from '../../../components/commonComponents/inputField/inputField';
-import CustomButton from '../../../components/commonComponents/button/button';
-import NavigationLink from '../../../components/commonComponents/navigationLink/navigationLink';
-import {login} from '../../../services/sharedFunctions/authentication';
-import CustomToast from '../../../components/commonComponents/customToast/customToast';
 import {useToast} from 'native-base';
+import {loginValidationSchema} from '../../../shared/validation/authValidation';
+import style from './loginScreenStyle';
+import InputFieldsHeader from '../../../components/common/inputFieldsHeader/inputFieldsHeader';
+import InputField from '../../../components/common/inputField/inputField';
+import CustomButton from '../../../components/common/button/button';
+import NavigationLink from '../../../components/common/navigationLink/navigationLink';
+import {login} from '../../../shared/services/authServices';
+import CustomToast from '../../../components/common/customToast/customToast';
 
 export default function LoginScreen({navigation}) {
   let [isLoading, setIsLoading] = useState(false);

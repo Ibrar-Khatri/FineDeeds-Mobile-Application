@@ -1,15 +1,15 @@
 import React, {useState} from 'react';
 import {View, Text, ScrollView} from 'react-native';
 import {useFormik} from 'formik';
-import {forgotPasswordValidationSchema} from '../../../services/validation/authentication/authValidation';
-import style from './forgotPasswordScreenStyle';
-import InputFieldsHeader from '../../../components/commonComponents/inputFieldsHeader/inputFieldsHeader';
-import InputField from '../../../components/commonComponents/inputField/inputField';
-import CustomButton from '../../../components/commonComponents/button/button';
-import NavigationLink from '../../../components/commonComponents/navigationLink/navigationLink';
-import {forgotPassword} from '../../../services/sharedFunctions/authentication';
 import {useToast} from 'native-base';
-import CustomToast from '../../../components/commonComponents/customToast/customToast';
+import {forgotPasswordValidationSchema} from '../../../shared/validation/authValidation';
+import style from './forgotPasswordScreenStyle';
+import InputFieldsHeader from '../../../components/common/inputFieldsHeader/inputFieldsHeader';
+import InputField from '../../../components/common/inputField/inputField';
+import CustomButton from '../../../components/common/button/button';
+import NavigationLink from '../../../components/common/navigationLink/navigationLink';
+import {forgotPassword} from '../../../shared/services/authServices';
+import CustomToast from '../../../components/common/customToast/customToast';
 
 export default function ForgotPasswordScreen({navigation}) {
   let [isLoading, setIsLoading] = useState(false);

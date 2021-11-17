@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import {widthPercentageToDP as vw} from '../../../responsive/responsive';
+import {widthPercentageToDP as vw} from '../../../../responsive/responsive';
 
 export default StyleSheet.create({
   sideDetailCardView: {

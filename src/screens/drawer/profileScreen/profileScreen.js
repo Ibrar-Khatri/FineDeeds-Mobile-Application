@@ -8,33 +8,33 @@ import {
   Image,
 } from 'react-native';
 import {Actionsheet} from 'native-base';
-import {isLoggedIn} from '../../../services/sharedFunctions/authentication';
 import Iocn1 from 'react-native-vector-icons/Entypo';
 import Icon2 from 'react-native-vector-icons/AntDesign';
 import Icon3 from 'react-native-vector-icons/MaterialIcons';
 import ImagePicker from 'react-native-image-crop-picker';
+import {isLoggedIn} from '../../../shared/services/authServices';
+import {useLazyQuery} from '@apollo/client';
 import {
   Permission,
   PERMISSION_TYPE,
 } from '../../../appPermissions/appPermissions';
-import CustomButton from '../../../components/commonComponents/button/button';
-import ProfileScreenCardWrapper from '../../../components/commonComponents/profileScreenCardWrapper/profileScreenCardWrapper';
-import ItemsSelectorCard from '../../../components/commonComponents/itemsSelectorCard/itemsSelectorCard';
-import ProductCard from '../../../components/commonComponents/productCard/productCard';
-import style from './profileScreenStyle';
-import {FinedeedsAppClient} from '../../../../aws_credentials/graphql-client';
+import CustomButton from '../../../components/common/button/button';
+import ProfileScreenCardWrapper from '../../../components/constant/profileScreenComponents/profileScreenCardWrapper/profileScreenCardWrapper';
+import ItemsSelectorCard from '../../../components/constant/profileScreenComponents/itemsSelectorCard/itemsSelectorCard';
+import ProductCard from '../../../components/common/productCard/productCard';
 import {getVolunteerById} from '../../../../graphql/queries';
-import {useLazyQuery} from '@apollo/client';
+import style from './profileScreenStyle';
 
 export default function ProfileScreen() {
   let [isActionSheetOpen, setIsActionSheetOpen] = useState(false);
   let [volunteer, setVolunteer] = useState();
   let [image, setImage] = useState();
+
   let [getVolunteerBy, volunteerData] = useLazyQuery(getVolunteerById);
 
   useEffect(() => {
     setVolunteer(volunteerData?.data?.getVolunteerById);
-  }, [volunteerData?.data]);
+  }, [volunteerData?.data?.getVolunteerById]);
 
   useEffect(() => {
     isLoggedIn()
@@ -111,15 +111,6 @@ export default function ProfileScreen() {
     },
   ];
 
-  let skills = ['Accounting', 'Development', 'Data Analysis'];
-  let causes = [
-    'Accounting',
-    'Human Resources',
-    'Marketing',
-    'Research',
-    'Animals',
-    'Arts And Culture',
-  ];
   let activities = [
     {
       image: require('../../../assets/images/profile_activity_1.png'),
@@ -226,8 +217,8 @@ export default function ProfileScreen() {
         <Text style={style.aboutTitle}>About</Text>
         <Text style={style.aboutText}>{volunteer?.aboutMe}</Text>
       </ProfileScreenCardWrapper>
-      <ItemsSelectorCard items={volunteer?.skills} title="Skills" />
-      <ItemsSelectorCard items={volunteer?.causes} title="Causes" />
+      <ItemsSelectorCard selectedItems={volunteer?.skills} title="Skills" />
+      <ItemsSelectorCard selectedItems={volunteer?.causes} title="Causes" />
 
       <ProfileScreenCardWrapper>
         <View style={style.titleAndLinkView}>
@@ -273,6 +264,7 @@ export default function ProfileScreen() {
           )}
         />
       </ProfileScreenCardWrapper>
+
       <Actionsheet isOpen={isActionSheetOpen} onClose={setIsActionSheetOpen}>
         <Actionsheet.Content>
           <Actionsheet.Item
