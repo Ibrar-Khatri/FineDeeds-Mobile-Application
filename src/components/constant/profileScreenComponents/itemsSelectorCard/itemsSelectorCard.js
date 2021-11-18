@@ -5,6 +5,7 @@ import CustomCheckBox from '../../../common/customCheckBox/customCheckBox';
 import ModalWrapper from '../../../common/modalWrapper/modalWrapper';
 import ProfileScreenCardWrapper from '../profileScreenCardWrapper/profileScreenCardWrapper';
 import style from './itemsSelectorCardStyle';
+
 export default function ItemsSelectorCard(props) {
   let {title, selectedItems} = props;
   let [isModalOpen, setIsModalOpen] = useState(false);
@@ -87,7 +88,6 @@ export default function ItemsSelectorCard(props) {
 
   function openModal() {
     setUpdate(selected);
-    setIsModalOpen(true);
     if (title === 'Skills') {
       setModalTitle('Add skills');
       setAllItems(skills);
@@ -95,6 +95,7 @@ export default function ItemsSelectorCard(props) {
       setModalTitle('Add causes');
       setAllItems(causes);
     }
+    setIsModalOpen(true);
   }
   function handleOnSaveChanges() {
     setIsModalOpen(false);
@@ -124,22 +125,25 @@ export default function ItemsSelectorCard(props) {
           </View>
         ))}
       </View>
-      <ModalWrapper
-        isModalOpen={isModalOpen}
-        setIsModalOpen={setIsModalOpen}
-        title={modalTitle}
-        onClick={handleOnSaveChanges}>
-        {allItems?.map((item, i) => (
-          <TouchableOpacity
-            key={i}
-            activeOpacity={0.5}
-            onPress={() => handleOnChange(item)}
-            style={style.checkBoxAndTextView}>
-            <CustomCheckBox isChecked={update?.includes(item)} />
-            <Text style={style.checkBoxText}>{item}</Text>
-          </TouchableOpacity>
-        ))}
-      </ModalWrapper>
+
+      {isModalOpen && (
+        <ModalWrapper
+          isModalOpen={isModalOpen}
+          setIsModalOpen={setIsModalOpen}
+          title={modalTitle}
+          onClick={handleOnSaveChanges}>
+          {allItems?.map((item, i) => (
+            <TouchableOpacity
+              key={i}
+              activeOpacity={0.5}
+              onPress={() => handleOnChange(item)}
+              style={style.checkBoxAndTextView}>
+              <CustomCheckBox isChecked={update?.includes(item)} />
+              <Text style={style.checkBoxText}>{item}</Text>
+            </TouchableOpacity>
+          ))}
+        </ModalWrapper>
+      )}
     </ProfileScreenCardWrapper>
   );
 }

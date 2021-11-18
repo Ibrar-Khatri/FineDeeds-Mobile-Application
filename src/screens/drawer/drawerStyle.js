@@ -17,4 +17,8 @@ export default StyleSheet.create({
   finededLogo: {
     marginRight: 20,
   },
+  activeTintColor: '#f06d06',
+  inactiveTintColor: '#212529',
+  activeBackgroundColor: '#fff',
+  pressColor: '#fff',
 });

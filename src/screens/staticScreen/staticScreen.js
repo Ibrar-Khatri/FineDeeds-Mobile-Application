@@ -1,6 +1,6 @@
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {Button, Image, View} from 'react-native';
+import {Button, Image, View, Text} from 'react-native';
 import style from './staticScreenStyle';
 import TermsAndCondition from './termsAndCondition/termsAndCondition';
 import About from './about/about';

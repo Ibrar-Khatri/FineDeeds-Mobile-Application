@@ -12,8 +12,6 @@ import Iocn1 from 'react-native-vector-icons/Entypo';
 import Icon2 from 'react-native-vector-icons/AntDesign';
 import Icon3 from 'react-native-vector-icons/MaterialIcons';
 import ImagePicker from 'react-native-image-crop-picker';
-import {isLoggedIn} from '../../../shared/services/authServices';
-import {useLazyQuery} from '@apollo/client';
 import {
   Permission,
   PERMISSION_TYPE,
@@ -22,30 +20,21 @@ import CustomButton from '../../../components/common/button/button';
 import ProfileScreenCardWrapper from '../../../components/constant/profileScreenComponents/profileScreenCardWrapper/profileScreenCardWrapper';
 import ItemsSelectorCard from '../../../components/constant/profileScreenComponents/itemsSelectorCard/itemsSelectorCard';
 import ProductCard from '../../../components/common/productCard/productCard';
-import {getVolunteerById} from '../../../../graphql/queries';
 import style from './profileScreenStyle';
+import CustomSpinner from '../../../components/common/spinner/spinner';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function ProfileScreen() {
   let [isActionSheetOpen, setIsActionSheetOpen] = useState(false);
+  let [isLoading, setIsLoading] = useState(true);
   let [volunteer, setVolunteer] = useState();
   let [image, setImage] = useState();
 
-  let [getVolunteerBy, volunteerData] = useLazyQuery(getVolunteerById);
-
   useEffect(() => {
-    setVolunteer(volunteerData?.data?.getVolunteerById);
-  }, [volunteerData?.data?.getVolunteerById]);
-
-  useEffect(() => {
-    isLoggedIn()
-      .then(res => {
-        getVolunteerBy({
-          variables: {volunteerId: res.attributes.sub},
-        });
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    AsyncStorage.getItem('volunteer').then(res => {
+      setIsLoading(false);
+      setVolunteer(JSON.parse(res));
+    });
   }, []);
 
   let selectImage = async type => {
@@ -157,140 +146,146 @@ export default function ProfileScreen() {
 
   return (
     <ScrollView>
-      <View style={style.profileView}>
-        <Image
-          alt="backgroung image"
-          style={style.backgroungImage}
-          source={require('../../../assets/images/jumbotrun.png')}
-          resizeMode="cover"
-        />
-        <View style={style.profileImageView}>
-          <TouchableOpacity
-            activeOpacity={0.5}
-            onPress={() => setIsActionSheetOpen(true)}>
-            {image ? (
-              <Image
-                alt="profile image"
-                source={{uri: image}}
-                resizeMode="cover"
-                style={style.profileImageStyle}
-              />
-            ) : (
-              <Image
-                alt="profile image"
-                source={require('../../../assets/images/no-img-event-card.png')}
-                resizeMode="cover"
-                style={style.profileImageStyle}
-              />
-            )}
-          </TouchableOpacity>
-        </View>
-        <Text style={style.userNameStyle}>{volunteer?.volunteerName}</Text>
-        <View>
-          <Text style={style.userLocationStyle}>
-            <Iocn1 name="location-pin" color="#f06d06" size={20} />
-            {volunteer?.city + ', ' + volunteer?.country}
-          </Text>
-        </View>
-        <View style={style.userFollowersView}>
-          {userFollowersDet.map((item, i) => (
-            <View key={i} style={style.userFollower}>
-              <Text style={style.userFollowerText}>{item.number}</Text>
-              <Text style={style.userFollowerText}>{item.type}</Text>
+      {!isLoading ? (
+        <>
+          <View style={style.profileView}>
+            <Image
+              alt="backgroung image"
+              style={style.backgroungImage}
+              source={require('../../../assets/images/jumbotrun.png')}
+              resizeMode="cover"
+            />
+            <View style={style.profileImageView}>
+              <TouchableOpacity
+                activeOpacity={0.5}
+                onPress={() => setIsActionSheetOpen(true)}>
+                {image ? (
+                  <Image
+                    alt="profile image"
+                    source={{uri: image}}
+                    resizeMode="cover"
+                    style={style.profileImageStyle}
+                  />
+                ) : (
+                  <Image
+                    alt="profile image"
+                    source={require('../../../assets/images/no-img-event-card.png')}
+                    resizeMode="cover"
+                    style={style.profileImageStyle}
+                  />
+                )}
+              </TouchableOpacity>
             </View>
-          ))}
-        </View>
-        <View>
-          <View style={style.buttonView}>
-            <CustomButton buttonText="Follow" />
-            <CustomButton
-              icon={<Icon2 name="message1" color="#fff" size={20} />}
-            />
-            <CustomButton
-              icon={<Iocn1 name="thumbs-up" color="#fff" size={20} />}
-            />
-          </View>
-        </View>
-      </View>
-
-      <ProfileScreenCardWrapper>
-        <Text style={style.aboutTitle}>About</Text>
-        <Text style={style.aboutText}>{volunteer?.aboutMe}</Text>
-      </ProfileScreenCardWrapper>
-      <ItemsSelectorCard selectedItems={volunteer?.skills} title="Skills" />
-      <ItemsSelectorCard selectedItems={volunteer?.causes} title="Causes" />
-
-      <ProfileScreenCardWrapper>
-        <View style={style.titleAndLinkView}>
-          <Text style={style.titleStyle}>Activity</Text>
-          <TouchableOpacity>
-            <Text style={style.linkStyle}>Sell all</Text>
-          </TouchableOpacity>
-        </View>
-        <FlatList
-          data={activities}
-          horizontal={true}
-          showsHorizontalScrollIndicator={false}
-          renderItem={({item, index}) => (
-            <TouchableOpacity key={index} style={style.activityView}>
-              <Image
-                source={item.image}
-                alt="activity image"
-                resizeMode="contain"
-                style={style.activityImageStyle}
-              />
-              <View style={style.activityTitleAndPostedByView}>
-                <Text style={style.activityTitle}>{item.title}</Text>
-                <Text style={style.activityPostedByText}>{item.postedBy}</Text>
+            <Text style={style.userNameStyle}>{volunteer?.volunteerName}</Text>
+            <View>
+              <Text style={style.userLocationStyle}>
+                <Iocn1 name="location-pin" color="#f06d06" size={20} />
+                {volunteer?.city + ', ' + volunteer?.country}
+              </Text>
+            </View>
+            <View style={style.userFollowersView}>
+              {userFollowersDet.map((item, i) => (
+                <View key={i} style={style.userFollower}>
+                  <Text style={style.userFollowerText}>{item.number}</Text>
+                  <Text style={style.userFollowerText}>{item.type}</Text>
+                </View>
+              ))}
+            </View>
+            <View>
+              <View style={style.buttonView}>
+                <CustomButton buttonText="Follow" />
+                <CustomButton
+                  icon={<Icon2 name="message1" color="#fff" size={20} />}
+                />
+                <CustomButton
+                  icon={<Iocn1 name="thumbs-up" color="#fff" size={20} />}
+                />
               </View>
-            </TouchableOpacity>
-          )}
-        />
-      </ProfileScreenCardWrapper>
-
-      <ProfileScreenCardWrapper>
-        <View style={style.titleAndLinkView}>
-          <Text style={style.titleStyle}>Products in charity store</Text>
-          <TouchableOpacity>
-            <Text style={style.linkStyle}>Sell all</Text>
-          </TouchableOpacity>
-        </View>
-        <FlatList
-          data={charityProducts}
-          horizontal={true}
-          showsHorizontalScrollIndicator={false}
-          renderItem={({item, index}) => (
-            <ProductCard key={index} productDetail={item} />
-          )}
-        />
-      </ProfileScreenCardWrapper>
-
-      <Actionsheet isOpen={isActionSheetOpen} onClose={setIsActionSheetOpen}>
-        <Actionsheet.Content>
-          <Actionsheet.Item
-            onPress={() => selectImage('camera')}
-            startIcon={<Iocn1 name="camera" color="#f06d06" size={30} />}>
-            Take a photo
-          </Actionsheet.Item>
-          <Actionsheet.Item
-            onPress={() => selectImage('library')}
-            startIcon={
-              <Icon3 name="photo-library" color="#f06d06" size={30} />
-            }>
-            Choose from Library
-          </Actionsheet.Item>
-          <Actionsheet.Item
-            onPress={() => selectImage('removeImage')}
-            startIcon={<Icon3 name="delete" color="red" size={30} />}>
-            Remove image
-          </Actionsheet.Item>
-          <Actionsheet.Item
-            onPress={selectImage}
-            style={style.actionsheetItemCancelText}>
-            Cancel
-          </Actionsheet.Item>
-        </Actionsheet.Content>
-      </Actionsheet>
+            </View>
+          </View>
+          <ProfileScreenCardWrapper>
+            <Text style={style.aboutTitle}>About</Text>
+            <Text style={style.aboutText}>{volunteer?.aboutMe}</Text>
+          </ProfileScreenCardWrapper>
+          <ItemsSelectorCard selectedItems={volunteer?.skills} title="Skills" />
+          <ItemsSelectorCard selectedItems={volunteer?.causes} title="Causes" />
+          <ProfileScreenCardWrapper>
+            <View style={style.titleAndLinkView}>
+              <Text style={style.titleStyle}>Activity</Text>
+              <TouchableOpacity>
+                <Text style={style.linkStyle}>Sell all</Text>
+              </TouchableOpacity>
+            </View>
+            <FlatList
+              data={activities}
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+              renderItem={({item, index}) => (
+                <TouchableOpacity key={index} style={style.activityView}>
+                  <Image
+                    source={item.image}
+                    alt="activity image"
+                    resizeMode="contain"
+                    style={style.activityImageStyle}
+                  />
+                  <View style={style.activityTitleAndPostedByView}>
+                    <Text style={style.activityTitle}>{item.title}</Text>
+                    <Text style={style.activityPostedByText}>
+                      {item.postedBy}
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+              )}
+            />
+          </ProfileScreenCardWrapper>
+          <ProfileScreenCardWrapper>
+            <View style={style.titleAndLinkView}>
+              <Text style={style.titleStyle}>Products in charity store</Text>
+              <TouchableOpacity>
+                <Text style={style.linkStyle}>Sell all</Text>
+              </TouchableOpacity>
+            </View>
+            <FlatList
+              data={charityProducts}
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+              renderItem={({item, index}) => (
+                <ProductCard key={index} productDetail={item} />
+              )}
+            />
+          </ProfileScreenCardWrapper>
+          <Actionsheet
+            isOpen={isActionSheetOpen}
+            onClose={setIsActionSheetOpen}>
+            <Actionsheet.Content>
+              <Actionsheet.Item
+                onPress={() => selectImage('camera')}
+                startIcon={<Iocn1 name="camera" color="#f06d06" size={30} />}>
+                Take a photo
+              </Actionsheet.Item>
+              <Actionsheet.Item
+                onPress={() => selectImage('library')}
+                startIcon={
+                  <Icon3 name="photo-library" color="#f06d06" size={30} />
+                }>
+                Choose from Library
+              </Actionsheet.Item>
+              <Actionsheet.Item
+                onPress={() => selectImage('removeImage')}
+                startIcon={<Icon3 name="delete" color="red" size={30} />}>
+                Remove image
+              </Actionsheet.Item>
+              <Actionsheet.Item
+                onPress={selectImage}
+                style={style.actionsheetItemCancelText}>
+                Cancel
+              </Actionsheet.Item>
+            </Actionsheet.Content>
+          </Actionsheet>
+        </>
+      ) : (
+        <CustomSpinner size="lg" color="#f06d06" />
+      )}
     </ScrollView>
   );
 }

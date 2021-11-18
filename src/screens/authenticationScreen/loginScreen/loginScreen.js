@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, ScrollView} from 'react-native';
 import {useFormik} from 'formik';
 import {useToast} from 'native-base';
@@ -10,11 +10,31 @@ import CustomButton from '../../../components/common/button/button';
 import NavigationLink from '../../../components/common/navigationLink/navigationLink';
 import {login} from '../../../shared/services/authServices';
 import CustomToast from '../../../components/common/customToast/customToast';
+import {getVolunteerById} from '../../../../graphql/queries';
+import {useLazyQuery} from '@apollo/client';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function LoginScreen({navigation}) {
   let [isLoading, setIsLoading] = useState(false);
   let [showInvalidInput, setShowInvalidInput] = useState(false);
+  let [getVolunteer, volunteerData] = useLazyQuery(getVolunteerById);
   let toast = useToast();
+
+  useEffect(() => {
+    if (volunteerData?.data?.getVolunteerById) {
+      console.log(typeof volunteerData?.data?.getVolunteerById);
+      setIsLoading(false);
+      AsyncStorage.setItem(
+        'volunteer',
+        JSON.stringify(volunteerData.data.getVolunteerById),
+      ).then(res => {
+        navigation.reset({
+          index: 0,
+          routes: [{name: 'drawer'}],
+        });
+      });
+    }
+  }, [volunteerData?.data?.getVolunteerById]);
 
   const formik = useFormik({
     initialValues: {
@@ -27,10 +47,8 @@ export default function LoginScreen({navigation}) {
       setIsLoading(true);
       login(email, password)
         .then(res => {
-          setIsLoading(false);
-          navigation.reset({
-            index: 0,
-            routes: [{name: 'drawer'}],
+          getVolunteer({
+            variables: {volunteerId: res.attributes.sub},
           });
         })
         .catch(err => {
