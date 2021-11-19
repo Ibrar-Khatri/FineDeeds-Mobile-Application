@@ -45,6 +45,6 @@ export default StyleSheet.create({
   },
   checkBoxText: {
     color: 'rgba(0,0,0,.6)',
-    fontSize: vw(3.3),
+    fontSize: vw(3.4),
   },
 });

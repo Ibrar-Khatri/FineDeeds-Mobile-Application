@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {View, Text, ScrollView, ImageBackground} from 'react-native';
 import Slick from 'react-native-slick';
-import Auth from '@aws-amplify/auth';
 import CustomButton from '../../../components/common/button/button';
 import SideDetailCard from '../../../components/constant/homeScreenComponents/sideDetailCard/sideDetailCard';
 import {isLoggedIn} from '../../../shared/services/authServices';
@@ -13,7 +12,7 @@ import CustomSpinner from '../../../components/common/spinner/spinner';
 export default function HomeScreen({navigation}) {
   let [isUserAutheticated, setIsUserAuthenticated] = useState(false);
   let [isLoading, setIsLoading] = useState(true);
-  let user = AsyncStorage.getItem('volunteer').then(res => {});
+  let user = AsyncStorage.getItem('volunteer');
 
   useEffect(() => {
     isLoggedIn()

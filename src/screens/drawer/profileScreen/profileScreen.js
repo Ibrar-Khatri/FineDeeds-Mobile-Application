@@ -23,17 +23,23 @@ import ProductCard from '../../../components/common/productCard/productCard';
 import style from './profileScreenStyle';
 import CustomSpinner from '../../../components/common/spinner/spinner';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {isLoggedIn} from '../../../shared/services/authServices';
 
 export default function ProfileScreen() {
   let [isActionSheetOpen, setIsActionSheetOpen] = useState(false);
   let [isLoading, setIsLoading] = useState(true);
   let [volunteer, setVolunteer] = useState();
   let [image, setImage] = useState();
+  let [user, setUser] = useState();
 
   useEffect(() => {
     AsyncStorage.getItem('volunteer').then(res => {
       setIsLoading(false);
       setVolunteer(JSON.parse(res));
+    });
+    isLoggedIn().then(res => {
+      setUser(res.attributes);
+      console.log(user);
     });
   }, []);
 
@@ -146,7 +152,7 @@ export default function ProfileScreen() {
 
   return (
     <ScrollView>
-      {!isLoading ? (
+      {!isLoading && user ? (
         <>
           <View style={style.profileView}>
             <Image
@@ -176,13 +182,15 @@ export default function ProfileScreen() {
                 )}
               </TouchableOpacity>
             </View>
-            <Text style={style.userNameStyle}>{volunteer?.volunteerName}</Text>
-            <View>
-              <Text style={style.userLocationStyle}>
-                <Iocn1 name="location-pin" color="#f06d06" size={20} />
-                {volunteer?.city + ', ' + volunteer?.country}
-              </Text>
-            </View>
+            <Text style={style.userNameStyle}>{user?.name}</Text>
+            {volunteer?.city && volunteer?.country && (
+              <View>
+                <Text style={style.userLocationStyle}>
+                  <Iocn1 name="location-pin" color="#f06d06" size={20} />
+                  {volunteer?.city + ', ' + volunteer?.country}
+                </Text>
+              </View>
+            )}
             <View style={style.userFollowersView}>
               {userFollowersDet.map((item, i) => (
                 <View key={i} style={style.userFollower}>
@@ -203,10 +211,12 @@ export default function ProfileScreen() {
               </View>
             </View>
           </View>
-          <ProfileScreenCardWrapper>
-            <Text style={style.aboutTitle}>About</Text>
-            <Text style={style.aboutText}>{volunteer?.aboutMe}</Text>
-          </ProfileScreenCardWrapper>
+          {volunteer?.aboutMe && (
+            <ProfileScreenCardWrapper>
+              <Text style={style.aboutTitle}>About</Text>
+              <Text style={style.aboutText}>{volunteer?.aboutMe}</Text>
+            </ProfileScreenCardWrapper>
+          )}
           <ItemsSelectorCard selectedItems={volunteer?.skills} title="Skills" />
           <ItemsSelectorCard selectedItems={volunteer?.causes} title="Causes" />
           <ProfileScreenCardWrapper>

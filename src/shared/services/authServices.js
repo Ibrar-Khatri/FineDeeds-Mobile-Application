@@ -11,7 +11,15 @@ export const signup = user => {
 };
 
 export const confirm = (email, confirmationCode) => {
-  return Auth.confirmSignUp(email, confirmationCode);
+  return new Promise((resolve, reject) => {
+    Auth.confirmSignUp(email, confirmationCode)
+      .then(res => {
+        resolve(res);
+      })
+      .catch(err => {
+        resolve(err);
+      });
+  });
 };
 
 export const resendSignUp = username => {
@@ -19,7 +27,16 @@ export const resendSignUp = username => {
 };
 
 export const login = (email, password) => {
-  return Auth.signIn(email, password);
+  return new Promise((resolve, reject) => {
+    Auth.signIn(email, password)
+      .then(user => {
+        resolve(user);
+      })
+      .catch(err => {
+        console.log('err');
+        reject(err);
+      });
+  });
 };
 
 export const logout = () => {

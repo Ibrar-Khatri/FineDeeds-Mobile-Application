@@ -6,11 +6,9 @@ import awsConfig from './aws_credentials/awsConfig';
 import DrawerNavigation from './src/screens/drawer/drawer';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import AuthenticationScreen from './src/screens/authenticationScreen/authentication';
-import StaticScreens from './src/screens/staticScreen/staticScreen';
 import {ApolloProvider} from '@apollo/client';
 import {FinedeedsAppClient} from './aws_credentials/graphql-client.js';
 
-// Amplify.configure(awsConfig);
 Amplify.configure({...awsConfig});
 
 const Stack = createNativeStackNavigator();
@@ -26,7 +24,6 @@ const App = () => {
               name="authentication-screen"
               component={AuthenticationScreen}
             />
-            <Stack.Screen name="static-screen" component={StaticScreens} />
           </Stack.Navigator>
         </NavigationContainer>
       </NativeBaseProvider>

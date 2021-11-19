@@ -6,7 +6,7 @@ import style from './customCheckBoxStyle';
 export default function CustomCheckBox(props) {
   let {isChecked, setIsChecked} = props;
   function handleChange() {
-    setIsChecked && isChecked ? setIsChecked(false) : setIsChecked(true);
+    setIsChecked && (isChecked ? setIsChecked(false) : setIsChecked(true));
   }
   return (
     <TouchableOpacity

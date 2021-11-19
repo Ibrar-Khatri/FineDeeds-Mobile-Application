@@ -6,6 +6,7 @@ import DrawerContent from '../../components/constant/drawerContent/drawerContent
 import ProfileScreen from './profileScreen/profileScreen';
 import style from './drawerStyle';
 import {isLoggedIn} from '../../shared/services/authServices';
+import StaticScreens from '../staticScreen/staticScreen';
 
 const Drawer = createDrawerNavigator();
 
@@ -68,6 +69,7 @@ export default function DrawerNavigation({navigation}) {
           options={{drawerLabel: 'Profile'}}
         />
       )}
+      <Drawer.Screen name="static-screen" component={StaticScreens} />
     </Drawer.Navigator>
   );
 }

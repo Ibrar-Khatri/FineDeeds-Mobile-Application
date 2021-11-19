@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {TouchableOpacity, Text, View} from 'react-native';
+import {TouchableOpacity, Text, View, FlatList} from 'react-native';
 import Icon from 'react-native-vector-icons/Octicons';
 import CustomCheckBox from '../../../common/customCheckBox/customCheckBox';
 import ModalWrapper from '../../../common/modalWrapper/modalWrapper';
@@ -12,7 +12,7 @@ export default function ItemsSelectorCard(props) {
   let [modalTitle, setModalTitle] = useState();
   let [allItems, setAllItems] = useState();
   let [selected, setSelected] = useState();
-  let [update, setUpdate] = useState();
+  let [update, setUpdate] = useState([]);
 
   useEffect(() => {
     setSelected(selectedItems);
@@ -91,22 +91,30 @@ export default function ItemsSelectorCard(props) {
     if (title === 'Skills') {
       setModalTitle('Add skills');
       setAllItems(skills);
-    } else if (title === 'Causes') {
+    } else {
       setModalTitle('Add causes');
       setAllItems(causes);
     }
     setIsModalOpen(true);
   }
+
   function handleOnSaveChanges() {
     setIsModalOpen(false);
     setSelected(update);
   }
   function handleOnChange(item) {
+    // console.log(item);
     if (update?.includes(item)) {
-      let filtered = update.filter(ite => ite !== item);
+      console.log(item, '1');
+      let filtered = update?.filter(ite => ite !== item);
       setUpdate(filtered);
     } else {
-      setUpdate([...update, item]);
+      console.log(item, '2');
+      if (update) {
+        setUpdate([...update, item]);
+      } else {
+        setUpdate([item]);
+      }
     }
   }
 
@@ -114,8 +122,8 @@ export default function ItemsSelectorCard(props) {
     <ProfileScreenCardWrapper>
       <View style={style.titleAndIconView}>
         <Text style={style.titleStyle}>{title}</Text>
-        <TouchableOpacity>
-          <Icon name="pencil" size={18} color="#f06d06" onPress={openModal} />
+        <TouchableOpacity onPress={() => openModal()}>
+          <Icon name="pencil" size={18} color="#f06d06" />
         </TouchableOpacity>
       </View>
       <View style={style.itemMainView}>
@@ -131,7 +139,13 @@ export default function ItemsSelectorCard(props) {
           isModalOpen={isModalOpen}
           setIsModalOpen={setIsModalOpen}
           title={modalTitle}
-          onClick={handleOnSaveChanges}>
+          onClickFun={handleOnSaveChanges}>
+          {/* <FlatList
+            data={allItems}
+            renderItem={({item, i}) => (
+              
+            )}
+          /> */}
           {allItems?.map((item, i) => (
             <TouchableOpacity
               key={i}

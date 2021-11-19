@@ -4,8 +4,8 @@ import HowItWorksCard from '../../../components/constant/howItWorkScreenComponen
 import style from './howItWorksStyle';
 
 export default function HowItWorks() {
-  let [isOganization, setIsOganization] = useState(false);
-  let [isVolunteer, setIsVolunteer] = useState(false);
+  let [isOganization, setIsOganization] = useState(true);
+  let [isVolunteer, setIsVolunteer] = useState(true);
 
   let volunteer = [
     {
@@ -100,6 +100,7 @@ export default function HowItWorks() {
         organization.map((item, i) => (
           <HowItWorksCard
             key={i}
+            index={i}
             image={item.image}
             title={item.title}
             about={item.about}

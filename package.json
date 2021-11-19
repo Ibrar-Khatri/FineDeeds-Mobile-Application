@@ -33,6 +33,7 @@
     "react-native-dotenv": "^3.3.0",
     "react-native-gesture-handler": "^1.10.3",
     "react-native-image-crop-picker": "^0.37.2",
+    "react-native-modal": "^13.0.0",
     "react-native-permissions": "^3.1.0",
     "react-native-reanimated": "^2.2.4",
     "react-native-safe-area-context": "^3.3.2",

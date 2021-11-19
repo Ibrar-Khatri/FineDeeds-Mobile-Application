@@ -97,7 +97,6 @@ export default function SignupScreen({navigation}) {
                 text="I Accept The Finedeeds"
                 displayName="Terms Of Service"
                 navigation={navigation}
-                screenName="static-screen"
                 routeName="terms-and-condition"
               />
             </View>

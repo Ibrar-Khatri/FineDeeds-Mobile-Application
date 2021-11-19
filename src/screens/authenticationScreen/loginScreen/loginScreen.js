@@ -21,18 +21,26 @@ export default function LoginScreen({navigation}) {
   let toast = useToast();
 
   useEffect(() => {
-    if (volunteerData?.data?.getVolunteerById) {
-      console.log(typeof volunteerData?.data?.getVolunteerById);
-      setIsLoading(false);
+    console.log(volunteerData?.variables)
+    if (volunteerData?.variables) {
       AsyncStorage.setItem(
         'volunteer',
-        JSON.stringify(volunteerData.data.getVolunteerById),
-      ).then(res => {
-        navigation.reset({
-          index: 0,
-          routes: [{name: 'drawer'}],
+        JSON.stringify(volunteerData?.data?.getVolunteerById),
+      )
+        .then(res => {
+          setIsLoading(false);
+          navigation.reset({
+            index: 0,
+            routes: [{name: 'drawer'}],
+          });
+        })
+        .catch(err => {
+          setIsLoading(false);
+          navigation.reset({
+            index: 0,
+            routes: [{name: 'drawer'}],
+          });
         });
-      });
     }
   }, [volunteerData?.data?.getVolunteerById]);
 

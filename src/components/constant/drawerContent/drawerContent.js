@@ -1,27 +1,26 @@
-import React, {useEffect, useState} from 'react';
-import {
-  DrawerContentScrollView,
-  DrawerItem,
-  DrawerItemList,
-} from '@react-navigation/drawer';
+import React, {useState} from 'react';
+import {DrawerContentScrollView, DrawerItem} from '@react-navigation/drawer';
 import {BackHandler, Image, Text, View} from 'react-native';
-import {isLoggedIn, logout} from '../../../shared/services/authServices';
-import {useNavigation} from '@react-navigation/core';
+import {logout} from '../../../shared/services/authServices';
 import {DrawerActions} from '@react-navigation/native';
 import style from './drawerContentStyle';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function DrawerContent(props) {
   let {isUserAuthenticated, setIsUserAuthenticated, user} = props;
-  let [index, setIndex] = useState();
-  let navigation = useNavigation();
+  let [index, setIndex] = useState(0);
 
   BackHandler.addEventListener('hardwareBackPress', () => {
-    setIndex();
-    navigation.dispatch(DrawerActions.closeDrawer());
+    setIndex(0);
   });
 
   let arry = [
+    {
+      lable: 'Home',
+      isFocused: false,
+      screenName: 'landing-screen',
+      alwaysShown: true,
+    },
     {
       lable: 'Login',
       isFocused: false,
@@ -31,9 +30,7 @@ export default function DrawerContent(props) {
     },
     {
       lable: 'Nonprofit login',
-      // isFocused: false,
       screenName: '',
-      initialRouteName: '',
       isUserAuthenticated: false,
     },
     {
@@ -47,8 +44,14 @@ export default function DrawerContent(props) {
       lable: 'Register a non-profit',
       // isFocused: false,
       screenName: '',
-      initialRouteName: '',
       isUserAuthenticated: false,
+    },
+
+    {
+      lable: 'Profile',
+      isFocused: false,
+      screenName: 'profile-screen',
+      isUserAuthenticated: true,
     },
     {
       lable: 'About',
@@ -61,7 +64,6 @@ export default function DrawerContent(props) {
       lable: 'Stories',
       // isFocused: false,
       screenName: '',
-      initialRouteName: '',
       isUserAuthenticated: true,
     },
     {
@@ -85,29 +87,32 @@ export default function DrawerContent(props) {
     },
   ];
   function darwerItemPress(item, ind) {
-    setIndex(ind);
+    if (arry[ind].screenName) {
+      setIndex(ind);
+    }
+
     if (item.lable === 'Logout') {
       logout()
         .then(res => {
           setIsUserAuthenticated(false);
-          console.log('setIsUserAuthenticated(false);');
+          setIndex(0);
           AsyncStorage.removeItem('volunteer');
-          navigation.dispatch(DrawerActions.closeDrawer());
-          navigation.dispatch(DrawerActions.jumpTo('landing-screen'));
+          props.navigation.dispatch(DrawerActions.closeDrawer());
+          props.navigation.dispatch(DrawerActions.jumpTo('landing-screen'));
         })
         .catch(err => {
           setIsUserAuthenticated(true);
         });
     } else {
-      item.screenName &&
-        item.initialRouteName &&
-        navigation.navigate(item.screenName, {
-          initialRouteName: item.initialRouteName,
-        });
+      item.screenName && item.initialRouteName
+        ? props.navigation.navigate(item.screenName, {
+            initialRouteName: item.initialRouteName,
+          })
+        : item.screenName && props.navigation.navigate(item.screenName);
     }
   }
 
-  if (index && arry[index].screenName) {
+  if (arry[index].screenName) {
     arry[index].isFocused = arry[index].isFocused ? false : true;
   }
 
@@ -120,7 +125,6 @@ export default function DrawerContent(props) {
           <Text style={style.roleText}>Volunteer</Text>
         </View>
       )}
-      <DrawerItemList {...props} />
       {arry.map(
         (item, i) =>
           (item.alwaysShown ||

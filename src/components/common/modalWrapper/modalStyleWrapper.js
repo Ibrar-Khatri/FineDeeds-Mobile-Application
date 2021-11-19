@@ -5,23 +5,45 @@ import {
 } from '../../../responsive/responsive';
 
 export default StyleSheet.create({
-  contentView: {
+  modalMainView: {
+    height: vh(50),
     backgroundColor: '#fff',
+    width: vw(80),
+    alignSelf: 'center',
+    borderRadius: 10,
+    overflow: 'hidden',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 6,
+    },
+    shadowOpacity: 0.39,
+    shadowRadius: 8.3,
+    elevation: 13,
   },
-  modalHeaderStyle: {
+  modalHeaderView: {
+    backgroundColor: '#fff',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 15,
+    borderBottomColor: '#212529',
+    borderBottomWidth: 1,
+  },
+  titleStyle: {
     color: '#212529',
     fontFamily: 'MontserratSemiBold',
     fontWeight: '700',
-    fontSize: vw(4),
+    fontSize: vw(5),
   },
-  checkBoxAndTextView: {
-    display: 'flex',
-    flexDirection: 'row',
-    margin: 10,
-    alignItems: 'center',
-  },
-  checkBoxText: {
-    color: 'rgba(0,0,0,.6)',
-    fontSize: vw(3.3),
+  modalFooter: {
+    borderTopColor: '#212529',
+    borderTopWidth: 1,
+    backgroundColor: '#fff',
+    paddingTop: 8,
+    paddingBottom: 8,
+    paddingRight: 20,
+    paddingLeft: 20,
   },
 });
