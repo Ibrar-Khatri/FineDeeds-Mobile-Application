@@ -9,7 +9,7 @@ export default function About() {
       <View style={style.aboutMainView}>
         <Text style={style.titleText}>About FineDeeds</Text>
         <Image
-          source={require('../../../assets/images/ripple_effect_of_goodness.png')}
+          source={require('../../../../assets/images/ripple_effect_of_goodness.png')}
           style={style.imageStyle}
           resizeMode='contain'
         />

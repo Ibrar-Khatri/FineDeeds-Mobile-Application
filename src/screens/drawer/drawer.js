@@ -6,7 +6,7 @@ import DrawerContent from '../../components/constant/drawerContent/drawerContent
 import ProfileScreen from './profileScreen/profileScreen';
 import style from './drawerStyle';
 import {isLoggedIn} from '../../shared/services/authServices';
-import StaticScreens from '../staticScreen/staticScreen';
+import StaticScreens from './staticScreen/staticScreen';
 
 const Drawer = createDrawerNavigator();
 
@@ -41,8 +41,6 @@ export default function DrawerNavigation({navigation}) {
         drawerInactiveTintColor: '#212529',
         drawerActiveBackgroundColor: '#fff',
       }}
-      backBehavior="initialRoute"
-      initialRouteName="landing-screen"
       drawerContent={props => (
         <DrawerContent
           {...props}

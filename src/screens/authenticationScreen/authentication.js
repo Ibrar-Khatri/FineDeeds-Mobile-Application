@@ -6,8 +6,8 @@ import SignupScreen from './signupScreen/signupScreen';
 import ForgotPasswordScreen from './forgotPasswordScreen/forgotPasswordScreen';
 import ConfirmationEmail from './emailConfirmation/emailConfirmation';
 import ResetPassword from './resetPassword/resetPassword';
-import TermsAndCondition from '../staticScreen/termsAndCondition/termsAndCondition';
-import {StyleSheet} from 'react-native';
+import TermsAndCondition from './termsAndCondition/termsAndCondition';
+import style from './authenticationScreenStyle';
 
 const Stack = createNativeStackNavigator();
 
@@ -29,7 +29,6 @@ export default function AuthenticationScreen({route}) {
         options={() => ({
           headerTitle: 'Terms and Conditions',
           headerTitleStyle: style.headerTitleStyle,
-          headerStyle: style.headerStyle,
           headerShown: true,
           headerRight: () => (
             <Image
@@ -42,14 +41,3 @@ export default function AuthenticationScreen({route}) {
     </Stack.Navigator>
   );
 }
-
-const style = StyleSheet.create({
-  headerTitleStyle: {
-    color: 'black',
-    fontFamily: 'Merriweather-Bold',
-  },
-  headerRightIcon: {
-    height: 30,
-    width: 35,
-  },
-});

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {DrawerContentScrollView, DrawerItem} from '@react-navigation/drawer';
 import {BackHandler, Image, Text, View} from 'react-native';
 import {logout} from '../../../shared/services/authServices';
@@ -11,7 +11,12 @@ export default function DrawerContent(props) {
   let [index, setIndex] = useState(0);
 
   BackHandler.addEventListener('hardwareBackPress', () => {
+    if (index === 0) {
+      BackHandler.exitApp();
+    }
     setIndex(0);
+    props.navigation.navigate('landing-screen');
+    return true;
   });
 
   let arry = [
@@ -25,7 +30,7 @@ export default function DrawerContent(props) {
       lable: 'Login',
       isFocused: false,
       screenName: 'authentication-screen',
-      initialRouteName: 'login',
+      nestedScreenName: 'login',
       isUserAuthenticated: false,
     },
     {
@@ -37,7 +42,7 @@ export default function DrawerContent(props) {
       lable: 'Become a volunteer',
       isFocused: false,
       screenName: 'authentication-screen',
-      initialRouteName: 'signup',
+      nestedScreenName: 'signup',
       isUserAuthenticated: false,
     },
     {
@@ -57,7 +62,7 @@ export default function DrawerContent(props) {
       lable: 'About',
       isFocused: false,
       screenName: 'static-screen',
-      initialRouteName: 'about',
+      nestedScreenName: 'about',
       isUserAuthenticated: true,
     },
     {
@@ -70,14 +75,14 @@ export default function DrawerContent(props) {
       lable: 'How It Works',
       isFocused: false,
       screenName: 'static-screen',
-      initialRouteName: 'howItWorks',
+      nestedScreenName: 'howItWorks',
       alwaysShown: true,
     },
     {
       lable: 'Request A Demo',
       // isFocused: false,
       screenName: '',
-      initialRouteName: '',
+      nestedScreenName: '',
       isUserAuthenticated: false,
     },
     {
@@ -104,9 +109,9 @@ export default function DrawerContent(props) {
           setIsUserAuthenticated(true);
         });
     } else {
-      item.screenName && item.initialRouteName
+      item.screenName && item.nestedScreenName
         ? props.navigation.navigate(item.screenName, {
-            initialRouteName: item.initialRouteName,
+            screen: item.nestedScreenName,
           })
         : item.screenName && props.navigation.navigate(item.screenName);
     }

@@ -2,7 +2,7 @@ import {StyleSheet} from 'react-native';
 import {
   heightPercentageToDP as vh,
   widthPercentageToDP as vw,
-} from '../../../responsive/responsive';
+} from '../../../../responsive/responsive';
 
 let contentText = {
   color: '#848383',
