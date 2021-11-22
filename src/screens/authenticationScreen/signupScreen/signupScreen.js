@@ -26,17 +26,20 @@ export default function SignupScreen({navigation}) {
       password: '',
     },
     validationSchema: signupValidationSchema,
-    onSubmit: userDet => {
+    onSubmit: user => {
+      let userDet = {
+        ...user,
+        'custom:role': 'VOLUNTEER',
+      };
       if (acceptTermsAndCond) {
         setIsLoading(true);
         signup(userDet)
           .then(res => {
             setIsLoading(false);
             let user = {
-              name: userDet.name,
-              email: res.user.username,
               userConfirmed: res.userConfirmed,
               userSub: res.userSub,
+              ...userDet,
             };
             navigation.navigate('email-confirmation', {
               user,

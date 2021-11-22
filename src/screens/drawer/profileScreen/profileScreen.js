@@ -23,23 +23,21 @@ import ProductCard from '../../../components/common/productCard/productCard';
 import style from './profileScreenStyle';
 import CustomSpinner from '../../../components/common/spinner/spinner';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {isLoggedIn} from '../../../shared/services/authServices';
+import VolunteeringExperience from '../../../components/constant/profileScreenComponents/volunteeringExperience/volunteeringExperience';
+import JourneyMap from '../../../components/constant/profileScreenComponents/journeyMap/journeyMap';
 
 export default function ProfileScreen() {
   let [isActionSheetOpen, setIsActionSheetOpen] = useState(false);
   let [isLoading, setIsLoading] = useState(true);
   let [volunteer, setVolunteer] = useState();
   let [image, setImage] = useState();
-  let [user, setUser] = useState();
+  let [isJourneyMap, setIsJourneyMap] = useState(false);
+  let [isVolunterringExp, setIsVolunterringExp] = useState(false);
 
   useEffect(() => {
     AsyncStorage.getItem('volunteer').then(res => {
       setIsLoading(false);
       setVolunteer(JSON.parse(res));
-    });
-    isLoggedIn().then(res => {
-      setUser(res.attributes);
-      console.log(user);
     });
   }, []);
 
@@ -152,7 +150,7 @@ export default function ProfileScreen() {
 
   return (
     <ScrollView>
-      {!isLoading && user ? (
+      {!isLoading ? (
         <>
           <View style={style.profileView}>
             <Image
@@ -182,8 +180,8 @@ export default function ProfileScreen() {
                 )}
               </TouchableOpacity>
             </View>
-            <Text style={style.userNameStyle}>{user?.name}</Text>
-            {volunteer?.city && volunteer?.country && (
+            <Text style={style.userNameStyle}>{volunteer?.volunteerName}</Text>
+            {(volunteer?.city || volunteer?.country) && (
               <View>
                 <Text style={style.userLocationStyle}>
                   <Iocn1 name="location-pin" color="#f06d06" size={20} />
@@ -217,8 +215,52 @@ export default function ProfileScreen() {
               <Text style={style.aboutText}>{volunteer?.aboutMe}</Text>
             </ProfileScreenCardWrapper>
           )}
-          <ItemsSelectorCard selectedItems={volunteer?.skills} title="Skills" />
-          <ItemsSelectorCard selectedItems={volunteer?.causes} title="Causes" />
+          <ItemsSelectorCard
+            selectedItems={volunteer?.skills}
+            title="Skills"
+            volunteer={volunteer}
+            setVolunteer={setVolunteer}
+          />
+          <ItemsSelectorCard
+            selectedItems={volunteer?.causes}
+            title="Causes"
+            volunteer={volunteer}
+            setVolunteer={setVolunteer}
+          />
+
+          <ProfileScreenCardWrapper>
+            <View style={style.timeLineHeader}>
+              <TouchableOpacity
+                onPress={() => {
+                  isJourneyMap ? setIsJourneyMap(false) : setIsJourneyMap(true);
+                }}>
+                <Text
+                  style={[
+                    style.timeLineHeaderTitle,
+                    isJourneyMap && style.focusedHeaderTimeTitle,
+                  ]}>
+                  Journey map
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  isVolunterringExp
+                    ? setIsVolunterringExp(false)
+                    : setIsVolunterringExp(true);
+                }}>
+                <Text
+                  style={[
+                    style.timeLineHeaderTitle,
+                    isVolunterringExp && style.focusedHeaderTimeTitle,
+                  ]}>
+                  Volunteering experience
+                </Text>
+              </TouchableOpacity>
+            </View>
+            {isJourneyMap && <JourneyMap />}
+            {isVolunterringExp && <VolunteeringExperience />}
+          </ProfileScreenCardWrapper>
+
           <ProfileScreenCardWrapper>
             <View style={style.titleAndLinkView}>
               <Text style={style.titleStyle}>Activity</Text>

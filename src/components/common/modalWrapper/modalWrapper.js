@@ -7,7 +7,8 @@ import CustomButton from '../button/button';
 import style from './modalStyleWrapper';
 
 export default function ModalWrapper(props) {
-  let {isModalOpen, setIsModalOpen, title, onClickFun, children} = props;
+  let {isModalOpen, setIsModalOpen, title, onClickFun, isLoading, children} =
+    props;
 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
@@ -26,9 +27,13 @@ export default function ModalWrapper(props) {
             <Icon name="close" color="#000" size={20} />
           </TouchableOpacity>
         </View>
-        <ScrollView>{props.children}</ScrollView>
+        <ScrollView>{children}</ScrollView>
         <View style={style.modalFooter}>
-          <CustomButton buttonText="Save Changes" onClick={onClickFun} />
+          <CustomButton
+            buttonText="Save Changes"
+            onClick={onClickFun}
+            isLoading={isLoading}
+          />
         </View>
       </View>
     </Modal>

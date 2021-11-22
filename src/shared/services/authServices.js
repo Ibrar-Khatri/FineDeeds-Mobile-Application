@@ -33,7 +33,6 @@ export const login = (email, password) => {
         resolve(user);
       })
       .catch(err => {
-        console.log('err');
         reject(err);
       });
   });

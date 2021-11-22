@@ -7,18 +7,20 @@ import ProfileScreen from './profileScreen/profileScreen';
 import style from './drawerStyle';
 import {isLoggedIn} from '../../shared/services/authServices';
 import StaticScreens from './staticScreen/staticScreen';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Drawer = createDrawerNavigator();
 
 export default function DrawerNavigation({navigation}) {
   let [isUserAuthenticated, setIsUserAuthenticated] = useState(false);
-  let [user, setUser] = useState();
-
+  let [volunteer, setVolunteer] = useState();
   useEffect(() => {
     isLoggedIn()
       .then(res => {
         setIsUserAuthenticated(true);
-        setUser(res.attributes);
+        AsyncStorage.getItem('volunteer').then(vol => {
+          setVolunteer(JSON.parse(vol));
+        });
       })
       .catch(err => {
         setIsUserAuthenticated(false);
@@ -46,27 +48,22 @@ export default function DrawerNavigation({navigation}) {
           {...props}
           isUserAuthenticated={isUserAuthenticated}
           setIsUserAuthenticated={setIsUserAuthenticated}
-          user={user}
+          volunteer={volunteer}
         />
       )}>
       <Drawer.Screen
+        screenProp
         name="landing-screen"
-        component={HomeScreen}
-        initialParams={{isUserAuthenticated: isUserAuthenticated}}
         options={{
           drawerLabel: 'Home',
-          headerPressColor: 'red',
-          headerPressOpacity: 0.5,
-          pressColor: 'red',
-        }}
+        }}>
+        {() => <HomeScreen isUserAuthenticated={isUserAuthenticated} />}
+      </Drawer.Screen>
+      <Drawer.Screen
+        name="profile-screen"
+        component={ProfileScreen}
+        options={{drawerLabel: 'Profile'}}
       />
-      {isUserAuthenticated && (
-        <Drawer.Screen
-          name="profile-screen"
-          component={ProfileScreen}
-          options={{drawerLabel: 'Profile'}}
-        />
-      )}
       <Drawer.Screen name="static-screen" component={StaticScreens} />
     </Drawer.Navigator>
   );

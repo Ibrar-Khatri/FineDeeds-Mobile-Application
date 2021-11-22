@@ -1,22 +1,29 @@
 import React, {useEffect, useState} from 'react';
 import {TouchableOpacity, Text, View, FlatList} from 'react-native';
+import {useToast} from 'native-base';
+import {useMutation} from '@apollo/client';
 import Icon from 'react-native-vector-icons/Octicons';
 import CustomCheckBox from '../../../common/customCheckBox/customCheckBox';
+import CustomToast from '../../../common/customToast/customToast';
 import ModalWrapper from '../../../common/modalWrapper/modalWrapper';
 import ProfileScreenCardWrapper from '../profileScreenCardWrapper/profileScreenCardWrapper';
 import style from './itemsSelectorCardStyle';
+import {
+  updateVolunteerCauses,
+  updateVolunteerSkills,
+} from '../../../../../graphql/mutations';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function ItemsSelectorCard(props) {
-  let {title, selectedItems} = props;
+  let {title, selectedItems, volunteer, setVolunteer} = props;
   let [isModalOpen, setIsModalOpen] = useState(false);
   let [modalTitle, setModalTitle] = useState();
   let [allItems, setAllItems] = useState();
-  let [selected, setSelected] = useState();
-  let [update, setUpdate] = useState([]);
-
-  useEffect(() => {
-    setSelected(selectedItems);
-  }, [selectedItems]);
+  let [update, setUpdate] = useState();
+  let [isLoading, setIsLoading] = useState(false);
+  let [updateSkills, updatedSkills] = useMutation(updateVolunteerSkills);
+  let [updateCauses, updatedCauses] = useMutation(updateVolunteerCauses);
+  let toast = useToast();
 
   let skills = [
     'Accounting',
@@ -87,7 +94,7 @@ export default function ItemsSelectorCard(props) {
   ];
 
   function openModal() {
-    setUpdate(selected);
+    setUpdate(selectedItems);
     if (title === 'Skills') {
       setModalTitle('Add skills');
       setAllItems(skills);
@@ -98,23 +105,63 @@ export default function ItemsSelectorCard(props) {
     setIsModalOpen(true);
   }
 
-  function handleOnSaveChanges() {
+  if ((updatedSkills?.data || updatedCauses?.data) && isLoading) {
     setIsModalOpen(false);
-    setSelected(update);
+    setIsLoading(false);
+    let updated =
+      title === 'Skills'
+        ? {...volunteer, skills: update}
+        : {...volunteer, causes: update};
+
+    AsyncStorage.setItem('volunteer', JSON.stringify(updated)).then(() => {
+      toast.show({
+        placement: 'top',
+        duration: 2000,
+        render: () => (
+          <CustomToast
+            type="success"
+            description={`${title} successfully updated`}
+          />
+        ),
+      });
+      setVolunteer(updated);
+    });
   }
+  let handleOnSaveChanges = () => {
+    if (update?.length) {
+      setIsLoading(true);
+      setIsLoading(true);
+      title === 'Skills'
+        ? updateSkills({
+            variables: {
+              input: {volunteerId: volunteer.volunteerId, skills: update},
+            },
+          })
+        : updateCauses({
+            variables: {
+              input: {volunteerId: volunteer.volunteerId, causes: update},
+            },
+          });
+    } else {
+      setIsModalOpen(false);
+      toast.show({
+        placement: 'top',
+        duration: 2000,
+        render: () => (
+          <CustomToast
+            type="error"
+            description={`Please select any one of ${title}`}
+          />
+        ),
+      });
+    }
+  };
   function handleOnChange(item) {
-    // console.log(item);
     if (update?.includes(item)) {
-      console.log(item, '1');
       let filtered = update?.filter(ite => ite !== item);
       setUpdate(filtered);
     } else {
-      console.log(item, '2');
-      if (update) {
-        setUpdate([...update, item]);
-      } else {
-        setUpdate([item]);
-      }
+      update ? setUpdate([...update, item]) : setUpdate([item]);
     }
   }
 
@@ -127,7 +174,7 @@ export default function ItemsSelectorCard(props) {
         </TouchableOpacity>
       </View>
       <View style={style.itemMainView}>
-        {selected?.map((item, i) => (
+        {selectedItems?.map((item, i) => (
           <View key={i} style={style.itemView}>
             <Text style={style.itemText}>{item}</Text>
           </View>
@@ -139,13 +186,8 @@ export default function ItemsSelectorCard(props) {
           isModalOpen={isModalOpen}
           setIsModalOpen={setIsModalOpen}
           title={modalTitle}
+          isLoading={isLoading}
           onClickFun={handleOnSaveChanges}>
-          {/* <FlatList
-            data={allItems}
-            renderItem={({item, i}) => (
-              
-            )}
-          /> */}
           {allItems?.map((item, i) => (
             <TouchableOpacity
               key={i}

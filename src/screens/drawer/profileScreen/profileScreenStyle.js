@@ -124,4 +124,19 @@ export default StyleSheet.create({
   actionsheetItemCancelText: {
     justifyContent: 'center',
   },
+  timeLineHeader: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+  },
+  timeLineHeaderTitle: {
+    color: '#2b2b2b',
+    fontFamily: 'Poppins-SemiBold',
+    fontSize: vw(3.8),
+  },
+  focusedHeaderTimeTitle: {
+    color: '#f06d06',
+    borderBottomColor: '#f06d06',
+    borderBottomWidth: 1,
+  },
 });

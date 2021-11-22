@@ -7,7 +7,7 @@ import style from './drawerContentStyle';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function DrawerContent(props) {
-  let {isUserAuthenticated, setIsUserAuthenticated, user} = props;
+  let {isUserAuthenticated, setIsUserAuthenticated, volunteer} = props;
   let [index, setIndex] = useState(0);
 
   BackHandler.addEventListener('hardwareBackPress', () => {
@@ -103,7 +103,8 @@ export default function DrawerContent(props) {
           setIndex(0);
           AsyncStorage.removeItem('volunteer');
           props.navigation.dispatch(DrawerActions.closeDrawer());
-          props.navigation.dispatch(DrawerActions.jumpTo('landing-screen'));
+          // props.navigation.dispatch(DrawerActions.jumpTo('landing-screen'));
+          props.navigation.navigate('drawer');
         })
         .catch(err => {
           setIsUserAuthenticated(true);
@@ -126,8 +127,8 @@ export default function DrawerContent(props) {
       {isUserAuthenticated && (
         <View style={style.profileView}>
           <Image source={require('../../../assets/images/fineDeedLogo.png')} />
-          <Text style={style.nameText}>{user?.name}</Text>
-          <Text style={style.roleText}>Volunteer</Text>
+          <Text style={style.nameText}>{volunteer?.volunteerName}</Text>
+          <Text style={style.roleText}>{volunteer?.__typename}</Text>
         </View>
       )}
       {arry.map(

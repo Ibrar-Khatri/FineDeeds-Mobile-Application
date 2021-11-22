@@ -9,22 +9,8 @@ import style from './homeScreenStyle';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CustomSpinner from '../../../components/common/spinner/spinner';
 
-export default function HomeScreen({navigation}) {
-  let [isUserAutheticated, setIsUserAuthenticated] = useState(false);
-  let [isLoading, setIsLoading] = useState(true);
-  let user = AsyncStorage.getItem('volunteer');
-
-  useEffect(() => {
-    isLoggedIn()
-      .then(res => {
-        setIsUserAuthenticated(true);
-        setIsLoading(false);
-      })
-      .catch(err => {
-        setIsUserAuthenticated(false);
-        setIsLoading(false);
-      });
-  }, [user]);
+export default function HomeScreen(props) {
+  let {isUserAuthenticated} = props;
 
   let sideDetail1 = [
     {
@@ -107,86 +93,82 @@ export default function HomeScreen({navigation}) {
 
   return (
     <ScrollView>
-      {isLoading ? (
-        <CustomSpinner size="lg" color="#f06d06" />
-      ) : (
-        <View style={style.mainView}>
-          {!isUserAutheticated && (
-            <View>
-              <ImageBackground
-                source={require('../../../assets/images/jumbotrun.png')}
-                style={style.imageStyle}>
-                <View style={style.headingAndSubHeadingView}>
-                  <Text style={style.headingStyle}>
-                    One Step Towards a Better World
-                  </Text>
-                  <Text style={style.subHeadingStyle}>Be the change</Text>
-                </View>
-              </ImageBackground>
-              <View style={style.sideDetailCardView}>
-                {sideDetail1.map((item, i) => (
-                  <SideDetailCard
-                    key={i}
-                    imageSource={item.image}
-                    title={item.title}
-                    detail={item.detail}
-                  />
-                ))}
-              </View>
-            </View>
-          )}
-          <View style={style.whatDoWeOffer}>
-            <Text style={style.whatDoWeOffertEXT}>WHAT DO WE OFFER</Text>
-            {whatDoWeOffer.map((item, i) => (
-              <SideDetailCard
-                key={i}
-                imageSource={item.image}
-                title={item.title}
-                detail={item.detail}
-              />
-            ))}
-          </View>
-          <View style={style.joinAsNonProfitView}>
+      <View style={style.mainView}>
+        {!isUserAuthenticated && (
+          <View>
             <ImageBackground
-              source={require('../../../assets/images/become-nonprofit.png')}>
-              <View style={style.joinAsNonProfittextView}>
-                <Text style={style.joinAsNonProfitTitle}>
-                  Join as a non-profit
+              source={require('../../../assets/images/jumbotrun.png')}
+              style={style.imageStyle}>
+              <View style={style.headingAndSubHeadingView}>
+                <Text style={style.headingStyle}>
+                  One Step Towards a Better World
                 </Text>
-                <Text style={style.joinAsNonProfitText}>
-                  Finedeeds allows non-profits to improve almost every aspect of
-                  their operations – from internal efficiency to contributor
-                  interactions, and fundraising – with a greater focus on
-                  digital strategy. Through Finedeeds non-profits could not only
-                  manage their members and staff but also create events,
-                  fundraise and launch projects, and engage share the same with
-                  their members bringing real-time communication and high-level
-                  of transparency of operations.
-                </Text>
-                <View style={style.registerNowButtonView}>
-                  <CustomButton buttonText="Register Now" />
-                </View>
+                <Text style={style.subHeadingStyle}>Be the change</Text>
               </View>
             </ImageBackground>
-            <Slick
-              style={style.slickView}
-              showsButtons={false}
-              dotStyle={style.slickDotStyle}
-              activeDotStyle={style.activeDotStyle}
-              autoplay={true}
-              autoplayTimeout={5}>
-              {sliderContent.map((item, i) => (
-                <SliderCard
+            <View style={style.sideDetailCardView}>
+              {sideDetail1.map((item, i) => (
+                <SideDetailCard
                   key={i}
-                  image={item.image}
-                  name={item.name}
-                  quote={item.quote}
+                  imageSource={item.image}
+                  title={item.title}
+                  detail={item.detail}
                 />
               ))}
-            </Slick>
+            </View>
           </View>
+        )}
+        <View style={style.whatDoWeOffer}>
+          <Text style={style.whatDoWeOffertEXT}>WHAT DO WE OFFER</Text>
+          {whatDoWeOffer.map((item, i) => (
+            <SideDetailCard
+              key={i}
+              imageSource={item.image}
+              title={item.title}
+              detail={item.detail}
+            />
+          ))}
         </View>
-      )}
+        <View style={style.joinAsNonProfitView}>
+          <ImageBackground
+            source={require('../../../assets/images/become-nonprofit.png')}>
+            <View style={style.joinAsNonProfittextView}>
+              <Text style={style.joinAsNonProfitTitle}>
+                Join as a non-profit
+              </Text>
+              <Text style={style.joinAsNonProfitText}>
+                Finedeeds allows non-profits to improve almost every aspect of
+                their operations – from internal efficiency to contributor
+                interactions, and fundraising – with a greater focus on digital
+                strategy. Through Finedeeds non-profits could not only manage
+                their members and staff but also create events, fundraise and
+                launch projects, and engage share the same with their members
+                bringing real-time communication and high-level of transparency
+                of operations.
+              </Text>
+              <View style={style.registerNowButtonView}>
+                <CustomButton buttonText="Register Now" />
+              </View>
+            </View>
+          </ImageBackground>
+          <Slick
+            style={style.slickView}
+            showsButtons={false}
+            dotStyle={style.slickDotStyle}
+            activeDotStyle={style.activeDotStyle}
+            autoplay={true}
+            autoplayTimeout={5}>
+            {sliderContent.map((item, i) => (
+              <SliderCard
+                key={i}
+                image={item.image}
+                name={item.name}
+                quote={item.quote}
+              />
+            ))}
+          </Slick>
+        </View>
+      </View>
     </ScrollView>
   );
 }

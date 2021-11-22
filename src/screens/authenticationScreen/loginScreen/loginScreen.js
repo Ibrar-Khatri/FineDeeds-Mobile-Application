@@ -22,7 +22,7 @@ export default function LoginScreen({navigation}) {
 
   useEffect(() => {
     if (volunteerData?.called && !volunteerData?.loading) {
-      if (volunteerData?.data) {
+      if (volunteerData?.data?.getVolunteerById) {
         AsyncStorage.setItem(
           'volunteer',
           JSON.stringify(volunteerData?.data?.getVolunteerById),
@@ -33,15 +33,16 @@ export default function LoginScreen({navigation}) {
             routes: [{name: 'drawer'}],
           });
         });
-      } else {
-        setIsLoading(false);
-        navigation.reset({
-          index: 0,
-          routes: [{name: 'drawer'}],
-        });
       }
+      // else {
+      //   setIsLoading(false);
+      //   navigation.reset({
+      //     index: 0,
+      //     routes: [{name: 'drawer'}],
+      //   });
+      // }
     }
-  }, [volunteerData?.loading]);
+  }, [volunteerData?.data?.getVolunteerById]);
 
   const formik = useFormik({
     initialValues: {
