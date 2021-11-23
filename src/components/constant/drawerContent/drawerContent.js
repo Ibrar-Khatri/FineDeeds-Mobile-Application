@@ -103,8 +103,7 @@ export default function DrawerContent(props) {
           setIndex(0);
           AsyncStorage.removeItem('volunteer');
           props.navigation.dispatch(DrawerActions.closeDrawer());
-          // props.navigation.dispatch(DrawerActions.jumpTo('landing-screen'));
-          props.navigation.navigate('drawer');
+          props.navigation.dispatch(DrawerActions.jumpTo('landing-screen'));
         })
         .catch(err => {
           setIsUserAuthenticated(true);

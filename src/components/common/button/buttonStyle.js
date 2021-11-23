@@ -9,7 +9,7 @@ export default StyleSheet.create({
     },
     buttonText: {
         color: '#fff',
-        fontSize: vw(5),
+        fontSize: vw(4),
         fontWeight: '600',
     }
 })

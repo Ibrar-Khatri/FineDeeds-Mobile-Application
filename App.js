@@ -8,12 +8,16 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import AuthenticationScreen from './src/screens/authenticationScreen/authentication';
 import {ApolloProvider} from '@apollo/client';
 import {FinedeedsAppClient} from './aws_credentials/graphql-client.js';
+import {LogBox} from 'react-native';
 
 Amplify.configure({...awsConfig});
 
 const Stack = createNativeStackNavigator();
 
 const App = () => {
+  useEffect(() => {
+    LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
+  }, []);
   return (
     <ApolloProvider client={FinedeedsAppClient}>
       <NativeBaseProvider>

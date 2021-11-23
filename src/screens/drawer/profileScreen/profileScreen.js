@@ -25,14 +25,18 @@ import CustomSpinner from '../../../components/common/spinner/spinner';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import VolunteeringExperience from '../../../components/constant/profileScreenComponents/volunteeringExperience/volunteeringExperience';
 import JourneyMap from '../../../components/constant/profileScreenComponents/journeyMap/journeyMap';
+import {useLazyQuery} from '@apollo/client';
+import {getActivities} from '../../../../graphql/queries';
 
 export default function ProfileScreen() {
   let [isActionSheetOpen, setIsActionSheetOpen] = useState(false);
   let [isLoading, setIsLoading] = useState(true);
   let [volunteer, setVolunteer] = useState();
   let [image, setImage] = useState();
-  let [isJourneyMap, setIsJourneyMap] = useState(false);
+  let [isJourneyMap, setIsJourneyMap] = useState(true);
   let [isVolunterringExp, setIsVolunterringExp] = useState(false);
+  let [getActivitiesById, activitiesData] = useLazyQuery(getActivities);
+  let [activities, setActivities] = useState(null);
 
   useEffect(() => {
     AsyncStorage.getItem('volunteer').then(res => {
@@ -40,6 +44,22 @@ export default function ProfileScreen() {
       setVolunteer(JSON.parse(res));
     });
   }, []);
+  useEffect(() => {
+    activitiesData?.data &&
+      setActivities(activitiesData?.data?.getActivities?.items);
+  }, [activitiesData?.data?.getActivities]);
+
+  useEffect(() => {
+    if (volunteer?.volunteerId) {
+      console.log(volunteer.volunteerId), 'volunteer.volunteerId)';
+      getActivitiesById({
+        variables: {
+          limit: 3,
+          volunteerId: volunteer.volunteerId,
+        },
+      });
+    }
+  }, [volunteer]);
 
   let selectImage = async type => {
     setIsActionSheetOpen(false);
@@ -104,22 +124,10 @@ export default function ProfileScreen() {
     },
   ];
 
-  let activities = [
-    {
-      image: require('../../../assets/images/profile_activity_1.png'),
-      title: 'test # 3',
-      postedBy: 'Rameer and b posted',
-    },
-    {
-      image: require('../../../assets/images/profile_activity_2.png'),
-      title: 'test number 3',
-      postedBy: 'Rameer and b posted',
-    },
-    {
-      image: require('../../../assets/images/profile_activity_3.png'),
-      title: 'test activity',
-      postedBy: 'Rameer and b posted',
-    },
+  let activitiesImages = [
+    require('../../../assets/images/profile_activity_1.png'),
+    require('../../../assets/images/profile_activity_2.png'),
+    require('../../../assets/images/profile_activity_3.png'),
   ];
   let charityProducts = [
     {
@@ -149,7 +157,7 @@ export default function ProfileScreen() {
   ];
 
   return (
-    <ScrollView>
+    <ScrollView nestedScrollEnabled={true}>
       {!isLoading ? (
         <>
           <View style={style.profileView}>
@@ -232,7 +240,8 @@ export default function ProfileScreen() {
             <View style={style.timeLineHeader}>
               <TouchableOpacity
                 onPress={() => {
-                  isJourneyMap ? setIsJourneyMap(false) : setIsJourneyMap(true);
+                  setIsJourneyMap(true);
+                  setIsVolunterringExp(false);
                 }}>
                 <Text
                   style={[
@@ -244,9 +253,8 @@ export default function ProfileScreen() {
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => {
-                  isVolunterringExp
-                    ? setIsVolunterringExp(false)
-                    : setIsVolunterringExp(true);
+                  setIsJourneyMap(false);
+                  setIsVolunterringExp(true);
                 }}>
                 <Text
                   style={[
@@ -275,15 +283,15 @@ export default function ProfileScreen() {
               renderItem={({item, index}) => (
                 <TouchableOpacity key={index} style={style.activityView}>
                   <Image
-                    source={item.image}
+                    source={activitiesImages[index]}
                     alt="activity image"
                     resizeMode="contain"
                     style={style.activityImageStyle}
                   />
                   <View style={style.activityTitleAndPostedByView}>
-                    <Text style={style.activityTitle}>{item.title}</Text>
+                    <Text style={style.activityTitle}>{item.activityName}</Text>
                     <Text style={style.activityPostedByText}>
-                      {item.postedBy}
+                      {volunteer.volunteerName}
                     </Text>
                   </View>
                 </TouchableOpacity>
