@@ -39,27 +39,58 @@ export default function ProfileScreen() {
   let [activities, setActivities] = useState(null);
 
   useEffect(() => {
-    AsyncStorage.getItem('volunteer').then(res => {
-      setIsLoading(false);
-      setVolunteer(JSON.parse(res));
-    });
+    async function fetchData() {
+      try {
+        let user = await AsyncStorage.getItem('volunteer');
+        user = JSON.parse(user);
+        if (user.volunteerId) {
+          setIsLoading(false);
+          setVolunteer(user);
+          console.log('user', user.volunteerId);
+          getActivitiesById({
+            variables: {
+              limit: 3,
+              volunteerId: user.volunteerId,
+            },
+          });
+          return;
+        }
+      } catch (e) {
+        console.log('error', e);
+      }
+    }
+
+    fetchData();
+
+    // AsyncStorage.getItem('volunteer').then(res => {
+    //   res = JSON.parse(res);
+    //   setIsLoading(false);
+    //   setVolunteer(res);
+    //   if (res.volunteerId) {
+    //     console.log(res.volunteerId);
+    //     getActivitiesById({
+    //       variables: {
+    //         limit: 3,
+    //         volunteerId: res.volunteerId,
+    //       },
+    //     });
+    //   }
+    // });
   }, []);
-  useEffect(() => {
-    activitiesData?.data &&
-      setActivities(activitiesData?.data?.getActivities?.items);
-  }, [activitiesData?.data?.getActivities]);
 
   useEffect(() => {
-    if (volunteer?.volunteerId) {
-      console.log(volunteer.volunteerId), 'volunteer.volunteerId)';
-      getActivitiesById({
-        variables: {
-          limit: 3,
-          volunteerId: volunteer.volunteerId,
-        },
-      });
+    console.log(
+      activitiesData?.data?.getActivities.items,
+      '1activitiesData?.data?.getActivities.items',
+    );
+    if (activitiesData?.data?.getActivities?.items?.length > 0) {
+      console.log(
+        activitiesData?.data?.getActivities.items,
+        '2activitiesData?.data?.getActivities.items',
+      );
+      setActivities(activitiesData?.data?.getActivities?.items);
     }
-  }, [volunteer]);
+  }, [activitiesData?.data?.getActivities?.items]);
 
   let selectImage = async type => {
     setIsActionSheetOpen(false);
@@ -265,39 +296,45 @@ export default function ProfileScreen() {
                 </Text>
               </TouchableOpacity>
             </View>
-            {isJourneyMap && <JourneyMap />}
-            {isVolunterringExp && <VolunteeringExperience />}
+            {isJourneyMap && <JourneyMap volunteer={volunteer} />}
+            {isVolunterringExp && (
+              <VolunteeringExperience volunteer={volunteer} />
+            )}
           </ProfileScreenCardWrapper>
 
-          <ProfileScreenCardWrapper>
-            <View style={style.titleAndLinkView}>
-              <Text style={style.titleStyle}>Activity</Text>
-              <TouchableOpacity>
-                <Text style={style.linkStyle}>Sell all</Text>
-              </TouchableOpacity>
-            </View>
-            <FlatList
-              data={activities}
-              horizontal={true}
-              showsHorizontalScrollIndicator={false}
-              renderItem={({item, index}) => (
-                <TouchableOpacity key={index} style={style.activityView}>
-                  <Image
-                    source={activitiesImages[index]}
-                    alt="activity image"
-                    resizeMode="contain"
-                    style={style.activityImageStyle}
-                  />
-                  <View style={style.activityTitleAndPostedByView}>
-                    <Text style={style.activityTitle}>{item.activityName}</Text>
-                    <Text style={style.activityPostedByText}>
-                      {volunteer.volunteerName}
-                    </Text>
-                  </View>
+          {activities && (
+            <ProfileScreenCardWrapper>
+              <View style={style.titleAndLinkView}>
+                <Text style={style.titleStyle}>Activity</Text>
+                <TouchableOpacity>
+                  <Text style={style.linkStyle}>Sell all</Text>
                 </TouchableOpacity>
-              )}
-            />
-          </ProfileScreenCardWrapper>
+              </View>
+              <FlatList
+                data={activities}
+                horizontal={true}
+                showsHorizontalScrollIndicator={false}
+                renderItem={({item, index}) => (
+                  <TouchableOpacity key={index} style={style.activityView}>
+                    <Image
+                      source={activitiesImages[index]}
+                      alt="activity image"
+                      resizeMode="contain"
+                      style={style.activityImageStyle}
+                    />
+                    <View style={style.activityTitleAndPostedByView}>
+                      <Text style={style.activityTitle}>
+                        {item.activityName}
+                      </Text>
+                      <Text style={style.activityPostedByText}>
+                        {volunteer.volunteerName}
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+                )}
+              />
+            </ProfileScreenCardWrapper>
+          )}
           <ProfileScreenCardWrapper>
             <View style={style.titleAndLinkView}>
               <Text style={style.titleStyle}>Products in charity store</Text>
@@ -305,14 +342,16 @@ export default function ProfileScreen() {
                 <Text style={style.linkStyle}>Sell all</Text>
               </TouchableOpacity>
             </View>
-            <FlatList
-              data={charityProducts}
-              horizontal={true}
-              showsHorizontalScrollIndicator={false}
-              renderItem={({item, index}) => (
-                <ProductCard key={index} productDetail={item} />
-              )}
-            />
+            {charityProducts && (
+              <FlatList
+                data={charityProducts}
+                horizontal={true}
+                showsHorizontalScrollIndicator={false}
+                renderItem={({item, index}) => (
+                  <ProductCard key={index} productDetail={item} />
+                )}
+              />
+            )}
           </ProfileScreenCardWrapper>
           <Actionsheet
             isOpen={isActionSheetOpen}

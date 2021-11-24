@@ -52,7 +52,7 @@ const FinedeedsAppClient = new ApolloClient({
             },
           },
           getActivities: {
-            keyArgs: false,
+            keyArgs: ['volunteerId'],
             merge(existing = {items: []}, incoming, {args: {limit, skip}}) {
               if (!(limit && skip)) {
                 return incoming;

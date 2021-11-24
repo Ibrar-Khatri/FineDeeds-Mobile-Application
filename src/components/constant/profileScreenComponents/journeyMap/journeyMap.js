@@ -8,7 +8,8 @@ import {getVolunteerPublishedStories} from '../../../../../graphql/queries';
 import style from './journeyMapStyle';
 import CustomSpinner from '../../../common/spinner/spinner';
 
-export default function JourneyMap() {
+export default function JourneyMap(props) {
+  let {volunteer} = props;
   let [getstories, storiesData] = useLazyQuery(getVolunteerPublishedStories);
   let [stories, setStories] = useState(null);
 
@@ -31,7 +32,6 @@ export default function JourneyMap() {
 
         return null;
       });
-    console.log(Object.keys(timeline));
     setStories(timeline);
     return;
   };
@@ -43,18 +43,17 @@ export default function JourneyMap() {
   }, [storiesData?.data]);
 
   useEffect(() => {
-    AsyncStorage.getItem('volunteer').then(vol => {
-      vol = JSON.parse(vol);
+    if (volunteer?.volunteerId) {
       getstories({
-        variables: {volunteerId: vol.volunteerId, isPublished: true},
+        variables: {volunteerId: volunteer.volunteerId, isPublished: true},
       });
-    });
-  }, []);
+    }
+  }, [volunteer]);
 
   return (
-    <ScrollView nestedScrollEnabled={true} style={style.scrollView}>
-      {stories ? (
-        Object.keys(stories).map((year, ind) => (
+    stories && (
+      <ScrollView nestedScrollEnabled={true} style={style.scrollView}>
+        {Object.keys(stories).map((year, ind) => (
           <View key={ind}>
             <Text style={style.yearContainerStyle}>{year}</Text>
             <Timeline
@@ -107,10 +106,8 @@ export default function JourneyMap() {
               }}
             />
           </View>
-        ))
-      ) : (
-        <CustomSpinner size="lg" color="#f06d06" />
-      )}
-    </ScrollView>
+        ))}
+      </ScrollView>
+    )
   );
 }
