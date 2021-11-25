@@ -1,4 +1,4 @@
-import gql from 'graphql-tag';
+import gql from "graphql-tag";
 
 const isEmailExistInDatabase = gql`
   query isEmailExistInDatabase($email: AWSEmail!) {
@@ -38,6 +38,18 @@ const getVolunteerById = gql`
     }
   }
 `;
+const getVolunteerDetail = gql`
+  query getVolunteerDetail($volunteerId: ID!) {
+    getVolunteerById(volunteerId: $volunteerId) {
+      volunteerId
+      email
+      volunteerName
+      causes
+      skills
+      createdAt
+    }
+  }
+`;
 
 const getOrganizations = gql`
   query getOrganizations(
@@ -59,6 +71,16 @@ const getOrganizations = gql`
   }
 `;
 
+const getActiveOrgs = gql`
+  query getActiveOrgs {
+    getActiveOrgs {
+      orgId
+      orgName
+      description
+    }
+  }
+`;
+
 const getOrgById = gql`
   query getOrgById($orgId: ID!) {
     getOrgById(orgId: $orgId) {
@@ -67,7 +89,7 @@ const getOrgById = gql`
       description
       areaOfWorking
       accountId
-      socialLinks {
+      social {
         linkedin
         facebook
         twitter
@@ -77,9 +99,34 @@ const getOrgById = gql`
   }
 `;
 
+const getOrgDetail = gql`
+  query getOrgDetail($orgId: ID!) {
+    getOrgById(orgId: $orgId) {
+      orgId
+      orgName
+    }
+  }
+`;
+
 const getOrgCenters = gql`
   query getOrgCenters($orgId: ID!) {
     getOrgCenters(orgId: $orgId) {
+      orgId
+      title
+      country
+      city
+      address
+      lat
+      objType
+      lng
+      createdAt
+      orgCenterId
+    }
+  }
+`;
+const getOrgCenter = gql`
+  query getOrgCenter($orgCenterId: ID!) {
+    getOrgCenter(orgCenterId: $orgCenterId) {
       orgId
       title
       country
@@ -105,33 +152,28 @@ const getUpcomingEvents = gql`
       description
       eventTime
       startDate
-      coverImg
       address
       country
       city
+      isPaid
       near_by_address
       raisedAmount
-      donors {
-        fullName
-        amount
-        charges
-        createdBy
-        donateAnonymously
-      }
+      orgId
+      # donors {
+      #   fullName
+      #   amount
+      #   charges
+      #   createdBy
+      #   donateAnonymously
+      # }
       online {
         link
         platform
       }
-      organization {
-        orgId
-        orgName
-      }
-      location {
-        line1
-        city
-        county
-        country
-      }
+      # organization {
+      #   orgId
+      #   orgName
+      # }
     }
   }
 `;
@@ -147,33 +189,28 @@ const getPastEvents = gql`
       description
       eventTime
       startDate
-      coverImg
       address
       country
       city
+      isPaid
       near_by_address
       raisedAmount
-      donors {
-        fullName
-        amount
-        charges
-        createdBy
-        donateAnonymously
-      }
+      orgId
+      # donors {
+      #   fullName
+      #   amount
+      #   charges
+      #   createdBy
+      #   donateAnonymously
+      # }
       online {
         link
         platform
       }
-      organization {
-        orgId
-        orgName
-      }
-      location {
-        line1
-        city
-        county
-        country
-      }
+      # organization {
+      #   orgId
+      #   orgName
+      # }
     }
   }
 `;
@@ -181,23 +218,17 @@ const getPastEvents = gql`
 const getOrgStaff = gql`
   query getOrgStaff($orgId: ID!, $status: OrgActDeactStaffStatus) {
     getOrgStaff(orgId: $orgId, status: $status) {
-      volunteerName
       volunteerId
+      volunteerName
+      country
+      skills
+      causes
+      city
+      country
       designation
-      # gender
-      # phone
-      # aboutMe
-      # dob
-      # city
-      # country
-      # causes
-      # skills
-      # center {
-      #   title
-      # }
-      # organization {
-      #   orgId
-      # }
+      organization {
+        orgName
+      }
     }
   }
 `;
@@ -232,12 +263,14 @@ const getGeneralEvents = gql`
         address
         country
         city
+        isPaid
         near_by_address
         isPrivate
-        organization {
-          orgId
-          orgName
-        }
+        orgId
+        # organization {
+        #   orgId
+        #   orgName
+        # }
       }
     }
   }
@@ -263,11 +296,12 @@ const getFundRaisingEvents = gql`
         description
         targetFunds
         objType
+        orgId
         raisedAmount
-        organization {
-          orgId
-          orgName
-        }
+        # organization {
+        #   orgId
+        #   orgName
+        # }
       }
     }
   }
@@ -294,14 +328,15 @@ const getOnlineEvents = gql`
         volunteersNeeded
         objType
         isPrivate
+        orgId
         online {
           link
           platform
         }
-        organization {
-          orgId
-          orgName
-        }
+        # organization {
+        #   orgId
+        #   orgName
+        # }
       }
     }
   }
@@ -342,14 +377,15 @@ const getEvents = gql`
         near_by_address
         raisedAmount
         isPrivate
+        orgId
         online {
           link
           platform
         }
-        organization {
-          orgId
-          orgName
-        }
+        # organization {
+        #   orgId
+        #   orgName
+        # }
       }
     }
   }
@@ -410,41 +446,35 @@ const getEvent = gql`
       volunteersNeeded
       title
       targetFunds
+      entry_fee
       # coverImg
       createdBy
       createdAt
       address
-      # country
-      # city
-      # near_by_address
       raisedAmount
+      orgId
       online {
         link
         platform
       }
       isPrivate
-      organization {
-        orgName
-        orgId
-      }
+      isPaid
+      # organization {
+      #   orgName
+      #   orgId
+      # }
       host {
         volunteerName
         volunteerId
         designation
-        # createdAt
         email
-        # gender
-        # aboutMe
       }
-      # eventHosts {
-      #   volunteerName
-      #   volunteerId
-      #   designation
-      #   createdAt
-      #   email
-      #   gender
-      #   aboutMe
-      # }
+      eventHosts {
+        volunteerName
+        volunteerId
+        designation
+        email
+      }
     }
   }
 `;
@@ -452,10 +482,16 @@ const getEvent = gql`
 const getEventCoHosts = gql`
   query getEventCoHosts($eventId: ID!) {
     getEventCoHosts(eventId: $eventId) {
-      volunteerName
-      volunteerId
-      designation
-      email
+      cohosts {
+        volunteerName
+        volunteerId
+        designation
+        email
+      }
+      host {
+        volunteerName
+        volunteerId
+      }
     }
   }
 `;
@@ -473,6 +509,7 @@ const getFunraisingEvent = gql`
       raisedAmount
       createdBy
       createdAt
+      orgId
       organization {
         orgName
         orgId
@@ -482,18 +519,35 @@ const getFunraisingEvent = gql`
 `;
 
 const getOrgVolunteers = gql`
-  query getOrgVolunteers($orgId: ID!, $orderByVolunteerType: Boolean) {
+  query getOrgVolunteers(
+    $orgId: ID!
+    $orderByVolunteerType: Boolean
+    $status: ParticipateStatus
+  ) {
     getOrgVolunteers(
       orgId: $orgId
       orderByVolunteerType: $orderByVolunteerType
+      status: $status
     ) {
+      status
       orgId
       volunteerId
       volunteerType
+      updatedAt
+      note
+      approvedBy {
+        volunteerName
+      }
       volunteer {
         volunteerName
         volunteerId
         email
+        country
+        skills
+        causes
+        city
+        country
+        designation
       }
     }
   }
@@ -572,10 +626,6 @@ const getPublishedStories = gql`
         orgName
         story
         isPublished
-        createdBy {
-          volunteerId
-          volunteerName
-        }
         createdById
         createdAt
         updatedBy
@@ -670,7 +720,9 @@ const getProject = gql`
       experience
       timeFrame
       createdBy
+      createdAt
       projectStatus
+      noOfParticipants
       organization {
         orgId
         orgName
@@ -797,13 +849,19 @@ const getParticipants = gql`
     $objStatus: ParticipateStatus
   ) {
     getParticipants(objId: $objId, objType: $objType, objStatus: $objStatus) {
+      id
       objId
       volunteerId
       objType
       objStatus
       reason
+      paymentId
       updatedAt
       createdAt
+      approved {
+        volunteerName
+        email
+      }
       volunteer {
         volunteerId
         volunteerName
@@ -973,9 +1031,318 @@ const getVolunteerContributionsCount = gql`
   }
 `;
 
+const getContributors = gql`
+  query getContributors($limit: Int, $skip: Int, $activeContributor: Boolean) {
+    getContributors(
+      limit: $limit
+      skip: $skip
+      activeContributor: $activeContributor
+    ) {
+      count
+      totalCount
+      skip
+      limit
+      items {
+        volunteerId
+        volunteerName
+        country
+        skills
+        causes
+        city
+        country
+        designation
+        organization {
+          orgName
+        }
+      }
+    }
+  }
+`;
+
+const getConversation = gql`
+  query getConversation($id: ID!) {
+    getConversation(id: $id) {
+      id
+      lastMessage
+      name
+      createdAt
+    }
+  }
+`;
+
+const listConversation = gql`
+  query listConversation(
+    $convoLinkUserId: ID!
+    $filter: ListConversationFilter
+  ) {
+    listConversation(convoLinkUserId: $convoLinkUserId, filter: $filter) {
+      id
+      lastMessageId
+      membersData {
+        volunteerId
+        volunteerName
+      }
+      lastMessage {
+        content {
+          text
+          attachements {
+            source
+            fileName
+            ext
+          }
+        }
+      }
+      name
+      createdAt
+      createdBy
+    }
+  }
+`;
+const getMessages = gql`
+  query getMessages($convoId: ID!, $limit: Int, $skip: Int) {
+    getMessages(convoId: $convoId, limit: $limit, skip: $skip) {
+      items {
+        id
+        authorId
+        content {
+          text
+          # attachements {
+          #   source
+          #   fileName
+          #   ext
+          # }
+          # parentMessageId
+        }
+        createdAt
+      }
+    }
+  }
+`;
+
+const getProducts = gql`
+  query getProducts($input: GetProductsInput) {
+    getProducts(input: $input) {
+      totalCount
+      limit
+      skip
+      items {
+        id
+        title
+        description
+        images
+        condition
+        supportingId
+        amount
+        category
+        sellerId
+        city
+        country
+        pickup_location
+        createdAt
+      }
+    }
+  }
+`;
+
+const getProductsCount = gql`
+  query getProductsCount($input: GetProductsInput) {
+    getProductsCount(input: $input)
+  }
+`;
+
+const getMyProducts = gql`
+  query getMyProducts($input: GetProductsInput) {
+    getMyProducts(input: $input) {
+      totalCount
+      limit
+      skip
+      items {
+        id
+        title
+        description
+        images
+        condition
+        supportingId
+        amount
+        category
+        sellerId
+        city
+        country
+        pickup_location
+        createdAt
+      }
+    }
+  }
+`;
+
+const getProduct = gql`
+  query getProduct($id: ID!) {
+    getProduct(id: $id) {
+      id
+      title
+      description
+      images
+      condition
+      supportingId
+      amount
+      category
+      sellerId
+      city
+      country
+      pickup_location
+      createdAt
+    }
+  }
+`;
+
+const getProductsByIds = gql`
+  query getProductsByIds($ids: [ID!]) {
+    getProductsByIds(ids: $ids) {
+      id
+      title
+      description
+      images
+      condition
+      supportingId
+      amount
+      category
+      sellerId
+      city
+      country
+      pickup_location
+      createdAt
+    }
+  }
+`;
+
+const getCartItems = gql`
+  query getCartItems($buyerId: ID!) {
+    getCartItems(buyerId: $buyerId) {
+      createdAt
+      product {
+        id
+        images
+        title
+        amount
+        city
+        description
+        country
+      }
+    }
+  }
+`;
+const getWishlistItems = gql`
+  query getWishlistItems($buyerId: ID!) {
+    getWishlistItems(buyerId: $buyerId) {
+      createdAt
+      product {
+        id
+        images
+        title
+        amount
+        city
+        description
+        country
+      }
+    }
+  }
+`;
+
+const getCartItemsCount = gql`
+  query getCartItemsCount($buyerId: ID!) {
+    getCartItems(buyerId: $buyerId) {
+      createdAt
+    }
+  }
+`;
+const getWishlistItemsCount = gql`
+  query getWishlistItemsCount($buyerId: ID!) {
+    getWishlistItems(buyerId: $buyerId) {
+      createdAt
+    }
+  }
+`;
+
+const listWarnings = gql`
+  query listWarnings($userId: ID!, $type: WARNING_TYPE) {
+    listWarnings(userId: $userId, type: $type) {
+      id
+      userId
+      message
+      type
+      createdAt
+    }
+  }
+`;
+
+const getOrders = gql`
+  query getOrders(
+    $userId: ID!
+    $type: MARKETPLACE_USER # $status: ORDER_STATUS
+  ) {
+    getOrders(userId: $userId, type: $type) {
+      id
+      createdAt
+      status
+      total
+      items {
+        id
+        orderId
+        productId
+        paymentId
+        amount
+        status
+        quantity
+        product {
+          id
+          title
+          supportingId
+          sellerId
+          images
+          pickup_location
+          amount
+        }
+      }
+    }
+  }
+`;
+const getOrderItems = gql`
+  query getOrderItems(
+    $userId: ID!
+    $type: MARKETPLACE_USER
+    $status: ORDER_STATUS
+  ) {
+    getOrderItems(userId: $userId, type: $type, status: $status) {
+      id
+      status
+      orderId
+      product {
+        id
+        title
+        supportingId
+        sellerId
+        images
+        pickup_location
+        amount
+      }
+    }
+  }
+`;
+
 export {
+  getOrderItems,
+  getCartItemsCount,
+  getOrders,
+  getVolunteerDetail,
+  getProduct,
+  getCartItems,
+  getProducts,
+  getMessages,
+  listConversation,
+  getConversation,
   getVolunteerContributionsCount,
   getOrgVolunteerType,
+  getContributors,
   isEmailExistInDatabase,
   getVolunteerById,
   getOrganizations,
@@ -1014,4 +1381,13 @@ export {
   getDonations,
   getEventDonors,
   getEventCoHosts,
+  getOrgDetail,
+  listWarnings,
+  getActiveOrgs,
+  getMyProducts,
+  getProductsByIds,
+  getProductsCount,
+  getWishlistItems,
+  getWishlistItemsCount,
+  getOrgCenter,
 };

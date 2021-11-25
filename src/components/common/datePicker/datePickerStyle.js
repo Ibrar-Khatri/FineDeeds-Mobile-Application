@@ -5,14 +5,15 @@ import {
 } from '../../../responsive/responsive';
 
 let inputStyle = {
-  padding: 5,
+  padding: 10,
   borderRadius: 5,
   borderWidth: 1,
   borderColor: '#ced4da',
   display: 'flex',
   flexDirection: 'row',
   justifyContent: 'space-between',
-}
+  alignItems: 'center',
+};
 
 export default StyleSheet.create({
   inputView: {
@@ -21,6 +22,9 @@ export default StyleSheet.create({
     marginBottom: 5,
     height: 83,
     alignSelf: 'center',
+  },
+  disabledBGColor: {
+    backgroundColor: '#e9ecef',
   },
   focusInputStyle: {
     ...inputStyle,
@@ -32,18 +36,10 @@ export default StyleSheet.create({
     ...inputStyle,
     color: '#495057',
   },
-  input: {
-    marginLeft: 5,
-    width: vw(65),
-    color: 'black',
-    fontSize: vw(4.5),
-  },
-  dateStyle: {
-    height: 50,
-  },
-  iconStyle: {
-    marginRight: 5,
-    alignSelf: 'center',
-    color: '#6c757d',
+  textStyle: {
+    color: '#212529',
+    fontSize: vw(4),
+    paddingTop: 7,
+    paddingBottom: 7,
   },
 });

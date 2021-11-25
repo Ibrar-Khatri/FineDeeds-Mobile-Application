@@ -10,6 +10,7 @@ export default StyleSheet.create({
     backgroundColor: '#fff',
     padding: 20,
     alignItems: 'center',
+    marginBottom:20
   },
   backgroungImage: {
     height: vw(45),

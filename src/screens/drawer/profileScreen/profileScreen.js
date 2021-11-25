@@ -26,7 +26,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import VolunteeringExperience from '../../../components/constant/profileScreenComponents/volunteeringExperience/volunteeringExperience';
 import JourneyMap from '../../../components/constant/profileScreenComponents/journeyMap/journeyMap';
 import {useLazyQuery} from '@apollo/client';
-import {getActivities} from '../../../../graphql/queries';
+import {getActivities, getMyProducts} from '../../../../graphql/queries';
 
 export default function ProfileScreen() {
   let [isActionSheetOpen, setIsActionSheetOpen] = useState(false);
@@ -35,7 +35,9 @@ export default function ProfileScreen() {
   let [image, setImage] = useState();
   let [isJourneyMap, setIsJourneyMap] = useState(true);
   let [isVolunterringExp, setIsVolunterringExp] = useState(false);
+  let [myProducts, setMyProducts] = useState();
   let [getActivitiesById, activitiesData] = useLazyQuery(getActivities);
+  let [getProductsById, productsData] = useLazyQuery(getMyProducts);
   let [activities, setActivities] = useState(null);
 
   useEffect(() => {
@@ -46,51 +48,43 @@ export default function ProfileScreen() {
         if (user.volunteerId) {
           setIsLoading(false);
           setVolunteer(user);
-          console.log('user', user.volunteerId);
           getActivitiesById({
             variables: {
               limit: 3,
               volunteerId: user.volunteerId,
             },
           });
-          return;
+          getProductsById({
+            variables: {
+              input: {
+                limit: 4,
+                filter: {
+                  status: 'AVAILABLE',
+                  seller: user.volunteerId,
+                },
+              },
+            },
+          });
         }
       } catch (e) {
         console.log('error', e);
       }
     }
-
     fetchData();
-
-    // AsyncStorage.getItem('volunteer').then(res => {
-    //   res = JSON.parse(res);
-    //   setIsLoading(false);
-    //   setVolunteer(res);
-    //   if (res.volunteerId) {
-    //     console.log(res.volunteerId);
-    //     getActivitiesById({
-    //       variables: {
-    //         limit: 3,
-    //         volunteerId: res.volunteerId,
-    //       },
-    //     });
-    //   }
-    // });
   }, []);
 
   useEffect(() => {
-    console.log(
-      activitiesData?.data?.getActivities.items,
-      '1activitiesData?.data?.getActivities.items',
-    );
     if (activitiesData?.data?.getActivities?.items?.length > 0) {
-      console.log(
-        activitiesData?.data?.getActivities.items,
-        '2activitiesData?.data?.getActivities.items',
-      );
       setActivities(activitiesData?.data?.getActivities?.items);
     }
-  }, [activitiesData?.data?.getActivities?.items]);
+
+    if (productsData?.data?.getMyProducts?.items?.length > 0) {
+      setMyProducts(productsData?.data?.getMyProducts?.items);
+    }
+  }, [
+    activitiesData?.data?.getActivities?.items,
+    productsData?.data?.getMyProducts?.items,
+  ]);
 
   let selectImage = async type => {
     setIsActionSheetOpen(false);
@@ -161,30 +155,10 @@ export default function ProfileScreen() {
     require('../../../assets/images/profile_activity_3.png'),
   ];
   let charityProducts = [
-    {
-      image: require('../../../assets/images/dynamicImages/charity_product_image_1.png'),
-      title: 'Playstation 5',
-      pickUp: 'Karachi, Pakistan',
-      price: 600,
-    },
-    {
-      image: require('../../../assets/images/dynamicImages/charity_product_image_2.png'),
-      title: 'Toy for kids',
-      pickUp: 'Khokhar Maira, Pakistan',
-      price: 15,
-    },
-    {
-      image: require('../../../assets/images/dynamicImages/charity_product_image_3.png'),
-      title: 'Jeans',
-      pickUp: 'Islamabad, Pakistan',
-      price: 33,
-    },
-    {
-      image: require('../../../assets/images/dynamicImages/charity_product_image_4.png'),
-      title: 'Rolex Watch',
-      pickUp: 'Karachi, Pakistan',
-      price: 5,
-    },
+    require('../../../assets/images/dynamicImages/charity_product_image_1.png'),
+    require('../../../assets/images/dynamicImages/charity_product_image_2.png'),
+    require('../../../assets/images/dynamicImages/charity_product_image_3.png'),
+    require('../../../assets/images/dynamicImages/charity_product_image_4.png'),
   ];
 
   return (
@@ -342,13 +316,18 @@ export default function ProfileScreen() {
                 <Text style={style.linkStyle}>Sell all</Text>
               </TouchableOpacity>
             </View>
-            {charityProducts && (
+            {myProducts && (
               <FlatList
-                data={charityProducts}
+                data={myProducts}
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}
                 renderItem={({item, index}) => (
-                  <ProductCard key={index} productDetail={item} />
+                  <ProductCard
+                    key={index}
+                    productDetail={item}
+                    images={charityProducts}
+                    index={index}
+                  />
                 )}
               />
             )}

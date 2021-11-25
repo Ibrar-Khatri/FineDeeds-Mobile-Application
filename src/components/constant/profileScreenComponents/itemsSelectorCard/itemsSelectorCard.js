@@ -187,6 +187,7 @@ export default function ItemsSelectorCard(props) {
           setIsModalOpen={setIsModalOpen}
           title={modalTitle}
           isLoading={isLoading}
+          buttonText="Save Changes"
           onClickFun={handleOnSaveChanges}>
           {allItems?.map((item, i) => (
             <TouchableOpacity

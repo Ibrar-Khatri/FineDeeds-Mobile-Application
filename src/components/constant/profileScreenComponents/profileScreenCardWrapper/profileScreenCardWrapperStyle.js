@@ -5,7 +5,7 @@ export default StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     backgroundColor: '#fff',
-    marginTop: 20,
+    marginBottom: 20,
     padding: 20,
     borderRadius: 10,
   },

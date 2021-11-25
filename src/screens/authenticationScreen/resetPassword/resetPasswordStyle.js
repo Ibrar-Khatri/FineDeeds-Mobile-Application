@@ -7,7 +7,7 @@ import {
 export default StyleSheet.create({
   mianView: {
     display: 'flex',
-    alignItems: 'center',
+    // alignItems: 'center',
     flexDirection: 'column',
     marginTop: 'auto',
     marginBottom: 'auto',
