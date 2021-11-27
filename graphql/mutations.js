@@ -33,14 +33,7 @@ const updateAddress = gql`
 
 const updateSocialLinks = gql`
   mutation updateSocialLinks($input: updateSocialLinksInput!) {
-    updateSocialLinks(input: $input) {
-      objId
-      objType
-      linkedin
-      facebook
-      twitter
-      instagram
-    }
+    updateSocialLinks(input: $input)
   }
 `;
 
@@ -60,6 +53,11 @@ const sendParticipateRequest = gql`
       objStatus
       objType
       volunteerId
+      volunteer {
+        email
+        volunteerId
+        volunteerName
+      }
       createdBy
     }
   }
@@ -118,6 +116,16 @@ const saveProExperience = gql`
     saveProExperience(input: $input) {
       proExpid
       jobTitle
+      orgName
+      fromDate
+      endDate
+      isCurrent
+      description
+      createdAt
+      createdBy {
+        volunteerId
+        volunteerName
+      }
     }
   }
 `;
@@ -127,6 +135,16 @@ const updateProExperience = gql`
     updateProExperience(input: $input) {
       proExpid
       jobTitle
+      orgName
+      fromDate
+      endDate
+      isCurrent
+      description
+      createdAt
+      createdBy {
+        volunteerId
+        volunteerName
+      }
     }
   }
 `;
@@ -301,6 +319,35 @@ const createEvent = gql`
   mutation createEvent($input: EventInput!) {
     createEvent(input: $input) {
       eventId
+      startDate
+      endDate
+      eventTime
+      description
+      duration
+      objType
+      volunteersNeeded
+      title
+      targetFunds
+      createdBy
+      createdAt
+      address
+      raisedAmount
+      entry_fee
+      online {
+        link
+        platform
+      }
+      isPrivate
+      organization {
+        orgName
+        orgId
+      }
+      host {
+        volunteerName
+        volunteerId
+        designation
+        email
+      }
     }
   }
 `;
@@ -309,6 +356,23 @@ const updateEvent = gql`
   mutation updateEvent($input: UpdateEventInput!) {
     updateEvent(input: $input) {
       eventId
+      objType
+      targetFunds
+      volunteersNeeded
+      title
+      description
+      eventTime
+      startDate
+      coverImg
+      address
+      country
+      city
+      near_by_address
+      raisedAmount
+      online {
+        link
+        platform
+      }
     }
   }
 `;
@@ -362,14 +426,23 @@ const changeParticipateStatus = gql`
 const acceptVolunteerRequest = gql`
   mutation acceptVolunteerRequest($input: OrgVolunteerRequestInput) {
     acceptVolunteerRequest(input: $input) {
+      status
       orgId
+      volunteerId
+      volunteerType
+      updatedAt
+      volunteer {
+        volunteerName
+        volunteerId
+        email
+      }
     }
   }
 `;
 
 const changeOrgVolunteerType = gql`
-  mutation  changeOrgVolunteerType($input: ChangeOrgVolunteerTypeInput!) {
-     changeOrgVolunteerType(input: $input) {
+  mutation changeOrgVolunteerType($input: ChangeOrgVolunteerTypeInput!) {
+    changeOrgVolunteerType(input: $input) {
       orgId
       volunteerId
     }
@@ -379,7 +452,16 @@ const changeOrgVolunteerType = gql`
 const declineVolunteerRequest = gql`
   mutation declineVolunteerRequest($input: DeclineVolunteerRequestInput) {
     declineVolunteerRequest(input: $input) {
+      status
       orgId
+      volunteerId
+      volunteerType
+      updatedAt
+      volunteer {
+        volunteerName
+        volunteerId
+        email
+      }
     }
   }
 `;
@@ -437,7 +519,238 @@ const inviteVolunteersForOrg = gql`
   }
 `;
 
+const requestDemo = gql`
+  mutation requestDemo($input: RequestDemoInput) {
+    requestDemo(input: $input)
+  }
+`;
+
+const deleteFileFromS3 = gql`
+  mutation deleteFileFromS3($key: String!) {
+    deleteFileFromS3(key: $key)
+  }
+`;
+
+const activateOrDeactivateVolunteer = gql`
+  mutation activateOrDeactivateVolunteer(
+    $volunteerId: ID!
+    $status: VolunteerStatus!
+  ) {
+    activateOrDeactivateVolunteer(volunteerId: $volunteerId, status: $status)
+  }
+`;
+
+const createConversation = gql`
+  mutation createConversation($input: CreateConversationInput!) {
+    createConversation(input: $input) {
+      id
+      name
+      createdBy
+    }
+  }
+`;
+
+const createConversationLink = gql`
+  mutation createConversationLink($input: CreateConversationLinkInput!) {
+    createConversationLink(input: $input) {
+      convoLinkUserId
+      convoLinkConversationId
+    }
+  }
+`;
+
+const sendMessage = gql`
+  mutation sendMessage($input: SendMessageInput) {
+    sendMessage(input: $input) {
+      messageConversationId
+    }
+  }
+`;
+
+const participateInPaidEvent = gql`
+  mutation participateInPaidEvent($input: ParticipateInPaidEventInput) {
+    participateInPaidEvent(input: $input) {
+      objId
+      objStatus
+      objType
+      volunteerId
+      paymentId
+      volunteer {
+        email
+        volunteerId
+        volunteerName
+      }
+      createdBy
+    }
+  }
+`;
+
+const uploadProduct = gql`
+  mutation uploadProduct($input: UploadProductInput!) {
+    uploadProduct(input: $input) {
+      id
+      title
+    }
+  }
+`;
+
+const updateProduct = gql`
+  mutation updateProduct($input: UpdateProductInput!) {
+    updateProduct(input: $input) {
+      id
+      title
+      description
+      images
+      condition
+      supportingId
+      amount
+      category
+      city
+      country
+      pickup_location
+    }
+  }
+`;
+
+const addToCart = gql`
+  mutation addToCart($input: AddToCartInput!) {
+    addToCart(input: $input) {
+      product {
+        id
+        title
+        description
+        images
+        condition
+        supportingId
+        amount
+        category
+        city
+        country
+        pickup_location
+      }
+    }
+  }
+`;
+const addToWishlist = gql`
+  mutation addToWishlist($input: AddToCartInput!) {
+    addToWishlist(input: $input) {
+      product {
+        id
+        title
+        description
+        images
+        condition
+        supportingId
+        amount
+        category
+        city
+        country
+        pickup_location
+      }
+    }
+  }
+`;
+
+const placeOrder = gql`
+  mutation placeOrder($input: PlaceOrderInput!) {
+    placeOrder(input: $input) {
+      id
+      createdAt
+      status
+      total
+      items {
+        id
+        orderId
+        productId
+        paymentId
+        amount
+        status
+        quantity
+        product {
+          id
+          title
+          supportingId
+          sellerId
+          images
+          pickup_location
+        }
+      }
+    }
+  }
+`;
+
+const confirmOrderPickUp = gql`
+  mutation confirmOrderPickUp($id: ID!, $code: ID!) {
+    confirmOrderPickUp(id: $id, code: $code) {
+      id
+      status
+      product {
+        id
+        title
+        supportingId
+        sellerId
+        images
+        pickup_location
+      }
+    }
+  }
+`;
+const cancelOrder = gql`
+  mutation cancelOrder($id: ID!) {
+    cancelOrder(id: $id) {
+      id
+    }
+  }
+`;
+const deleteProduct = gql`
+  mutation deleteProduct($id: ID!) {
+    deleteProduct(id: $id)
+  }
+`;
+
+const moveItemToCart = gql`
+  mutation moveItemToCart($items: [AddToCartInput!]) {
+    moveItemToCart(items: $items)
+  }
+`;
+
+const removeItemFromCart = gql`
+  mutation removeItemFromCart($buyerId: ID!, $productId: ID!) {
+    removeItemFromCart(buyerId: $buyerId, productId: $productId)
+  }
+`;
+
+const removeItemFromWishlist = gql`
+  mutation removeItemFromWishlist($buyerId: ID!, $productId: ID!) {
+    removeItemFromWishlist(buyerId: $buyerId, productId: $productId)
+  }
+`;
+
+const deleteWarning = gql`
+  mutation deleteWarning($id: ID!) {
+    deleteWarning(id: $id)
+  }
+`;
+
 export {
+  removeItemFromWishlist,
+  deleteWarning,
+  removeItemFromCart,
+  moveItemToCart,
+  updateProduct,
+  deleteProduct,
+  cancelOrder,
+  confirmOrderPickUp,
+  placeOrder,
+  addToCart,
+  uploadProduct,
+  participateInPaidEvent,
+  createConversation,
+  createConversationLink,
+  sendMessage,
+  activateOrDeactivateVolunteer,
+  deleteFileFromS3,
+  requestDemo,
   updateVolunteerInfo,
   updateAddress,
   updateSocialLinks,
@@ -480,5 +793,6 @@ export {
   sendNotification,
   readNotification,
   inviteVolunteersForOrg,
-  changeOrgVolunteerType
+  changeOrgVolunteerType,
+  addToWishlist,
 };

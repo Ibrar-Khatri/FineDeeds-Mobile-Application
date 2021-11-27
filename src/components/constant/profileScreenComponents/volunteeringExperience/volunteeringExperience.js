@@ -1,59 +1,131 @@
-import React, {useState} from 'react';
-import {Text, View} from 'react-native';
-import * as yup from 'yup';
+import React, {useEffect, useState} from 'react';
+import {Text, TouchableOpacity, View} from 'react-native';
 import {useFormik} from 'formik';
+import Octicons from 'react-native-vector-icons/Octicons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import CustomButton from '../../../common/button/button';
 import ModalWrapper from '../../../common/modalWrapper/modalWrapper';
 import style from './volunteeringExperienceStyle';
 import InputField from '../../../common/inputField/inputField';
 import DateAndTimePicker from '../../../common/datePicker/datePicker';
 import CustomCheckBox from '../../../common/customCheckBox/customCheckBox';
+import {volunteerAddExperienceValidation} from '../../../../shared/validation/profileValidation';
+import {useLazyQuery, useMutation, useQuery} from '@apollo/client';
+import {saveProExperience} from '../../../../../graphql/mutations';
+import {getVolunteerProExperience} from '../../../../../graphql/queries';
 
-export default function VolunteeringExperience() {
+export default function VolunteeringExperience(props) {
+  let {volunteer} = props;
   let [isModalOpen, setIsModalOpen] = useState(false);
   let [isLoading, setIsLoading] = useState(false);
+  let [volunteerExpeience, setVolunteerExpeience] = useState([]);
   let [showInvalidInput, setShowInvalidInput] = useState(false);
-  let [currentlyWorkHere, setCurrentlyWorkHere] = useState(false);
-  let [from, setFrom] = useState();
-  let [to, setTo] = useState();
+  let [isCurrent, setIsCurrent] = useState(false);
+  let [saveVolunteerExp, saveVolunteerExpData] = useMutation(saveProExperience);
+  let [getVolunteerProExperienceById, getVolunteerProExperienceData] =
+    useLazyQuery(getVolunteerProExperience);
 
   function setModalOpen() {
     setIsModalOpen(true);
   }
 
-  let professionalExperience = yup.object().shape({
-    jobTitle: yup.string().required('This field is required'),
-    organisationName: yup.string().required('This field is required'),
-    from: yup.string().required('This field is required'),
-    to: yup.string().required('This field is required'),
-    description: yup.string(),
-  });
-
   const formik = useFormik({
     initialValues: {
       jobTitle: '',
-      organisationName: '',
-      from: '',
-      to: '',
+      orgName: '',
+      fromDate: '',
+      endDate: '',
+      isCurrent: false,
       description: '',
     },
-    validationSchema: professionalExperience,
+    validationSchema: volunteerAddExperienceValidation,
     onSubmit: expDet => {
-      console.log('expDet');
+      setIsLoading(true);
+      let experienceData = {...expDet, createdBy: volunteer.volunteerId};
+      console.log(experienceData);
+      saveVolunteerExp({
+        variables: {input: experienceData},
+      });
     },
   });
 
+  useEffect(() => {
+    if (getVolunteerProExperienceData?.data) {
+      setVolunteerExpeience(
+        getVolunteerProExperienceData?.data?.getVolunteerProExperience,
+      );
+    }
+    if (saveVolunteerExpData?.data?.saveProExperience && isLoading) {
+      console.log(volunteer.volunteerId, ' ==> volunteer id');
+      console.log(
+        saveVolunteerExpData?.data?.saveProExperience?.createdBy,
+        ' ==> creater id',
+      );
+      setIsLoading(false);
+      setIsModalOpen(false);
+      setVolunteerExpeience([
+        ...volunteerExpeience,
+        saveVolunteerExpData?.data?.saveProExperience,
+      ]);
+    }
+  }, [getVolunteerProExperienceData, saveVolunteerExpData]);
+  console.log(
+    saveVolunteerExpData.loading,
+    'saveVolunteerExpData?.data?.saveProExperience',
+  );
+
+  useEffect(() => {
+    if (volunteer.volunteerId) {
+      getVolunteerProExperienceById({
+        variables: {volunteerId: volunteer.volunteerId},
+      });
+    }
+  }, [volunteer]);
+
+  function onPressIsCurrent() {
+    console.log(formik.values.isCurrent);
+
+    if (formik.values.isCurrent) {
+      formik.setFieldValue('isCurrent', false),
+        formik.setFieldValue('endDate', '');
+    } else {
+      formik.setFieldValue('isCurrent', true),
+        formik.setFieldValue('endDate', '');
+    }
+  }
+
   return (
     <View style={style.mainViewVolunteeringExp}>
+      <View style={style.buttonView}>
+        <CustomButton buttonText="Add Experience" onClick={setModalOpen} />
+      </View>
+      {volunteerExpeience &&
+        volunteerExpeience?.map((item, i) => (
+          <View style={style.volunteerExpView} key={i}>
+            <View style={style.volunteerExpDetView}>
+              <Text style={style.jobTitle}>{item.jobTitle}</Text>
+              <Text style={style.jobDes}>{item.orgName}</Text>
+              {item?.description ? (
+                <Text style={style.jobDes}>{item?.description}</Text>
+              ) : null}
+            </View>
+            <View style={style.iconView}>
+              <Octicons name="pencil" size={18} color="#f06d06" />
+              <MaterialIcons name="delete" size={18} color="red" />
+            </View>
+          </View>
+        ))}
+
       {isModalOpen && (
         <ModalWrapper
           isModalOpen={isModalOpen}
           setIsModalOpen={setIsModalOpen}
           title="Professional Experience"
           buttonText="Add Experience"
+          isLoading={isLoading}
           onClickFun={() => {
-            formik.handleSubmit();
             setShowInvalidInput(true);
+            formik.handleSubmit();
           }}
           isLoading={isLoading}>
           <View style={style.modalMainView}>
@@ -70,51 +142,59 @@ export default function VolunteeringExperience() {
               <Text style={style.titleStyle}>Organisation Name</Text>
               <InputField
                 type="text"
-                value={formik.values.organisationName}
-                setValue={formik.handleChange('organisationName')}
-                invalidInput={
-                  showInvalidInput && formik.errors.organisationName
-                }
+                value={formik.values.orgName}
+                setValue={formik.handleChange('orgName')}
+                invalidInput={showInvalidInput && formik.errors.orgName}
               />
             </View>
             <View>
               <Text style={style.titleStyle}>From</Text>
               <DateAndTimePicker
-                value={formik.values.from}
-                setValue={formik.handleChange('from')}
-                invalidInput={showInvalidInput && formik.errors.from}
+                value={formik.values.fromDate}
+                setValue={formik.handleChange('fromDate')}
+                invalidInput={showInvalidInput && formik.errors.fromDate}
+                disabled={false}
+                maximumDate={new Date()}
               />
             </View>
             <View>
               <Text style={style.titleStyle}>To</Text>
               <DateAndTimePicker
-                value={formik.values.to}
-                setValue={formik.handleChange('to')}
-                invalidInput={showInvalidInput && formik.errors.to}
-                disabled={currentlyWorkHere && true}
+                value={formik.values.endDate}
+                setValue={formik.handleChange('endDate')}
+                invalidInput={showInvalidInput && formik.errors.endDate}
+                isCurrent={formik.values.isCurrent}
+                maximumDate={new Date()}
               />
             </View>
-            <View style={style.checkBoxAndTextView}>
+            <TouchableOpacity
+              style={style.checkBoxAndTextView}
+              onPress={onPressIsCurrent}
+              activeOpacity={1}>
               <CustomCheckBox
-                isChecked={currentlyWorkHere}
-                setIsChecked={setCurrentlyWorkHere}
+                isChecked={formik.values.isCurrent}
+                callOnPress={onPressIsCurrent}
               />
               <Text style={style.checkBoxText}> I currently work here</Text>
-            </View>
+            </TouchableOpacity>
             <View>
               <Text style={style.titleStyle}>Description</Text>
               <InputField
                 type="text"
                 value={formik.values.description}
-                setValue={formik.handleChange('name')}
+                setValue={formik.handleChange('description')}
                 invalidInput={showInvalidInput && formik.errors.description}
                 multiline={true}
+                maxLength={300}
               />
+              <Text
+                style={
+                  style.descriptionLengthStyle
+                }>{`${formik.values.description.length}/300`}</Text>
             </View>
           </View>
         </ModalWrapper>
       )}
-      <CustomButton buttonText="Add Experience" onClick={setModalOpen} />
     </View>
   );
 }

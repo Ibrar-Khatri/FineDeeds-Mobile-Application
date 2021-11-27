@@ -13,6 +13,7 @@ import {
   updateVolunteerSkills,
 } from '../../../../../graphql/mutations';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import EmptyDataComponent from '../../../common/emptyDataComponent/emptyDataComponent';
 
 export default function ItemsSelectorCard(props) {
   let {title, selectedItems, volunteer, setVolunteer} = props;
@@ -174,11 +175,15 @@ export default function ItemsSelectorCard(props) {
         </TouchableOpacity>
       </View>
       <View style={style.itemMainView}>
-        {selectedItems?.map((item, i) => (
-          <View key={i} style={style.itemView}>
-            <Text style={style.itemText}>{item}</Text>
-          </View>
-        ))}
+        {selectedItems ? (
+          selectedItems?.map((item, i) => (
+            <View key={i} style={style.itemView}>
+              <Text style={style.itemText}>{item}</Text>
+            </View>
+          ))
+        ) : (
+          <EmptyDataComponent title={title} />
+        )}
       </View>
 
       {isModalOpen && (
@@ -192,10 +197,13 @@ export default function ItemsSelectorCard(props) {
           {allItems?.map((item, i) => (
             <TouchableOpacity
               key={i}
-              activeOpacity={0.5}
+              activeOpacity={1}
               onPress={() => handleOnChange(item)}
               style={style.checkBoxAndTextView}>
-              <CustomCheckBox isChecked={update?.includes(item)} />
+              <CustomCheckBox
+                isChecked={update?.includes(item)}
+                callOnPress={() => handleOnChange(item)}
+              />
               <Text style={style.checkBoxText}>{item}</Text>
             </TouchableOpacity>
           ))}

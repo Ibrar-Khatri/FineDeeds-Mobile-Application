@@ -94,7 +94,7 @@ export default function SignupScreen({navigation}) {
             <View style={style.checkBoxAndTextView}>
               <CustomCheckBox
                 isChecked={acceptTermsAndCond}
-                setIsChecked={setAcceptTermsAndCond}
+                callOnPress={() => setAcceptTermsAndCond(!acceptTermsAndCond)}
               />
               <NavigationLink
                 text="I Accept The Finedeeds"

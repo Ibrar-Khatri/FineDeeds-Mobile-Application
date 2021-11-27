@@ -19,6 +19,7 @@ export default function InputField(props) {
     autoCapitalize,
     keyboardType,
     multiline,
+    maxLength,
   } = props;
 
   return (
@@ -36,6 +37,7 @@ export default function InputField(props) {
           autoCapitalize={autoCapitalize}
           secureTextEntry={secureTextEntry && !showPassword}
           multiline={multiline}
+          maxLength={maxLength}
         />
 
         {type === 'password' &&

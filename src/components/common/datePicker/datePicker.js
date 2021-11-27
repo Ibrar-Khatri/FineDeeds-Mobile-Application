@@ -7,38 +7,35 @@ import DateTimePicker from 'react-native-modal-datetime-picker';
 import style from './datePickerStyle';
 
 export default function DateAndTimePicker(props) {
-  let [isfocus, setIsFoucs] = useState(false);
+  let [showDatePicker, setShowDatePicker] = useState(false);
 
-  let {value, setValue, invalidInput, disabled} = props;
+  let {value, setValue, invalidInput, isCurrent, maximumDate} = props;
 
   function setDate(date) {
-    setIsFoucs(false);
+    setShowDatePicker(false);
     setValue(JSON.stringify(date));
   }
-
-  useEffect(() => {
-    disabled && setValue('');
-  }, [disabled]);
 
   return (
     <TouchableOpacity
       activeOpacity={1}
       style={style.inputView}
-      onPress={() => !disabled && setIsFoucs(true)}>
+      onPress={() => !isCurrent && setShowDatePicker(true)}>
       <View
         style={[
-          isfocus ? style.focusInputStyle : style.blurInputStyle,
-          disabled && style.disabledBGColor,
+          showDatePicker ? style.focusInputStyle : style.blurInputStyle,
+          isCurrent && style.disabledBGColor,
         ]}>
-        {isfocus && (
+        {showDatePicker && (
           <DateTimePicker
-            isVisible={isfocus}
-            value={value ? value : new Date()}
+            isVisible={true}
+            date={value ? new Date(JSON.parse(value)) : new Date()}
             onConfirm={setDate}
-            onCancel={() => setIsFoucs(false)}
+            onCancel={() => setShowDatePicker(false)}
+            maximumDate={maximumDate}
           />
         )}
-        {value && !disabled ? (
+        {value && !isCurrent ? (
           <Text style={style.textStyle}>
             {moment(JSON.parse(value)).format('L')}
           </Text>
@@ -47,7 +44,7 @@ export default function DateAndTimePicker(props) {
         )}
         <Icon name="date-range" size={20} style={style.iconStyle} />
       </View>
-      {invalidInput && <InvalidInput error={invalidInput} />}
+      {invalidInput && !isCurrent && <InvalidInput error={invalidInput} />}
     </TouchableOpacity>
   );
 }
