@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import {ScrollView, Text, TouchableOpacity, View} from 'react-native';
 import Modal from 'react-native-modal';
-// import { Modal } from 'native-base';
 import Icon from 'react-native-vector-icons/AntDesign';
 import CustomButton from '../button/button';
 import style from './modalStyleWrapper';

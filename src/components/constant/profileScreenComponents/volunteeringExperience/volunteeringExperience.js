@@ -13,17 +13,19 @@ import {volunteerAddExperienceValidation} from '../../../../shared/validation/pr
 import {useLazyQuery, useMutation, useQuery} from '@apollo/client';
 import {saveProExperience} from '../../../../../graphql/mutations';
 import {getVolunteerProExperience} from '../../../../../graphql/queries';
+import EmptyDataComponent from '../../../common/emptyDataComponent/emptyDataComponent';
+import CustomSpinner from '../../../common/spinner/spinner';
 
 export default function VolunteeringExperience(props) {
   let {volunteer} = props;
   let [isModalOpen, setIsModalOpen] = useState(false);
+  let [loading, setLoading] = useState(true);
   let [isLoading, setIsLoading] = useState(false);
   let [volunteerExpeience, setVolunteerExpeience] = useState([]);
   let [showInvalidInput, setShowInvalidInput] = useState(false);
-  let [isCurrent, setIsCurrent] = useState(false);
   let [saveVolunteerExp, saveVolunteerExpData] = useMutation(saveProExperience);
   let [getVolunteerProExperienceById, getVolunteerProExperienceData] =
-    useLazyQuery(getVolunteerProExperience);
+    useLazyQuery(getVolunteerProExperience, {fetchPolicy: 'network-only'});
 
   function setModalOpen() {
     setIsModalOpen(true);
@@ -42,38 +44,11 @@ export default function VolunteeringExperience(props) {
     onSubmit: expDet => {
       setIsLoading(true);
       let experienceData = {...expDet, createdBy: volunteer.volunteerId};
-      console.log(experienceData);
       saveVolunteerExp({
         variables: {input: experienceData},
       });
     },
   });
-
-  useEffect(() => {
-    if (getVolunteerProExperienceData?.data) {
-      setVolunteerExpeience(
-        getVolunteerProExperienceData?.data?.getVolunteerProExperience,
-      );
-    }
-    if (saveVolunteerExpData?.data?.saveProExperience && isLoading) {
-      console.log(volunteer.volunteerId, ' ==> volunteer id');
-      console.log(
-        saveVolunteerExpData?.data?.saveProExperience?.createdBy,
-        ' ==> creater id',
-      );
-      setIsLoading(false);
-      setIsModalOpen(false);
-      setVolunteerExpeience([
-        ...volunteerExpeience,
-        saveVolunteerExpData?.data?.saveProExperience,
-      ]);
-    }
-  }, [getVolunteerProExperienceData, saveVolunteerExpData]);
-  console.log(
-    saveVolunteerExpData.loading,
-    'saveVolunteerExpData?.data?.saveProExperience',
-  );
-
   useEffect(() => {
     if (volunteer.volunteerId) {
       getVolunteerProExperienceById({
@@ -81,10 +56,30 @@ export default function VolunteeringExperience(props) {
       });
     }
   }, [volunteer]);
+  useEffect(() => {
+    (async function () {
+      if (getVolunteerProExperienceData?.data?.getVolunteerProExperience) {
+        setLoading(false);
+        setVolunteerExpeience(
+          getVolunteerProExperienceData?.data?.getVolunteerProExperience,
+        );
+      }
+      if (saveVolunteerExpData?.data?.saveProExperience && isLoading) {
+        formik.handleReset();
+        setIsLoading(false);
+        setIsModalOpen(false);
+        await setVolunteerExpeience([
+          ...volunteerExpeience,
+          saveVolunteerExpData?.data?.saveProExperience,
+        ]);
+      }
+    })();
+  }, [
+    getVolunteerProExperienceData,
+    saveVolunteerExpData?.data?.saveProExperience,
+  ]);
 
   function onPressIsCurrent() {
-    console.log(formik.values.isCurrent);
-
     if (formik.values.isCurrent) {
       formik.setFieldValue('isCurrent', false),
         formik.setFieldValue('endDate', '');
@@ -96,26 +91,34 @@ export default function VolunteeringExperience(props) {
 
   return (
     <View style={style.mainViewVolunteeringExp}>
-      <View style={style.buttonView}>
-        <CustomButton buttonText="Add Experience" onClick={setModalOpen} />
-      </View>
-      {volunteerExpeience &&
-        volunteerExpeience?.map((item, i) => (
-          <View style={style.volunteerExpView} key={i}>
-            <View style={style.volunteerExpDetView}>
-              <Text style={style.jobTitle}>{item.jobTitle}</Text>
-              <Text style={style.jobDes}>{item.orgName}</Text>
-              {item?.description ? (
-                <Text style={style.jobDes}>{item?.description}</Text>
-              ) : null}
-            </View>
-            <View style={style.iconView}>
-              <Octicons name="pencil" size={18} color="#f06d06" />
-              <MaterialIcons name="delete" size={18} color="red" />
-            </View>
+      {loading ? (
+        <CustomSpinner size="lg" color="#f06d06" />
+      ) : (
+        <>
+          {volunteerExpeience.length > 0 ? (
+            volunteerExpeience?.map((item, i) => (
+              <View style={style.volunteerExpView} key={i}>
+                <View style={style.volunteerExpDetView}>
+                  <Text style={style.jobTitle}>{item.jobTitle}</Text>
+                  <Text style={style.jobDes}>{item.orgName}</Text>
+                  {item?.description ? (
+                    <Text style={style.jobDes}>{item?.description}</Text>
+                  ) : null}
+                </View>
+                <View style={style.iconView}>
+                  <Octicons name="pencil" size={18} color="#f06d06" />
+                  <MaterialIcons name="delete" size={18} color="red" />
+                </View>
+              </View>
+            ))
+          ) : (
+            <EmptyDataComponent title="Experience" />
+          )}
+          <View style={style.buttonView}>
+            <CustomButton buttonText="Add Experience" onClick={setModalOpen} />
           </View>
-        ))}
-
+        </>
+      )}
       {isModalOpen && (
         <ModalWrapper
           isModalOpen={isModalOpen}

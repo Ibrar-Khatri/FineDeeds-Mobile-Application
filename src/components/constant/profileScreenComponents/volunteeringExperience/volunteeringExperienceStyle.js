@@ -8,7 +8,6 @@ export default StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
     padding: 15,
-    marginTop: 10,
   },
   modalMainView: {margin: 15},
   titleStyle: {
@@ -36,6 +35,7 @@ export default StyleSheet.create({
   },
   volunteerExpDetView: {
     paddingLeft: 5,
+    width: '85%',
   },
   volunteerExpView: {
     display: 'flex',
@@ -49,7 +49,8 @@ export default StyleSheet.create({
     borderBottomWidth: 1,
   },
   buttonView: {
-    alignSelf: 'flex-end',
+    alignSelf: 'center',
+    marginTop: 20,
   },
   jobTitle: {
     color: '#212529',

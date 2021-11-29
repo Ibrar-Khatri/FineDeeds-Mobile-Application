@@ -10,7 +10,7 @@ export default StyleSheet.create({
     backgroundColor: '#fff',
     padding: 20,
     alignItems: 'center',
-    marginBottom:20
+    marginBottom: 20,
   },
   backgroungImage: {
     height: vw(45),
@@ -129,6 +129,7 @@ export default StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-around',
+    marginBottom: 22,
   },
   timeLineHeaderTitle: {
     color: '#2b2b2b',
@@ -139,5 +140,8 @@ export default StyleSheet.create({
     color: '#f06d06',
     borderBottomColor: '#f06d06',
     borderBottomWidth: 1,
+  },
+  contentContainerStyle: {
+    flexGrow: 1,
   },
 });

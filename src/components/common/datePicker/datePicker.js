@@ -13,7 +13,7 @@ export default function DateAndTimePicker(props) {
 
   function setDate(date) {
     setShowDatePicker(false);
-    setValue(JSON.stringify(date));
+    setValue(moment(date).format('YYYY-MM-DD'));
   }
 
   return (
@@ -29,16 +29,14 @@ export default function DateAndTimePicker(props) {
         {showDatePicker && (
           <DateTimePicker
             isVisible={true}
-            date={value ? new Date(JSON.parse(value)) : new Date()}
+            date={value ? new Date(value) : new Date()}
             onConfirm={setDate}
             onCancel={() => setShowDatePicker(false)}
             maximumDate={maximumDate}
           />
         )}
         {value && !isCurrent ? (
-          <Text style={style.textStyle}>
-            {moment(JSON.parse(value)).format('L')}
-          </Text>
+          <Text style={style.textStyle}>{moment(value).format('L')}</Text>
         ) : (
           <Text style={style.textStyle}>mm/dd/yyy</Text>
         )}

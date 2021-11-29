@@ -34,13 +34,6 @@ export default function LoginScreen({navigation}) {
           });
         });
       }
-      // else {
-      //   setIsLoading(false);
-      //   navigation.reset({
-      //     index: 0,
-      //     routes: [{name: 'drawer'}],
-      //   });
-      // }
     }
   }, [volunteerData?.data?.getVolunteerById]);
 

@@ -5,5 +5,7 @@ export default StyleSheet.create({
     display: 'flex',
     alignSelf: 'center',
     marginTop: 20,
+    marginLeft: 'auto',
+    marginRight: 'auto',
   },
 });

@@ -26,22 +26,30 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import VolunteeringExperience from '../../../components/constant/profileScreenComponents/volunteeringExperience/volunteeringExperience';
 import JourneyMap from '../../../components/constant/profileScreenComponents/journeyMap/journeyMap';
 import {useLazyQuery} from '@apollo/client';
-import {getActivities, getMyProducts} from '../../../../graphql/queries';
+import {
+  getActivities,
+  getMyProducts,
+  getVolunteerPublishedStories,
+} from '../../../../graphql/queries';
+import EmptyDataComponent from '../../../components/common/emptyDataComponent/emptyDataComponent';
 
 export default function ProfileScreen() {
   let [isActionSheetOpen, setIsActionSheetOpen] = useState(false);
   let [isLoading, setIsLoading] = useState(true);
+  let [loading, setLoading] = useState(true);
   let [volunteer, setVolunteer] = useState();
   let [image, setImage] = useState();
   let [isJourneyMap, setIsJourneyMap] = useState(true);
   let [isVolunterringExp, setIsVolunterringExp] = useState(false);
-  let [myProducts, setMyProducts] = useState();
+  let [myProducts, setMyProducts] = useState(null);
   let [getActivitiesById, activitiesData] = useLazyQuery(getActivities);
   let [getProductsById, productsData] = useLazyQuery(getMyProducts);
+  let [getstories, storiesData] = useLazyQuery(getVolunteerPublishedStories);
+
   let [activities, setActivities] = useState(null);
 
   useEffect(() => {
-    async function fetchData() {
+    (async function () {
       try {
         let user = await AsyncStorage.getItem('volunteer');
         user = JSON.parse(user);
@@ -65,20 +73,21 @@ export default function ProfileScreen() {
               },
             },
           });
+          getstories({
+            variables: {volunteerId: user.volunteerId, isPublished: true},
+          });
         }
       } catch (e) {
         console.log('error', e);
       }
-    }
-    fetchData();
+    })();
   }, []);
 
   useEffect(() => {
-    if (activitiesData?.data?.getActivities?.items?.length > 0) {
+    if (activitiesData?.data?.getActivities?.items?.length >= 0) {
       setActivities(activitiesData?.data?.getActivities?.items);
     }
-
-    if (productsData?.data?.getMyProducts?.items?.length > 0) {
+    if (productsData?.data?.getMyProducts?.items?.length >= 0) {
       setMyProducts(productsData?.data?.getMyProducts?.items);
     }
   }, [
@@ -198,7 +207,8 @@ export default function ProfileScreen() {
               <View>
                 <Text style={style.userLocationStyle}>
                   <Iocn1 name="location-pin" color="#f06d06" size={20} />
-                  {volunteer?.city + ', ' + volunteer?.country}
+                  {volunteer?.city && `${volunteer.city} ,`}
+                  {volunteer?.country && `${volunteer.country} `}
                 </Text>
               </View>
             )}
@@ -270,7 +280,9 @@ export default function ProfileScreen() {
                 </Text>
               </TouchableOpacity>
             </View>
-            {isJourneyMap && <JourneyMap volunteer={volunteer} />}
+            {isJourneyMap && (
+              <JourneyMap volunteer={volunteer} storiesData={storiesData} />
+            )}
             {isVolunterringExp && (
               <VolunteeringExperience volunteer={volunteer} />
             )}
@@ -288,6 +300,14 @@ export default function ProfileScreen() {
                 data={activities}
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}
+                contentContainerStyle={style.contentContainerStyle}
+                ListEmptyComponent={
+                  activitiesData.loading && activities ? (
+                    <CustomSpinner size="lg" color="#f06d06" />
+                  ) : (
+                    <EmptyDataComponent title="Products" />
+                  )
+                }
                 renderItem={({item, index}) => (
                   <TouchableOpacity key={index} style={style.activityView}>
                     <Image
@@ -316,11 +336,13 @@ export default function ProfileScreen() {
                 <Text style={style.linkStyle}>Sell all</Text>
               </TouchableOpacity>
             </View>
-            {myProducts && (
+            {myProducts?.length >= 0 ? (
               <FlatList
                 data={myProducts}
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}
+                contentContainerStyle={style.contentContainerStyle}
+                ListEmptyComponent={<EmptyDataComponent title="Products" />}
                 renderItem={({item, index}) => (
                   <ProductCard
                     key={index}
@@ -330,6 +352,8 @@ export default function ProfileScreen() {
                   />
                 )}
               />
+            ) : (
+              <CustomSpinner size="lg" color="#f06d06" />
             )}
           </ProfileScreenCardWrapper>
           <Actionsheet

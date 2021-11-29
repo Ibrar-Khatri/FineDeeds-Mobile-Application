@@ -4,7 +4,6 @@ import { widthPercentageToDP as vw } from "../../../responsive/responsive";
 export default StyleSheet.create({
     mianView: {
         display: 'flex',
-        // alignItems: 'center',
         flexDirection: 'column',
         marginTop: 'auto',
         marginBottom: 'auto',
