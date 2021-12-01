@@ -7,6 +7,7 @@ import {getVolunteerPublishedStories} from '../../../../../graphql/queries';
 import style from './journeyMapStyle';
 import EmptyDataComponent from '../../../common/emptyDataComponent/emptyDataComponent';
 import CustomSpinner from '../../../common/spinner/spinner';
+import RenderS3Image from '../../../common/renderS3Image/renderS3Image';
 
 export default function JourneyMap(props) {
   let [isLoading, setIsLoading] = useState(true);
@@ -24,6 +25,7 @@ export default function JourneyMap(props) {
           timeline = {};
         }
 
+        
         if (timeline[createdYear]) {
           timeline[createdYear] = [...timeline[createdYear], {...story}];
         } else {
@@ -84,13 +86,18 @@ export default function JourneyMap(props) {
                       </View>
                       <View style={style.imageAndTitleView}>
                         <Text style={style.titleStyle}>{item?.title}</Text>
-                        <Image
+                        <RenderS3Image
+                          resizeMode="cover"
+                          style={style.imageStyle}
+                          s3Key={`STORY/${item?.storyId}.webp`}
+                        />
+                        {/* <Image
                           source={{
                             uri: 'https://d2eygdx4i21ndl.cloudfront.net/STORY/8e5529a8-6acb-4988-9cba-ccb53b7e59bb.webp',
                           }}
                           resizeMode="cover"
                           style={style.imageStyle}
-                        />
+                        /> */}
                       </View>
                     </View>
                   </TouchableOpacity>

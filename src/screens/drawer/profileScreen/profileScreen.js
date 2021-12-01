@@ -16,6 +16,7 @@ import {
   Permission,
   PERMISSION_TYPE,
 } from '../../../appPermissions/appPermissions';
+import RNFetchBlob from 'react-native-fetch-blob';
 import CustomButton from '../../../components/common/button/button';
 import ProfileScreenCardWrapper from '../../../components/constant/profileScreenComponents/profileScreenCardWrapper/profileScreenCardWrapper';
 import ItemsSelectorCard from '../../../components/constant/profileScreenComponents/itemsSelectorCard/itemsSelectorCard';
@@ -32,20 +33,28 @@ import {
   getVolunteerPublishedStories,
 } from '../../../../graphql/queries';
 import EmptyDataComponent from '../../../components/common/emptyDataComponent/emptyDataComponent';
+import RenderS3Image from '../../../components/common/renderS3Image/renderS3Image';
+import {
+  base64ToFile,
+  compressImage,
+  getImageDimensions,
+} from '../../../shared/services/helper';
+import {
+  _putFileToS3,
+  _removeFileFromS3,
+} from '../../../shared/services/s3Services';
 
 export default function ProfileScreen() {
   let [isActionSheetOpen, setIsActionSheetOpen] = useState(false);
   let [isLoading, setIsLoading] = useState(true);
-  let [loading, setLoading] = useState(true);
   let [volunteer, setVolunteer] = useState();
-  let [image, setImage] = useState();
+  let [image, setImage] = useState(null);
   let [isJourneyMap, setIsJourneyMap] = useState(true);
   let [isVolunterringExp, setIsVolunterringExp] = useState(false);
   let [myProducts, setMyProducts] = useState(null);
   let [getActivitiesById, activitiesData] = useLazyQuery(getActivities);
   let [getProductsById, productsData] = useLazyQuery(getMyProducts);
   let [getstories, storiesData] = useLazyQuery(getVolunteerPublishedStories);
-
   let [activities, setActivities] = useState(null);
 
   useEffect(() => {
@@ -97,20 +106,30 @@ export default function ProfileScreen() {
 
   let selectImage = async type => {
     setIsActionSheetOpen(false);
-    await Permission.requestMultiple([
-      PERMISSION_TYPE.photo,
-      PERMISSION_TYPE.camera,
-    ]);
+    Permission.requestMultiple([PERMISSION_TYPE.photo, PERMISSION_TYPE.camera]);
+    let option = {
+      width: 300,
+      height: 400,
+      cropping: true,
+      includeBase64: true,
+    };
     switch (type) {
       case 'camera': {
-        ImagePicker.openCamera({
-          width: 300,
-          height: 400,
-          cropping: true,
-        })
-          .then(img => {
+        ImagePicker.openCamera(option)
+          .then(async img => {
             setImage(img.path);
-            console.log(image);
+            compressImage(img.path).then(res => {
+              RNFetchBlob.fs.readFile(res, 'base64').then(async data => {
+                let buffer = await Buffer.from(data, 'base64');
+                _putFileToS3(`VOLUNTEER/${volunteer?.volunteerId}.webp`, buffer)
+                  .then(res => {
+                    console.log(res, 'success');
+                  })
+                  .catch(err => {
+                    console.log(err, 'Err');
+                  });
+              });
+            });
           })
           .catch(err => {
             console.log(err);
@@ -118,14 +137,10 @@ export default function ProfileScreen() {
         break;
       }
       case 'library': {
-        ImagePicker.openPicker({
-          width: 300,
-          height: 400,
-          cropping: true,
-        })
+        ImagePicker.openPicker(option)
           .then(image => {
             setImage(image.path);
-            console.log(image);
+            console.log(img);
           })
           .catch(err => {
             console.log(err);
@@ -133,7 +148,14 @@ export default function ProfileScreen() {
         break;
       }
       case 'removeImage': {
-        setImage();
+        _removeFileFromS3(`VOLUNTEER/${volunteer?.volunteerId}.webp`)
+          .then(res => {
+            console.log(res, 'Deleted');
+            setImage();
+          })
+          .catch(err => {
+            console.log(err, 'Error');
+          });
         break;
       }
     }
@@ -158,18 +180,6 @@ export default function ProfileScreen() {
     },
   ];
 
-  let activitiesImages = [
-    require('../../../assets/images/profile_activity_1.png'),
-    require('../../../assets/images/profile_activity_2.png'),
-    require('../../../assets/images/profile_activity_3.png'),
-  ];
-  let charityProducts = [
-    require('../../../assets/images/dynamicImages/charity_product_image_1.png'),
-    require('../../../assets/images/dynamicImages/charity_product_image_2.png'),
-    require('../../../assets/images/dynamicImages/charity_product_image_3.png'),
-    require('../../../assets/images/dynamicImages/charity_product_image_4.png'),
-  ];
-
   return (
     <ScrollView nestedScrollEnabled={true}>
       {!isLoading ? (
@@ -182,25 +192,32 @@ export default function ProfileScreen() {
               resizeMode="cover"
             />
             <View style={style.profileImageView}>
-              <TouchableOpacity
-                activeOpacity={0.5}
-                onPress={() => setIsActionSheetOpen(true)}>
-                {image ? (
-                  <Image
-                    alt="profile image"
-                    source={{uri: image}}
-                    resizeMode="cover"
-                    style={style.profileImageStyle}
-                  />
-                ) : (
-                  <Image
-                    alt="profile image"
-                    source={require('../../../assets/images/no-img-event-card.png')}
-                    resizeMode="cover"
-                    style={style.profileImageStyle}
-                  />
-                )}
-              </TouchableOpacity>
+              {/* {image ? (
+                <Image
+                  alt="profile image"
+                  source={{uri: image}}
+                  resizeMode="cover"
+                  style={style.profileImageStyle}
+                />
+              ) : (
+                // <Image
+                //   alt="profile image"
+                //   source={require('../../../assets/images/no-img-event-card.png')}
+                // resizeMode="cover"
+                // style={style.profileImageStyle}
+                // />
+                )} */}
+              <RenderS3Image
+                resizeMode="cover"
+                style={style.profileImageStyle}
+                s3Key={`VOLUNTEER/${volunteer?.volunteerId}.webp`}
+                onClick={() => setIsActionSheetOpen(true)}
+                imageUrl={image}
+              />
+              {/* <TouchableOpacity
+                    activeOpacity={0.5}
+                    onPress={() => setIsActionSheetOpen(true)}>
+              </TouchableOpacity> */}
             </View>
             <Text style={style.userNameStyle}>{volunteer?.volunteerName}</Text>
             {(volunteer?.city || volunteer?.country) && (
@@ -288,7 +305,7 @@ export default function ProfileScreen() {
             )}
           </ProfileScreenCardWrapper>
 
-          {activities && (
+          {activities?.length > 0 && (
             <ProfileScreenCardWrapper>
               <View style={style.titleAndLinkView}>
                 <Text style={style.titleStyle}>Activity</Text>
@@ -301,20 +318,13 @@ export default function ProfileScreen() {
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}
                 contentContainerStyle={style.contentContainerStyle}
-                ListEmptyComponent={
-                  activitiesData.loading && activities ? (
-                    <CustomSpinner size="lg" color="#f06d06" />
-                  ) : (
-                    <EmptyDataComponent title="Products" />
-                  )
-                }
+                ListEmptyComponent={<CustomSpinner size="lg" color="#f06d06" />}
                 renderItem={({item, index}) => (
                   <TouchableOpacity key={index} style={style.activityView}>
-                    <Image
-                      source={activitiesImages[index]}
-                      alt="activity image"
+                    <RenderS3Image
                       resizeMode="contain"
                       style={style.activityImageStyle}
+                      s3Key={`ACTIVITY/${item?.activityId}.webp`}
                     />
                     <View style={style.activityTitleAndPostedByView}>
                       <Text style={style.activityTitle}>
@@ -344,12 +354,7 @@ export default function ProfileScreen() {
                 contentContainerStyle={style.contentContainerStyle}
                 ListEmptyComponent={<EmptyDataComponent title="Products" />}
                 renderItem={({item, index}) => (
-                  <ProductCard
-                    key={index}
-                    productDetail={item}
-                    images={charityProducts}
-                    index={index}
-                  />
+                  <ProductCard key={index} productDetail={item} />
                 )}
               />
             ) : (
