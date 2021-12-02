@@ -3,7 +3,7 @@ import {Image, TouchableOpacity} from 'react-native';
 import {_getFileFromS3} from '../../../shared/services/s3Services';
 
 export default function RenderS3Image(props) {
-  let {style, resizeMode, s3Key, onClick, imageUrl} = props;
+  let {style, resizeMode, s3Key, onClick, imageUrl, setImageUrl} = props;
 
   const [image, setImage] = useState('');
 
@@ -12,12 +12,12 @@ export default function RenderS3Image(props) {
 
     if (s3Key) {
       _getFileFromS3(s3Key)
-        .then(imageUrl => {
-          setImage(imageUrl);
-          console.log(imageUrl, 'imageUrl');
+        .then(imgUrl => {
+          setImage(imgUrl.config.url);
         })
         .catch(err => {
-          console.log(err, ' Error');
+          console.log(err, 'e');
+          setImage('');
         });
     }
     return () => {

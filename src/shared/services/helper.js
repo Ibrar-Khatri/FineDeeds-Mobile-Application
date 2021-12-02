@@ -1,11 +1,7 @@
 import {useEffect, useState} from 'react';
-// import {Image} from 'react-native';
 import moment from 'moment';
-import {decode as atob, encode as btoa} from 'base-64';
 import {Image} from 'react-native-compressor';
-
-// import {toast} from 'react-toastify';
-// import imageCompression from 'browser-image-compression';
+// import reactNativeFetchBlob from 'react-native-fetch-blob';
 
 const usePrevious = (useRef, useEffect, value) => {
   // return usePrevious = (value) => {
@@ -89,14 +85,14 @@ const getBase64 = file =>
   });
 
 const base64ToFile = (dataurl, filename, type) => {
-  var arr = dataurl.split(','),
-    mime = arr[0].match(/:(.*?);/)[1],
-    bstr = atob(arr[1]),
-    n = bstr.length,
-    u8arr = new Uint8Array(n);
-  while (n--) {
-    u8arr[n] = bstr.charCodeAt(n);
-  }
+  // var arr = dataurl.split(','),
+  //   mime = arr[0].match(/:(.*?);/)[1],
+  //   bstr = atob(arr[1]),
+  //   n = bstr.length,
+  //   u8arr = new Uint8Array(n);
+  // while (n--) {
+  //   u8arr[n] = bstr.charCodeAt(n);
+  // }
 
   return new File([u8arr], filename, {
     type: mime,
@@ -117,20 +113,23 @@ function getImageDimensions(file, imgPath) {
   });
 }
 
-function compressImage(path, maxWidthOrHeight = 1920) {
+function compressImage(path) {
   const options = {
-    // maxSizeMB: 1,
-    // maxWidthOrHeight,
-    // useWebWorker: true,
-    maxWidth: 1920,
-    maxHeight: 1920,
-    input: 'base64',
-  };
-  return Image.compress(path, {
     maxWidth: 1920,
     maxHeight: 1920,
     input: 'uri',
-    returnableOutputType: 'uri',
+    returnableOutputType: 'base64',
+  };
+  return new Promise((resolve, reject) => {
+    Image.compress(path, options)
+      .then(async image => {
+        let buffer = await Buffer.from(image, 'base64');
+        resolve(buffer);
+      })
+      .catch(err => {
+        console.log(err, 'Error in compressing');
+        reject(err);
+      });
   });
 }
 

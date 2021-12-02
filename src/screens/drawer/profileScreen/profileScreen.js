@@ -7,7 +7,7 @@ import {
   View,
   Image,
 } from 'react-native';
-import {Actionsheet} from 'native-base';
+import {Actionsheet, useToast} from 'native-base';
 import Iocn1 from 'react-native-vector-icons/Entypo';
 import Icon2 from 'react-native-vector-icons/AntDesign';
 import Icon3 from 'react-native-vector-icons/MaterialIcons';
@@ -16,7 +16,6 @@ import {
   Permission,
   PERMISSION_TYPE,
 } from '../../../appPermissions/appPermissions';
-import RNFetchBlob from 'react-native-fetch-blob';
 import CustomButton from '../../../components/common/button/button';
 import ProfileScreenCardWrapper from '../../../components/constant/profileScreenComponents/profileScreenCardWrapper/profileScreenCardWrapper';
 import ItemsSelectorCard from '../../../components/constant/profileScreenComponents/itemsSelectorCard/itemsSelectorCard';
@@ -34,15 +33,12 @@ import {
 } from '../../../../graphql/queries';
 import EmptyDataComponent from '../../../components/common/emptyDataComponent/emptyDataComponent';
 import RenderS3Image from '../../../components/common/renderS3Image/renderS3Image';
-import {
-  base64ToFile,
-  compressImage,
-  getImageDimensions,
-} from '../../../shared/services/helper';
+import {compressImage} from '../../../shared/services/helper';
 import {
   _putFileToS3,
   _removeFileFromS3,
 } from '../../../shared/services/s3Services';
+import CustomToast from '../../../components/common/customToast/customToast';
 
 export default function ProfileScreen() {
   let [isActionSheetOpen, setIsActionSheetOpen] = useState(false);
@@ -56,6 +52,8 @@ export default function ProfileScreen() {
   let [getProductsById, productsData] = useLazyQuery(getMyProducts);
   let [getstories, storiesData] = useLazyQuery(getVolunteerPublishedStories);
   let [activities, setActivities] = useState(null);
+
+  let toast = useToast();
 
   useEffect(() => {
     (async function () {
@@ -106,30 +104,54 @@ export default function ProfileScreen() {
 
   let selectImage = async type => {
     setIsActionSheetOpen(false);
-    Permission.requestMultiple([PERMISSION_TYPE.photo, PERMISSION_TYPE.camera]);
+    !isActionSheetOpen &&
+      Permission.requestMultiple([
+        PERMISSION_TYPE.photo,
+        PERMISSION_TYPE.camera,
+      ]);
     let option = {
-      width: 300,
+      width: 400,
       height: 400,
       cropping: true,
-      includeBase64: true,
     };
     switch (type) {
       case 'camera': {
         ImagePicker.openCamera(option)
           .then(async img => {
-            setImage(img.path);
-            compressImage(img.path).then(res => {
-              RNFetchBlob.fs.readFile(res, 'base64').then(async data => {
-                let buffer = await Buffer.from(data, 'base64');
+            compressImage(img.path)
+              .then(buffer => {
                 _putFileToS3(`VOLUNTEER/${volunteer?.volunteerId}.webp`, buffer)
                   .then(res => {
-                    console.log(res, 'success');
+                    setImage(img.path);
+                    toast.show({
+                      placement: 'top',
+                      duration: 2000,
+                      render: () => (
+                        <CustomToast
+                          type="success"
+                          description={`Image upload successfully`}
+                        />
+                      ),
+                    });
                   })
+                  
                   .catch(err => {
-                    console.log(err, 'Err');
+                    console.log({err}, 'Err');
+                    toast.show({
+                      placement: 'top',
+                      duration: 2000,
+                      render: () => (
+                        <CustomToast
+                          type="error"
+                          description={`Something went wrong, Please try agin later `}
+                        />
+                      ),
+                    });
                   });
+              })
+              .catch(err => {
+                console.log(err);
               });
-            });
           })
           .catch(err => {
             console.log(err);
@@ -138,9 +160,41 @@ export default function ProfileScreen() {
       }
       case 'library': {
         ImagePicker.openPicker(option)
-          .then(image => {
-            setImage(image.path);
-            console.log(img);
+          .then(async img => {
+            compressImage(img.path)
+              .then(buffer => {
+                _putFileToS3(`VOLUNTEER/${volunteer?.volunteerId}.webp`, buffer)
+                  .then(res => {
+                    setImage(img.path);
+                    console.log(res, 'success');
+                    toast.show({
+                      placement: 'top',
+                      duration: 2000,
+                      render: () => (
+                        <CustomToast
+                          type="success"
+                          description={`Image upload successfully`}
+                        />
+                      ),
+                    });
+                  })
+                  .catch(err => {
+                    console.log({err}, 'Err');
+                    toast.show({
+                      placement: 'top',
+                      duration: 2000,
+                      render: () => (
+                        <CustomToast
+                          type="error"
+                          description={`Something went wrong, Please try agin later `}
+                        />
+                      ),
+                    });
+                  });
+              })
+              .catch(err => {
+                console.log(err);
+              });
           })
           .catch(err => {
             console.log(err);
@@ -150,11 +204,22 @@ export default function ProfileScreen() {
       case 'removeImage': {
         _removeFileFromS3(`VOLUNTEER/${volunteer?.volunteerId}.webp`)
           .then(res => {
-            console.log(res, 'Deleted');
-            setImage();
+            setImage('deleted');
+            toast.show({
+              placement: 'top',
+              duration: 2000,
+              render: () => (
+                <CustomToast type="success" description={`Image Deleted!`} />
+              ),
+            });
           })
           .catch(err => {
             console.log(err, 'Error');
+            toast.show({
+              placement: 'top',
+              duration: 2000,
+              render: () => <CustomToast type="error" description={err} />,
+            });
           });
         break;
       }
@@ -213,6 +278,7 @@ export default function ProfileScreen() {
                 s3Key={`VOLUNTEER/${volunteer?.volunteerId}.webp`}
                 onClick={() => setIsActionSheetOpen(true)}
                 imageUrl={image}
+                setImageUrl={setImage}
               />
               {/* <TouchableOpacity
                     activeOpacity={0.5}

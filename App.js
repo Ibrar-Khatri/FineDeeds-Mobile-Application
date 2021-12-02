@@ -13,11 +13,12 @@ import {LogBox} from 'react-native';
 Amplify.configure({...awsConfig});
 
 const Stack = createNativeStackNavigator();
+LogBox.ignoreLogs([
+  'VirtualizedLists should never be nested',
+  'new NativeEventEmitter',
+]);
 
 const App = () => {
-  useEffect(() => {
-    LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
-  }, []);
   return (
     <ApolloProvider client={FinedeedsAppClient}>
       <NativeBaseProvider>
