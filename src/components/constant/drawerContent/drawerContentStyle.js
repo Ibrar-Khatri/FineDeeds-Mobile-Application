@@ -34,4 +34,10 @@ export default StyleSheet.create({
     borderBottomColor: '#B8B8B8',
     borderBottomWidth: 1,
   },
+  profileImageStyle: {
+    height: 60,
+    width: 60,
+    borderRadius: 100,
+    overflow: 'hidden',
+  },
 });

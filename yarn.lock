@@ -9234,7 +9234,7 @@
     "invariant" "^2.2.4"
     "prop-types" "^15.7.2"
 
-"react-native-get-random-values@^1.4.0", "react-native-get-random-values@^1.7.0":
+"react-native-get-random-values@^1.4.0", "react-native-get-random-values@^1.7.0", "react-native-get-random-values@^1.7.1":
   "integrity" "sha512-VXWdk73N7pQMEAcM9pvZv+yuWmu2qQrS0QldhdgYmo7dmPHb3x/7tvQKDxkR9gy9/+SoS2uQq9eq06sZ200piA=="
   "resolved" "https://registry.npmjs.org/react-native-get-random-values/-/react-native-get-random-values-1.7.1.tgz"
   "version" "1.7.1"

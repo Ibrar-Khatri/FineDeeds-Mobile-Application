@@ -19,25 +19,23 @@ const isImageExist = (url, callBack) => {
   imageData.src = url;
 };
 
-const _getFileFromS3 = (key, customPrefix) => {
-  return axios.get(
-    `${
-      NATIVE_PUBLIC_CLOUDFRONT
-        ? NATIVE_PUBLIC_CLOUDFRONT
-        : 'https://d1dgq26wta4hyq.cloudfront.net'
-    }/${key}`,
-  );
-  // new Promise((res, rej) => {
-
-  //     .then(url => res(url.config.url))
-  //     .catch(err => rej());
-  // let url = `${
-  //   NATIVE_PUBLIC_CLOUDFRONT
-  //     ? NATIVE_PUBLIC_CLOUDFRONT
-  //     : 'https://d1dgq26wta4hyq.cloudfront.net'
-  // }/${key}`;
-  // console.log(url, 'url');
-  // res(
+const _getFileFromS3 = async (key, customPrefix) => {
+  return new Promise((res, rej) => {
+    Storage.get(key, {
+      customPrefix: defaultPrefix,
+      contentType: 'image/webp',
+    }).then(imageUrl => {
+      axios
+        .get(imageUrl)
+        .then(url => {
+          res(imageUrl);
+        })
+        .catch(err => {
+          rej(err);
+        });
+    });
+  });
+  // return await axios.get(
   //   `${
   //     NATIVE_PUBLIC_CLOUDFRONT
   //       ? NATIVE_PUBLIC_CLOUDFRONT

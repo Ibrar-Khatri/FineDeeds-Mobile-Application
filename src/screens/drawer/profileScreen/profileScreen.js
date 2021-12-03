@@ -118,6 +118,7 @@ export default function ProfileScreen() {
       case 'camera': {
         ImagePicker.openCamera(option)
           .then(async img => {
+            setImage(img.path);
             compressImage(img.path)
               .then(buffer => {
                 _putFileToS3(`VOLUNTEER/${volunteer?.volunteerId}.webp`, buffer)
@@ -134,9 +135,9 @@ export default function ProfileScreen() {
                       ),
                     });
                   })
-                  
+
                   .catch(err => {
-                    console.log({err}, 'Err');
+                    setImage('');
                     toast.show({
                       placement: 'top',
                       duration: 2000,
@@ -163,10 +164,10 @@ export default function ProfileScreen() {
           .then(async img => {
             compressImage(img.path)
               .then(buffer => {
+                setImage(img.path);
                 _putFileToS3(`VOLUNTEER/${volunteer?.volunteerId}.webp`, buffer)
                   .then(res => {
                     setImage(img.path);
-                    console.log(res, 'success');
                     toast.show({
                       placement: 'top',
                       duration: 2000,
@@ -178,8 +179,10 @@ export default function ProfileScreen() {
                       ),
                     });
                   })
+
                   .catch(err => {
-                    console.log({err}, 'Err');
+                    setImage('');
+                    // console.log({err}, 'Err');
                     toast.show({
                       placement: 'top',
                       duration: 2000,
@@ -214,11 +217,16 @@ export default function ProfileScreen() {
             });
           })
           .catch(err => {
-            console.log(err, 'Error');
+            setImage('');
             toast.show({
               placement: 'top',
               duration: 2000,
-              render: () => <CustomToast type="error" description={err} />,
+              render: () => (
+                <CustomToast
+                  type="error"
+                  description="Something went wrong, Please try agin later"
+                />
+              ),
             });
           });
         break;
@@ -257,33 +265,16 @@ export default function ProfileScreen() {
               resizeMode="cover"
             />
             <View style={style.profileImageView}>
-              {/* {image ? (
-                <Image
-                  alt="profile image"
-                  source={{uri: image}}
-                  resizeMode="cover"
-                  style={style.profileImageStyle}
-                />
-              ) : (
-                // <Image
-                //   alt="profile image"
-                //   source={require('../../../assets/images/no-img-event-card.png')}
-                // resizeMode="cover"
-                // style={style.profileImageStyle}
-                // />
-                )} */}
               <RenderS3Image
                 resizeMode="cover"
                 style={style.profileImageStyle}
-                s3Key={`VOLUNTEER/${volunteer?.volunteerId}.webp`}
+                s3Key={
+                  volunteer?.volunteerId &&
+                  `VOLUNTEER/${volunteer?.volunteerId}.webp`
+                }
                 onClick={() => setIsActionSheetOpen(true)}
                 imageUrl={image}
-                setImageUrl={setImage}
               />
-              {/* <TouchableOpacity
-                    activeOpacity={0.5}
-                    onPress={() => setIsActionSheetOpen(true)}>
-              </TouchableOpacity> */}
             </View>
             <Text style={style.userNameStyle}>{volunteer?.volunteerName}</Text>
             {(volunteer?.city || volunteer?.country) && (

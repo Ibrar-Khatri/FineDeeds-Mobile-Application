@@ -3,7 +3,7 @@ import {Image, TouchableOpacity} from 'react-native';
 import {_getFileFromS3} from '../../../shared/services/s3Services';
 
 export default function RenderS3Image(props) {
-  let {style, resizeMode, s3Key, onClick, imageUrl, setImageUrl} = props;
+  let {style, resizeMode, s3Key, onClick, imageUrl, update} = props;
 
   const [image, setImage] = useState('');
 
@@ -13,7 +13,7 @@ export default function RenderS3Image(props) {
     if (s3Key) {
       _getFileFromS3(s3Key)
         .then(imgUrl => {
-          setImage(imgUrl.config.url);
+          setImage(imgUrl);
         })
         .catch(err => {
           console.log(err, 'e');
@@ -23,7 +23,7 @@ export default function RenderS3Image(props) {
     return () => {
       unmounted = true;
     };
-  }, [s3Key, imageUrl]);
+  }, [s3Key, imageUrl, update]);
 
   return (
     <TouchableOpacity activeOpacity={onClick ? 0.5 : 1} onPress={onClick}>
@@ -31,10 +31,20 @@ export default function RenderS3Image(props) {
         style={style}
         source={
           imageUrl
-            ? {uri: imageUrl}
+            ? imageUrl !== 'deleted'
+              ? {uri: imageUrl}
+              : require('../../../assets/images/no-img-event-card.png')
             : image
             ? {uri: image}
             : require('../../../assets/images/no-img-event-card.png')
+
+          // imageUrl
+          //   ? imageUrl !== 'deleted'
+          //     ? {uri: imageUrl}
+          //     : require('../../../assets/images/no-img-event-card.png')
+          //   : image
+          //   ? {uri: image}
+          //   : require('../../../assets/images/no-img-event-card.png')
         }
         resizeMode={resizeMode}
       />

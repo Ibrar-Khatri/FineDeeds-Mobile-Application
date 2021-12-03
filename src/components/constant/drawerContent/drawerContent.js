@@ -1,14 +1,22 @@
 import React, {useEffect, useState} from 'react';
 import {DrawerContentScrollView, DrawerItem} from '@react-navigation/drawer';
 import {BackHandler, Image, Text, View} from 'react-native';
+import {useDrawerStatus} from '@react-navigation/drawer';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import RenderS3Image from '../../common/renderS3Image/renderS3Image';
 import {logout} from '../../../shared/services/authServices';
 import {DrawerActions} from '@react-navigation/native';
 import style from './drawerContentStyle';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function DrawerContent(props) {
   let {isUserAuthenticated, setIsUserAuthenticated, volunteer} = props;
   let [index, setIndex] = useState(0);
+  let [update, setUpdate] = useState(false);
+
+  const isDrawerOpen = useDrawerStatus() === 'open';
+  useEffect(() => {
+    setUpdate(isDrawerOpen);
+  }, [isDrawerOpen]);
 
   BackHandler.addEventListener('hardwareBackPress', () => {
     if (index === 0) {
@@ -125,7 +133,25 @@ export default function DrawerContent(props) {
     <DrawerContentScrollView {...props}>
       {isUserAuthenticated && (
         <View style={style.profileView}>
-          <Image source={require('../../../assets/images/fineDeedLogo.png')} />
+          <RenderS3Image
+            resizeMode="cover"
+            style={style.profileImageStyle}
+            s3Key={
+              volunteer?.volunteerId &&
+              `VOLUNTEER/${volunteer?.volunteerId}.webp`
+            }
+            update={update}
+          />
+
+          {/* <Image
+            source={require('../../../assets/images/fineDeedLogo.png')}
+            style={{
+              height: 60,
+              width: 60,
+              borderRadius: 100,
+              overflow: 'hidden',
+            }}
+          /> */}
           <Text style={style.nameText}>{volunteer?.volunteerName}</Text>
           <Text style={style.roleText}>{volunteer?.__typename}</Text>
         </View>
