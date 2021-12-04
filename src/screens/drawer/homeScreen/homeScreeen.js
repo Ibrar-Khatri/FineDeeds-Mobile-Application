@@ -3,14 +3,26 @@ import {View, Text, ScrollView, ImageBackground} from 'react-native';
 import Slick from 'react-native-slick';
 import CustomButton from '../../../components/common/button/button';
 import SideDetailCard from '../../../components/constant/homeScreenComponents/sideDetailCard/sideDetailCard';
-import {isLoggedIn} from '../../../shared/services/authServices';
 import SliderCard from '../../../components/constant/homeScreenComponents/sliderCard/sliderCard';
 import style from './homeScreenStyle';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import CustomSpinner from '../../../components/common/spinner/spinner';
+import StoriesCard from '../../../components/common/storiesCard/storiesCard';
+import CardTitle from '../../../components/constant/homeScreenComponents/cardTitle/cardTitle';
+import {useLazyQuery} from '@apollo/client';
+import {getVolunteerPublishedStories} from '../../../../graphql/queries';
 
 export default function HomeScreen(props) {
   let {isUserAuthenticated} = props;
+  let [getstories, storiesData] = useLazyQuery(getVolunteerPublishedStories);
+
+  useEffect(() => {
+    console.log(storiesData?.data?.getStories?.items, '2 storiesData?.data');
+  }, [storiesData]);
+
+  useEffect(() => {
+    getstories({
+      variables: {limit: 3},
+    });
+  }, []);
 
   let sideDetail1 = [
     {
@@ -129,6 +141,14 @@ export default function HomeScreen(props) {
             />
           ))}
         </View>
+
+        <View style={{margin: 20}}>
+          <CardTitle />
+          {storiesData?.data?.getStories?.items?.map((item, i) => (
+            <StoriesCard key={i} data={item} />
+          ))}
+        </View>
+
         <View style={style.joinAsNonProfitView}>
           <ImageBackground
             source={require('../../../assets/images/become-nonprofit.png')}>

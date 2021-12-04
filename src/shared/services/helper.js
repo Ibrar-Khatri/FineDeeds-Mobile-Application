@@ -1,6 +1,7 @@
 import {useEffect, useState} from 'react';
 import moment from 'moment';
 import {Image} from 'react-native-compressor';
+import {_putFileToS3} from './s3Services';
 // import reactNativeFetchBlob from 'react-native-fetch-blob';
 
 const usePrevious = (useRef, useEffect, value) => {
@@ -93,12 +94,11 @@ const base64ToFile = (dataurl, filename, type) => {
   // while (n--) {
   //   u8arr[n] = bstr.charCodeAt(n);
   // }
-
-  return new File([u8arr], filename, {
-    type: mime,
-    lastModified: Date.now(),
-    lastModifiedDate: new Date(),
-  });
+  // return new File([u8arr], filename, {
+  //   type: mime,
+  //   lastModified: Date.now(),
+  //   lastModifiedDate: new Date(),
+  // });
 };
 
 const parseGraphQLError = error => error.split('GraphQL error:')[1];
@@ -110,6 +110,31 @@ function getImageDimensions(file, imgPath) {
       (width, height) => resolved({width, height}),
       rejected,
     );
+  });
+}
+
+function uploadImageInS3Bucket(path, s3Key) {
+  const options = {
+    maxWidth: 1920,
+    maxHeight: 1920,
+    input: 'uri',
+    returnableOutputType: 'base64',
+  };
+  return new Promise((resolve, reject) => {
+    Image.compress(path, options)
+      .then(async image => {
+        let buffer = await Buffer.from(image, 'base64');
+        _putFileToS3(s3Key, buffer)
+          .then(res => {
+            resolve(res);
+          })
+          .catch(err => {
+            reject(err);
+          });
+      })
+      .catch(err => {
+        resolve(err);
+      });
   });
 }
 
@@ -187,4 +212,5 @@ export {
   compressImage,
   getImageDimensions,
   useDebounce,
+  uploadImageInS3Bucket,
 };

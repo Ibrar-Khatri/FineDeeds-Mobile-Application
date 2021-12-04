@@ -20,12 +20,9 @@ export default function JourneyMap(props) {
       storiesData['getStories'].items.map(story => {
         const {createdAt} = story;
         const createdYear = new Date(createdAt).getFullYear();
-
         if (!timeline) {
           timeline = {};
         }
-
-        
         if (timeline[createdYear]) {
           timeline[createdYear] = [...timeline[createdYear], {...story}];
         } else {

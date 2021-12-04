@@ -7,15 +7,8 @@ import {
   View,
   Image,
 } from 'react-native';
-import {Actionsheet, useToast} from 'native-base';
 import Iocn1 from 'react-native-vector-icons/Entypo';
 import Icon2 from 'react-native-vector-icons/AntDesign';
-import Icon3 from 'react-native-vector-icons/MaterialIcons';
-import ImagePicker from 'react-native-image-crop-picker';
-import {
-  Permission,
-  PERMISSION_TYPE,
-} from '../../../appPermissions/appPermissions';
 import CustomButton from '../../../components/common/button/button';
 import ProfileScreenCardWrapper from '../../../components/constant/profileScreenComponents/profileScreenCardWrapper/profileScreenCardWrapper';
 import ItemsSelectorCard from '../../../components/constant/profileScreenComponents/itemsSelectorCard/itemsSelectorCard';
@@ -33,12 +26,15 @@ import {
 } from '../../../../graphql/queries';
 import EmptyDataComponent from '../../../components/common/emptyDataComponent/emptyDataComponent';
 import RenderS3Image from '../../../components/common/renderS3Image/renderS3Image';
-import {compressImage} from '../../../shared/services/helper';
 import {
   _putFileToS3,
   _removeFileFromS3,
 } from '../../../shared/services/s3Services';
-import CustomToast from '../../../components/common/customToast/customToast';
+import ImagePickerActionSheet from '../../../components/common/imagePickerActionSheet/imagePickerActionSheet';
+import {
+  Permission,
+  PERMISSION_TYPE,
+} from '../../../appPermissions/appPermissions';
 
 export default function ProfileScreen() {
   let [isActionSheetOpen, setIsActionSheetOpen] = useState(false);
@@ -52,8 +48,6 @@ export default function ProfileScreen() {
   let [getProductsById, productsData] = useLazyQuery(getMyProducts);
   let [getstories, storiesData] = useLazyQuery(getVolunteerPublishedStories);
   let [activities, setActivities] = useState(null);
-
-  let toast = useToast();
 
   useEffect(() => {
     (async function () {
@@ -90,6 +84,14 @@ export default function ProfileScreen() {
     })();
   }, []);
 
+  async function invokeActionSheet() {
+    await Permission.requestMultiple([
+      PERMISSION_TYPE.photo,
+      PERMISSION_TYPE.camera,
+    ]);
+    setIsActionSheetOpen(true);
+  }
+
   useEffect(() => {
     if (activitiesData?.data?.getActivities?.items?.length >= 0) {
       setActivities(activitiesData?.data?.getActivities?.items);
@@ -101,138 +103,6 @@ export default function ProfileScreen() {
     activitiesData?.data?.getActivities?.items,
     productsData?.data?.getMyProducts?.items,
   ]);
-
-  let selectImage = async type => {
-    setIsActionSheetOpen(false);
-    !isActionSheetOpen &&
-      Permission.requestMultiple([
-        PERMISSION_TYPE.photo,
-        PERMISSION_TYPE.camera,
-      ]);
-    let option = {
-      width: 400,
-      height: 400,
-      cropping: true,
-    };
-    switch (type) {
-      case 'camera': {
-        ImagePicker.openCamera(option)
-          .then(async img => {
-            setImage(img.path);
-            compressImage(img.path)
-              .then(buffer => {
-                _putFileToS3(`VOLUNTEER/${volunteer?.volunteerId}.webp`, buffer)
-                  .then(res => {
-                    setImage(img.path);
-                    toast.show({
-                      placement: 'top',
-                      duration: 2000,
-                      render: () => (
-                        <CustomToast
-                          type="success"
-                          description={`Image upload successfully`}
-                        />
-                      ),
-                    });
-                  })
-
-                  .catch(err => {
-                    setImage('');
-                    toast.show({
-                      placement: 'top',
-                      duration: 2000,
-                      render: () => (
-                        <CustomToast
-                          type="error"
-                          description={`Something went wrong, Please try agin later `}
-                        />
-                      ),
-                    });
-                  });
-              })
-              .catch(err => {
-                console.log(err);
-              });
-          })
-          .catch(err => {
-            console.log(err);
-          });
-        break;
-      }
-      case 'library': {
-        ImagePicker.openPicker(option)
-          .then(async img => {
-            compressImage(img.path)
-              .then(buffer => {
-                setImage(img.path);
-                _putFileToS3(`VOLUNTEER/${volunteer?.volunteerId}.webp`, buffer)
-                  .then(res => {
-                    setImage(img.path);
-                    toast.show({
-                      placement: 'top',
-                      duration: 2000,
-                      render: () => (
-                        <CustomToast
-                          type="success"
-                          description={`Image upload successfully`}
-                        />
-                      ),
-                    });
-                  })
-
-                  .catch(err => {
-                    setImage('');
-                    // console.log({err}, 'Err');
-                    toast.show({
-                      placement: 'top',
-                      duration: 2000,
-                      render: () => (
-                        <CustomToast
-                          type="error"
-                          description={`Something went wrong, Please try agin later `}
-                        />
-                      ),
-                    });
-                  });
-              })
-              .catch(err => {
-                console.log(err);
-              });
-          })
-          .catch(err => {
-            console.log(err);
-          });
-        break;
-      }
-      case 'removeImage': {
-        _removeFileFromS3(`VOLUNTEER/${volunteer?.volunteerId}.webp`)
-          .then(res => {
-            setImage('deleted');
-            toast.show({
-              placement: 'top',
-              duration: 2000,
-              render: () => (
-                <CustomToast type="success" description={`Image Deleted!`} />
-              ),
-            });
-          })
-          .catch(err => {
-            setImage('');
-            toast.show({
-              placement: 'top',
-              duration: 2000,
-              render: () => (
-                <CustomToast
-                  type="error"
-                  description="Something went wrong, Please try agin later"
-                />
-              ),
-            });
-          });
-        break;
-      }
-    }
-  };
 
   let userFollowersDet = [
     {
@@ -272,7 +142,7 @@ export default function ProfileScreen() {
                   volunteer?.volunteerId &&
                   `VOLUNTEER/${volunteer?.volunteerId}.webp`
                 }
-                onClick={() => setIsActionSheetOpen(true)}
+                onClick={invokeActionSheet}
                 imageUrl={image}
               />
             </View>
@@ -418,34 +288,18 @@ export default function ProfileScreen() {
               <CustomSpinner size="lg" color="#f06d06" />
             )}
           </ProfileScreenCardWrapper>
-          <Actionsheet
-            isOpen={isActionSheetOpen}
-            onClose={setIsActionSheetOpen}>
-            <Actionsheet.Content>
-              <Actionsheet.Item
-                onPress={() => selectImage('camera')}
-                startIcon={<Iocn1 name="camera" color="#f06d06" size={30} />}>
-                Take a photo
-              </Actionsheet.Item>
-              <Actionsheet.Item
-                onPress={() => selectImage('library')}
-                startIcon={
-                  <Icon3 name="photo-library" color="#f06d06" size={30} />
-                }>
-                Choose from Library
-              </Actionsheet.Item>
-              <Actionsheet.Item
-                onPress={() => selectImage('removeImage')}
-                startIcon={<Icon3 name="delete" color="red" size={30} />}>
-                Remove image
-              </Actionsheet.Item>
-              <Actionsheet.Item
-                onPress={selectImage}
-                style={style.actionsheetItemCancelText}>
-                Cancel
-              </Actionsheet.Item>
-            </Actionsheet.Content>
-          </Actionsheet>
+          <ImagePickerActionSheet
+            isActionSheetOpen={isActionSheetOpen}
+            setIsActionSheetOpen={setIsActionSheetOpen}
+            option={{
+              width: 400,
+              height: 400,
+              cropping: true,
+            }}
+            image={image}
+            setImage={setImage}
+            s3Key={`VOLUNTEER/${volunteer?.volunteerId}.webp`}
+          />
         </>
       ) : (
         <CustomSpinner size="lg" color="#f06d06" />

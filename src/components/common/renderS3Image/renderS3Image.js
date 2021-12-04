@@ -9,7 +9,6 @@ export default function RenderS3Image(props) {
 
   useEffect(() => {
     let unmounted = false;
-
     if (s3Key) {
       _getFileFromS3(s3Key)
         .then(imgUrl => {

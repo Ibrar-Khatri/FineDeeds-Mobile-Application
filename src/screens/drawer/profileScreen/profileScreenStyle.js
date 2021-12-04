@@ -122,9 +122,6 @@ export default StyleSheet.create({
     color: '#212529',
     fontSize: vw(3.5),
   },
-  actionsheetItemCancelText: {
-    justifyContent: 'center',
-  },
   timeLineHeader: {
     display: 'flex',
     flexDirection: 'row',
