@@ -1,16 +1,18 @@
 import React from 'react';
 import {View} from 'native-base';
 import style from './storiesCardStyle';
-import {Image, Text} from 'react-native';
+import {Image, Text, useWindowDimensions} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import RenderHtml from 'react-native-render-html';
 import RenderS3Image from '../renderS3Image/renderS3Image';
 
 export default function StoriesCard({data}) {
-  // console.log(data?.storyId, 'itemf');
+  const {width} = useWindowDimensions();
+
   return (
     <View style={style.mainView}>
       <RenderS3Image
-        resizeMode="contain"
+        resizeMode="cover"
         style={style.imageStyle}
         s3Key={data?.storyId && `STORY/${data?.storyId}.webp`}
       />
@@ -29,11 +31,15 @@ export default function StoriesCard({data}) {
         </View>
         <View style={style.descriptionView}>
           <Text style={style.storyTitle}>{data?.title}</Text>
-          <Text style={style.textStyle}>
-            {/* {data?.story} */}
-            Hello 001 Hello 001 Hello 001 Hello 001 Hello 001 Hello 001 Hello
-            Hello 001 Hello 001 Hello 001 Hello 001 Hello 001 Hello 001 Hello
-          </Text>
+          <View style={style.renderHtmlView}>
+            <RenderHtml
+              source={{
+                html: data?.story,
+              }}
+              tagsStyles={style.tagsStyles}
+              contentWidth={width}
+            />
+          </View>
         </View>
       </View>
     </View>

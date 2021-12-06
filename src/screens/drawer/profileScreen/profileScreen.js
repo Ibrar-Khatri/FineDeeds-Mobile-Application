@@ -35,6 +35,7 @@ import {
   Permission,
   PERMISSION_TYPE,
 } from '../../../appPermissions/appPermissions';
+import FlatListComponent from '../../../components/common/flatListComponent/flatListComponent';
 
 export default function ProfileScreen() {
   let [isActionSheetOpen, setIsActionSheetOpen] = useState(false);
@@ -240,12 +241,10 @@ export default function ProfileScreen() {
                   <Text style={style.linkStyle}>Sell all</Text>
                 </TouchableOpacity>
               </View>
-              <FlatList
+              <FlatListComponent
                 data={activities}
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}
-                contentContainerStyle={style.contentContainerStyle}
-                ListEmptyComponent={<CustomSpinner size="lg" color="#f06d06" />}
                 renderItem={({item, index}) => (
                   <TouchableOpacity key={index} style={style.activityView}>
                     <RenderS3Image
@@ -274,12 +273,11 @@ export default function ProfileScreen() {
               </TouchableOpacity>
             </View>
             {myProducts?.length >= 0 ? (
-              <FlatList
+              <FlatListComponent
                 data={myProducts}
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}
-                contentContainerStyle={style.contentContainerStyle}
-                ListEmptyComponent={<EmptyDataComponent title="Products" />}
+                emptyDataTitle="Products"
                 renderItem={({item, index}) => (
                   <ProductCard key={index} productDetail={item} />
                 )}

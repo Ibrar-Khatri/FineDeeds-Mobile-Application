@@ -8,100 +8,38 @@ import style from './homeScreenStyle';
 import StoriesCard from '../../../components/common/storiesCard/storiesCard';
 import CardTitle from '../../../components/constant/homeScreenComponents/cardTitle/cardTitle';
 import {useLazyQuery} from '@apollo/client';
-import {getVolunteerPublishedStories} from '../../../../graphql/queries';
-
+import {
+  getActivities,
+  getVolunteerPublishedStories,
+} from '../../../../graphql/queries';
+import CustomSpinner from '../../../components/common/spinner/spinner';
+import FlatListComponent from '../../../components/common/flatListComponent/flatListComponent';
+import {
+  sideDetail1,
+  whatDoWeOffer,
+  sliderContent,
+} from '../../../shared/helperData/homeScreen';
+import ActivitiesCard from '../../../components/common/activitiesCard/activitiesCard';
 export default function HomeScreen(props) {
   let {isUserAuthenticated} = props;
   let [getstories, storiesData] = useLazyQuery(getVolunteerPublishedStories);
-
-  useEffect(() => {
-    console.log(storiesData?.data?.getStories?.items, '2 storiesData?.data');
-  }, [storiesData]);
-
+  let [getRandomActivities, activitiesData] = useLazyQuery(getActivities);
+  let [stories, setStories] = useState();
+  let [activities, setActivities] = useState();
   useEffect(() => {
     getstories({
       variables: {limit: 3},
     });
+    getRandomActivities({
+      variables: {limit: 3},
+    });
   }, []);
-
-  let sideDetail1 = [
-    {
-      image: require('../../../assets/images/charity1.png'),
-      title: 'Project',
-      detail:
-        'Take up projects with nonprofits to help them save costs and build a meanigful association with them.',
-    },
-    {
-      image: require('../../../assets/images/calender.png'),
-      title: 'Events',
-      detail:
-        'Join the events created by nonprofits near you and help them in making a better world.',
-    },
-    {
-      image: require('../../../assets/images/volunteer1.png'),
-      title: 'Activities',
-      detail:
-        'Found nothing that interests you, create your own social activity and invite others or join one near you.',
-    },
-    {
-      image: require('../../../assets/images/stories.png'),
-      title: 'Stories',
-      detail:
-        'Acts of kindness and humanity are contagious. Read the finedeeds stories, get inspired and inspire others.',
-    },
-  ];
-  let whatDoWeOffer = [
-    {
-      image: require('../../../assets/images/offer1.png'),
-      title: 'Unified solution',
-      detail:
-        'Fundraising, Events , Project and Contributor management, collaboration & communicaton all on a single platform',
-    },
-    {
-      image: require('../../../assets/images/offer3.png'),
-      title: 'Easy to use',
-      detail:
-        'Intuitive and user friendly design. Different dashboards for non-profit and it’s staff / volunteers simplify the user experience',
-    },
-    {
-      image: require('../../../assets/images/offer3.png'),
-      title: 'Better networking',
-      detail:
-        'Connect with people with similar interests, team up for events. Message / comment on posts to reach out to volunteers',
-    },
-    {
-      image: require('../../../assets/images/offer4.png'),
-      title: 'Profiles',
-      detail:
-        'Build your profile , showcase your volunteering experience and be recognized for your work',
-    },
-    {
-      image: require('../../../assets/images/offer5.png'),
-      title: 'Inspire & Be inspired',
-      detail:
-        'A selfless act always sparks another”. Read volunteer stories and spread positivity by sharing your',
-    },
-    {
-      image: require('../../../assets/images/offer6.png'),
-      title: 'Analytics',
-      detail:
-        'A special dashboard for non-profits helps measure growth, manage events and projects, through analytics',
-    },
-  ];
-
-  let sliderContent = [
-    {
-      image: require('../../../assets/images/martin.jpg'),
-      quote:
-        'Every man must decide whether he will walk in the light of creative altruism or in the darkness of destructive selfishness',
-      name: '- MARTIN LUTHER KING, JR',
-    },
-    {
-      image: require('../../../assets/images/mother-teresa.png'),
-      quote: 'If you cannot feed a hundred people, feed one',
-      name: '- Mother Teresa',
-    },
-  ];
+  if (storiesData?.data?.getStories?.items) {
+    !stories && setStories(storiesData?.data?.getStories?.items);
+  }
+  !activities &&
+    activitiesData?.data?.getActivities?.items &&
+    setActivities(activitiesData?.data?.getActivities?.items);
 
   return (
     <ScrollView>
@@ -130,47 +68,64 @@ export default function HomeScreen(props) {
             </View>
           </View>
         )}
-        <View style={style.whatDoWeOffer}>
-          <Text style={style.whatDoWeOffertEXT}>WHAT DO WE OFFER</Text>
-          {whatDoWeOffer.map((item, i) => (
-            <SideDetailCard
-              key={i}
-              imageSource={item.image}
-              title={item.title}
-              detail={item.detail}
+
+        <View style={style.bodyView}>
+          <View style={style.whatDoWeOffer}>
+            <CardTitle title="WHAT DO WE OFFER" />
+            {whatDoWeOffer.map((item, i) => (
+              <SideDetailCard
+                key={i}
+                imageSource={item.image}
+                title={item.title}
+                detail={item.detail}
+              />
+            ))}
+          </View>
+
+          <View style={style.dynamicDataView}>
+            <CardTitle title="ACTIVITIES NEAR YOU" showLink={true} />
+            <FlatListComponent
+              data={activities}
+              horizontal={true}
+              showsHorizontalScrollIndicator={true}
+              ListEmptyComponent={<CustomSpinner size="lg" color="#f06d06" />}
+              renderItem={({item, i}) => <ActivitiesCard key={i} data={item} />}
             />
-          ))}
-        </View>
+          </View>
+          <View style={style.dynamicDataView}>
+            <CardTitle title="STORIES THAT INSPIRE" showLink={true} />
+            <FlatListComponent
+              data={stories}
+              horizontal={true}
+              showsHorizontalScrollIndicator={true}
+              ListEmptyComponent={<CustomSpinner size="lg" color="#f06d06" />}
+              renderItem={({item, i}) => <StoriesCard key={i} data={item} />}
+            />
+          </View>
 
-        <View style={{margin: 20}}>
-          <CardTitle />
-          {storiesData?.data?.getStories?.items?.map((item, i) => (
-            <StoriesCard key={i} data={item} />
-          ))}
-        </View>
-
-        <View style={style.joinAsNonProfitView}>
-          <ImageBackground
-            source={require('../../../assets/images/become-nonprofit.png')}>
-            <View style={style.joinAsNonProfittextView}>
-              <Text style={style.joinAsNonProfitTitle}>
-                Join as a non-profit
-              </Text>
-              <Text style={style.joinAsNonProfitText}>
-                Finedeeds allows non-profits to improve almost every aspect of
-                their operations – from internal efficiency to contributor
-                interactions, and fundraising – with a greater focus on digital
-                strategy. Through Finedeeds non-profits could not only manage
-                their members and staff but also create events, fundraise and
-                launch projects, and engage share the same with their members
-                bringing real-time communication and high-level of transparency
-                of operations.
-              </Text>
-              <View style={style.registerNowButtonView}>
-                <CustomButton buttonText="Register Now" />
+          <View style={style.joinAsNonProfitView}>
+            <ImageBackground
+              source={require('../../../assets/images/become-nonprofit.png')}>
+              <View style={style.joinAsNonProfittextView}>
+                <Text style={style.joinAsNonProfitTitle}>
+                  Join as a non-profit
+                </Text>
+                <Text style={style.joinAsNonProfitText}>
+                  Finedeeds allows non-profits to improve almost every aspect of
+                  their operations – from internal efficiency to contributor
+                  interactions, and fundraising – with a greater focus on
+                  digital strategy. Through Finedeeds non-profits could not only
+                  manage their members and staff but also create events,
+                  fundraise and launch projects, and engage share the same with
+                  their members bringing real-time communication and high-level
+                  of transparency of operations.
+                </Text>
+                <View style={style.registerNowButtonView}>
+                  <CustomButton buttonText="Register Now" />
+                </View>
               </View>
-            </View>
-          </ImageBackground>
+            </ImageBackground>
+          </View>
           <Slick
             style={style.slickView}
             showsButtons={false}

@@ -8,6 +8,10 @@ export default StyleSheet.create({
   mainView: {
     backgroundColor: '#fff',
   },
+  bodyView: {
+    paddingLeft: 20,
+    paddingRight: 20,
+  },
   imageStyle: {
     height: vh(35),
   },
@@ -31,15 +35,7 @@ export default StyleSheet.create({
   whatDoWeOffer: {
     marginTop: 40,
   },
-  whatDoWeOffertEXT: {
-    fontFamily: 'Montserrat-Regular',
-    color: '#212529',
-    fontSize: vw(5),
-    marginLeft: 20,
-    marginBottom: 40,
-  },
   joinAsNonProfitView: {
-    margin: 20,
     borderRadius: 10,
     overflow: 'hidden',
   },
@@ -64,12 +60,15 @@ export default StyleSheet.create({
   },
   slickView: {
     marginTop: 50,
-    height: vw(145),
+    height: vw(135),
   },
   slickDotStyle: {
     display: 'none',
   },
   activeDotStyle: {
     display: 'none',
+  },
+  dynamicDataView: {
+    marginBottom: 20,
   },
 });
