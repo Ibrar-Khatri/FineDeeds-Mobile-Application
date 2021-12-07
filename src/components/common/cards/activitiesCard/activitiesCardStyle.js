@@ -2,7 +2,7 @@ import {StyleSheet} from 'react-native';
 import {
   widthPercentageToDP as vw,
   heightPercentageToDP as vh,
-} from '../../../responsive/responsive';
+} from '../../../../responsive/responsive';
 
 export default StyleSheet.create({
   activitiesMainView: {

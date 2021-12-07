@@ -2,7 +2,7 @@ import {StyleSheet} from 'react-native';
 import {
   heightPercentageToDP as vh,
   widthPercentageToDP as vw,
-} from '../../../responsive/responsive';
+} from '../../../../responsive/responsive';
 
 export default StyleSheet.create({
   mainView: {
@@ -43,12 +43,15 @@ export default StyleSheet.create({
     fontFamily: 'Montserrat-Bold',
     color: '#212529',
   },
-  renderHtmlView: {height: 65, overflow: 'hidden'},
   tagsStyles: {
     br: {display: 'none'},
     h1: {fontSize: vw(3.5), margin: 0, padding: 0},
     h2: {fontSize: vw(3.5), margin: 0, padding: 0},
     h3: {fontSize: vw(3.5), margin: 0, padding: 0},
-    body: {color: '#212529'},
+    body: {
+      color: '#212529',
+      height: 65,
+      overflow: 'hidden',
+    },
   },
 });

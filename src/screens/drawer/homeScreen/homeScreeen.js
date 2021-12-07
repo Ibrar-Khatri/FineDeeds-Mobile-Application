@@ -20,12 +20,14 @@ import {
   sliderContent,
 } from '../../../shared/helperData/homeScreen';
 import ActivitiesCard from '../../../components/common/activitiesCard/activitiesCard';
+
 export default function HomeScreen(props) {
   let {isUserAuthenticated} = props;
   let [getstories, storiesData] = useLazyQuery(getVolunteerPublishedStories);
   let [getRandomActivities, activitiesData] = useLazyQuery(getActivities);
   let [stories, setStories] = useState();
   let [activities, setActivities] = useState();
+
   useEffect(() => {
     getstories({
       variables: {limit: 3},
@@ -34,9 +36,10 @@ export default function HomeScreen(props) {
       variables: {limit: 3},
     });
   }, []);
-  if (storiesData?.data?.getStories?.items) {
-    !stories && setStories(storiesData?.data?.getStories?.items);
-  }
+
+  !stories &&
+    storiesData?.data?.getStories?.items &&
+    setStories(storiesData?.data?.getStories?.items);
   !activities &&
     activitiesData?.data?.getActivities?.items &&
     setActivities(activitiesData?.data?.getActivities?.items);
