@@ -9,7 +9,8 @@ export default StyleSheet.create({
     display: 'flex',
   },
   imageStyle: {
-    height: vw(85),
+    height: vw(80),
+    width: vw(80),
     alignSelf: 'center',
     borderRadius: 20,
     overflow: 'hidden',

@@ -5,7 +5,7 @@ import CustomButton from '../../../components/common/button/button';
 import SideDetailCard from '../../../components/constant/homeScreenComponents/sideDetailCard/sideDetailCard';
 import SliderCard from '../../../components/constant/homeScreenComponents/sliderCard/sliderCard';
 import style from './homeScreenStyle';
-import StoriesCard from '../../../components/common/storiesCard/storiesCard';
+import StoriesCard from '../../../components/common/cards/storiesCard/storiesCard';
 import CardTitle from '../../../components/constant/homeScreenComponents/cardTitle/cardTitle';
 import {useLazyQuery} from '@apollo/client';
 import {
@@ -19,7 +19,7 @@ import {
   whatDoWeOffer,
   sliderContent,
 } from '../../../shared/helperData/homeScreen';
-import ActivitiesCard from '../../../components/common/activitiesCard/activitiesCard';
+import ActivitiesCard from '../../../components/common/cards/activitiesCard/activitiesCard';
 
 export default function HomeScreen(props) {
   let {isUserAuthenticated} = props;
@@ -73,7 +73,7 @@ export default function HomeScreen(props) {
         )}
 
         <View style={style.bodyView}>
-          <View style={style.whatDoWeOffer}>
+          <View>
             <CardTitle title="WHAT DO WE OFFER" />
             {whatDoWeOffer.map((item, i) => (
               <SideDetailCard

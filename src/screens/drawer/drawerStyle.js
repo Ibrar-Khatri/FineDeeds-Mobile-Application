@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+import {Platform, StyleSheet} from 'react-native';
 
 export default StyleSheet.create({
   headerTitleStyle: {
@@ -10,7 +10,7 @@ export default StyleSheet.create({
       width: 0,
       height: 9,
     },
-    shadowOpacity: 0.48,
+    shadowOpacity: Platform.OS === 'ios' ? 0.2 : 0.48,
     shadowRadius: 11.95,
     elevation: 18,
   },
@@ -21,4 +21,5 @@ export default StyleSheet.create({
   inactiveTintColor: '#212529',
   activeBackgroundColor: '#fff',
   pressColor: '#fff',
+  headerTintColor: '#212529',
 });

@@ -7,7 +7,6 @@ import {
 export default StyleSheet.create({
   mianView: {
     display: 'flex',
-    // alignItems: 'center',
     flexDirection: 'column',
     marginTop: 'auto',
     marginBottom: 'auto',
@@ -18,8 +17,7 @@ export default StyleSheet.create({
     marginRight: vw(7),
   },
   termsAndCondView: {
-    height: 60,
-    marginBottom: 10,
+    marginBottom: 15,
   },
   checkBoxAndTextView: {
     display: 'flex',
@@ -41,4 +39,3 @@ export default StyleSheet.create({
     marginLeft: 10,
   },
 });
-

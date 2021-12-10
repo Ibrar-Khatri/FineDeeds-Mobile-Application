@@ -25,8 +25,8 @@ export default StyleSheet.create({
     overflow: 'hidden',
   },
   dateCardImage: {
-    height: 70,
-    width: 55,
+    height: vw(16),
+    width: vw(13),
     marginLeft: 25,
     marginTop: -10,
     display: 'flex',
@@ -36,18 +36,18 @@ export default StyleSheet.create({
   dateStyle: {
     color: '#f06d06',
     fontFamily: 'Montserrat-Bold',
-    fontSize: vw(3.5),
+    fontSize: vw(3.6),
   },
   lineBetMonthAndDate: {
-    width: 40,
+    width: vw(10),
     borderBottomColor: '#d3d1d0',
     borderBottomWidth: 1,
     margin: 4,
   },
   startingOn: {
     backgroundColor: '#f1ae44',
-    width: 200,
-    height: 28,
+    width: vw(45),
+    padding: 5,
     alignItems: 'center',
     display: 'flex',
     flexDirection: 'column',

@@ -1,7 +1,7 @@
 import {Image} from 'native-base';
 import React from 'react';
 import {Text, TouchableOpacity} from 'react-native';
-import RenderS3Image from '../renderS3Image/renderS3Image';
+import RenderS3Image from '../../renderS3Image/renderS3Image';
 import style from './productCardStyle';
 
 export default function ProductCard(props) {

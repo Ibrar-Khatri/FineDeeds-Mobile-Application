@@ -50,8 +50,9 @@ export default StyleSheet.create({
     h3: {fontSize: vw(3.5), margin: 0, padding: 0},
     body: {
       color: '#212529',
-      height: 65,
+      height: 60,
       overflow: 'hidden',
+      fontSize: vw(3.3),
     },
   },
 });

@@ -11,8 +11,8 @@ import {FinedeedsAppClient} from './aws_credentials/graphql-client.js';
 import {LogBox} from 'react-native';
 
 Amplify.configure({...awsConfig});
-
 const Stack = createNativeStackNavigator();
+
 LogBox.ignoreLogs([
   'VirtualizedLists should never be nested',
   'new NativeEventEmitter',

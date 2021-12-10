@@ -19,8 +19,8 @@ export default StyleSheet.create({
     overflow: 'hidden',
   },
   profileImageView: {
-    height: 110,
-    width: 110,
+    height: vw(29),
+    width: vw(29),
     marginTop: vh(-10),
     backgroundColor: '#fff',
     borderRadius: 100,
@@ -28,8 +28,8 @@ export default StyleSheet.create({
     alignItems: 'center',
   },
   profileImageStyle: {
-    height: 100,
-    width: 100,
+    height: vw(27),
+    width: vw(27),
     borderRadius: 100,
     overflow: 'hidden',
     borderColor: '#c3c3c3',

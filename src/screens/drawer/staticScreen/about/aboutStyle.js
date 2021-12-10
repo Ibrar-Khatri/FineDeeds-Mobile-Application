@@ -15,17 +15,19 @@ export default StyleSheet.create({
   },
   imageStyle: {
     height: vw(60),
-    alignSelf:'center',
-    marginTop:30
+    alignSelf: 'center',
+    marginTop: 30,
+  },
+  titleView: {
+    height: vh(15),
+    backgroundColor: '#fffaf4',
+    justifyContent: 'center',
   },
   titleText: {
     fontSize: vw(6),
     color: '#212529',
     textAlign: 'center',
     fontFamily: 'Merriweather-Black',
-    height: vh(15),
-    backgroundColor: '#fffaf4',
-    textAlignVertical: 'center',
   },
   contentView: {
     margin: 30,

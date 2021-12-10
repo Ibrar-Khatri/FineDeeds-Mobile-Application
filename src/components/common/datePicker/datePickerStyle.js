@@ -20,21 +20,31 @@ export default StyleSheet.create({
     width: '100%',
     marginTop: 5,
     marginBottom: 5,
-    height: 83,
     alignSelf: 'center',
+  },
+  inputStyle: {
+    padding: 10,
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: '#ced4da',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: '#fff',
   },
   disabledBGColor: {
     backgroundColor: '#e9ecef',
   },
   focusInputStyle: {
-    ...inputStyle,
     shadowColor: '#fd7e14',
-    shadowRadius: 10,
+    shadowOpacity: 1,
+    shadowRadius: 4,
+    shadowOffset: {
+      height: 0,
+      width: 0,
+    },
     elevation: 1,
-  },
-  blurInputStyle: {
-    ...inputStyle,
-    color: '#495057',
   },
   textStyle: {
     color: '#212529',

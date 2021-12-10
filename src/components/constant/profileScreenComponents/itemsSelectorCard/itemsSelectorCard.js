@@ -14,6 +14,7 @@ import {
 } from '../../../../../graphql/mutations';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import EmptyDataComponent from '../../../common/emptyDataComponent/emptyDataComponent';
+import {heightPercentageToDP as vh} from '../../../../responsive/responsive';
 
 export default function ItemsSelectorCard(props) {
   let {title, selectedItems, volunteer, setVolunteer} = props;
@@ -171,7 +172,7 @@ export default function ItemsSelectorCard(props) {
       <View style={style.titleAndIconView}>
         <Text style={style.titleStyle}>{title}</Text>
         <TouchableOpacity onPress={() => openModal()}>
-          <Icon name="pencil" size={18} color="#f06d06" />
+          <Icon name="pencil" size={vh(2.8)} color="#f06d06" />
         </TouchableOpacity>
       </View>
       <View style={style.itemMainView}>

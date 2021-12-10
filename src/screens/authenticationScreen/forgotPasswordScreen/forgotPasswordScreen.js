@@ -10,6 +10,7 @@ import CustomButton from '../../../components/common/button/button';
 import NavigationLink from '../../../components/common/navigationLink/navigationLink';
 import {forgotPassword} from '../../../shared/services/authServices';
 import CustomToast from '../../../components/common/customToast/customToast';
+import AuthWrapper from '../../../components/common/authWrapper/authWrapper';
 
 export default function ForgotPasswordScreen({navigation}) {
   let [isLoading, setIsLoading] = useState(false);
@@ -43,35 +44,41 @@ export default function ForgotPasswordScreen({navigation}) {
   });
 
   return (
-    <View style={style.mianView}>
-      <ScrollView>
-        <InputFieldsHeader
-          title="Forgot Password"
-          subTitle="Please check your email for password reset code"
+    // <View style={style.mianView}>
+    //   <ScrollView>
+    //     <InputFieldsHeader
+    //       title="Forgot Password"
+    //       subTitle="Please check your email for password reset code"
+    //     />
+    //   </ScrollView>
+    // </View>
+    <AuthWrapper>
+      <InputFieldsHeader
+        title="Forgot Password"
+        subTitle="Please check your email for password reset code"
+      />
+      <View style={style.inputFieldsView}>
+        <InputField
+          type="email"
+          value={formik.values.email}
+          setValue={formik.handleChange('email')}
+          placeholder="Email Address"
+          invalidInput={showInvalidInput && formik.errors.email}
+          autoCapitalize="none"
         />
-        <View style={style.inputFieldsView}>
-          <InputField
-            type="email"
-            value={formik.values.email}
-            setValue={formik.handleChange('email')}
-            placeholder="Email Address"
-            invalidInput={showInvalidInput && formik.errors.email}
-            autoCapitalize="none"
-          />
-          <CustomButton
-            buttonText="SEND CODE"
-            onClick={formik.handleSubmit}
-            setShowInvalidInput={setShowInvalidInput}
-            isLoading={isLoading}
-          />
-          <NavigationLink
-            text="Go Back"
-            displayName="Login"
-            navigation={navigation}
-            routeName="login"
-          />
-        </View>
-      </ScrollView>
-    </View>
+        <CustomButton
+          buttonText="SEND CODE"
+          onClick={formik.handleSubmit}
+          setShowInvalidInput={setShowInvalidInput}
+          isLoading={isLoading}
+        />
+        <NavigationLink
+          text="Go Back"
+          displayName="Login"
+          navigation={navigation}
+          routeName="login"
+        />
+      </View>
+    </AuthWrapper>
   );
 }

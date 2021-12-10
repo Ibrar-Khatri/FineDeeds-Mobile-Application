@@ -33,7 +33,7 @@ export default StyleSheet.create({
   },
   titleStyle: {
     color: '#212529',
-    fontFamily: 'MontserratSemiBold',
+    fontFamily: 'Montserrat-SemiBold',
     fontWeight: '700',
     fontSize: vw(5),
   },

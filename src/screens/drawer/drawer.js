@@ -30,6 +30,7 @@ export default function DrawerNavigation({navigation}) {
     <Drawer.Navigator
       screenOptions={{
         title: 'Finedeeds',
+        headerTintColor: style.headerTintColor,
         headerTitleStyle: style.headerTitleStyle,
         headerStyle: style.headerStyle,
         headerRight: () => (

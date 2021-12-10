@@ -21,7 +21,7 @@ export default StyleSheet.create({
   },
   headingStyle: {
     color: '#fff',
-    fontSize: vw(8),
+    fontSize: vw(7.8),
     fontFamily: 'Montserrat-ExtraBold',
   },
   subHeadingStyle: {
@@ -30,9 +30,6 @@ export default StyleSheet.create({
     fontSize: vw(6),
   },
   sideDetailCardView: {
-    marginTop: 40,
-  },
-  whatDoWeOffer: {
     marginTop: 40,
   },
   joinAsNonProfitView: {
@@ -56,7 +53,7 @@ export default StyleSheet.create({
     marginBottom: 20,
   },
   registerNowButtonView: {
-    width: 200,
+    width: vw(40),
   },
   slickView: {
     marginTop: 50,

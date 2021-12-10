@@ -56,14 +56,16 @@ export default StyleSheet.create({
     color: '#212529',
     fontWeight: '500',
     marginBottom: 5,
+    fontSize: vw(3.8),
   },
   jobDes: {
     color: 'rgba(0,0,0,.5)',
+    fontSize: vw(3),
   },
   iconView: {
     display: 'flex',
     flexDirection: 'row',
-    width: 40,
+    width: vw(10),
     justifyContent: 'space-around',
   },
 });

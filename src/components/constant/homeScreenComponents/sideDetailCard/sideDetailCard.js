@@ -3,7 +3,7 @@ import {View, Text, Image} from 'react-native';
 import style from './sideDetailCardStyle';
 
 export default function SideDetailCard(props) {
-  let {imageSource, title, detail,} = props;
+  let {imageSource, title, detail} = props;
 
   return (
     <View style={style.sideDetailCardView}>

@@ -63,7 +63,7 @@ export default function ImagePickerActionSheet(props) {
         break;
       }
       case 'library': {
-        ImagePicker.openCamera(option).then(async img => {
+        ImagePicker.openPicker(option).then(async img => {
           setImage(img.path);
           uploadImageInS3Bucket(img.path, s3Key)
             .then(uploaded => {

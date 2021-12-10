@@ -7,11 +7,13 @@ export default function About() {
   return (
     <ScrollView>
       <View style={style.aboutMainView}>
-        <Text style={style.titleText}>About FineDeeds</Text>
+        <View style={style.titleView}>
+          <Text style={style.titleText}>About Finedeeds</Text>
+        </View>
         <Image
           source={require('../../../../assets/images/ripple_effect_of_goodness.png')}
           style={style.imageStyle}
-          resizeMode='contain'
+          resizeMode="contain"
         />
         <View style={style.contentView}>
           <View style={style.contentParaView}>

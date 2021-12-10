@@ -9,6 +9,7 @@ import InputField from '../../../components/common/inputField/inputField';
 import InputFieldsHeader from '../../../components/common/inputFieldsHeader/inputFieldsHeader';
 import {confirmNewPassword} from '../../../shared/services/authServices';
 import CustomToast from '../../../components/common/customToast/customToast';
+import AuthWrapper from '../../../components/common/authWrapper/authWrapper';
 
 export default function ResetPassword({navigation, route}) {
   let {email} = route.params;
@@ -45,44 +46,45 @@ export default function ResetPassword({navigation, route}) {
   });
 
   return (
-    <View style={style.mianView}>
-      <ScrollView>
-        <InputFieldsHeader
-          title="Reset Password"
-          subTitle="Please check your email for password reset code"
+    // <View style={style.mianView}>
+    //   <ScrollView></ScrollView>
+    // </View>
+    <AuthWrapper>
+      <InputFieldsHeader
+        title="Reset Password"
+        subTitle="Please check your email for password reset code"
+      />
+      <View style={style.inputFieldsView}>
+        <InputField
+          type="text"
+          value={formik.values.confirmationCode}
+          setValue={formik.handleChange('confirmationCode')}
+          placeholder="Confirmation Code"
+          invalidInput={showInvalidInput && formik.errors.confirmationCode}
         />
-        <View style={style.inputFieldsView}>
-          <InputField
-            type="text"
-            value={formik.values.confirmationCode}
-            setValue={formik.handleChange('confirmationCode')}
-            placeholder="Confirmation Code"
-            invalidInput={showInvalidInput && formik.errors.confirmationCode}
-          />
-          <InputField
-            type="password"
-            value={formik.values.newPassword}
-            setValue={formik.handleChange('newPassword')}
-            secureTextEntry={true}
-            placeholder="New Password"
-            invalidInput={showInvalidInput && formik.errors.newPassword}
-          />
-          <InputField
-            type="password"
-            value={formik.values.confrimPassword}
-            setValue={formik.handleChange('confrimPassword')}
-            secureTextEntry={true}
-            placeholder="Confirm Password"
-            invalidInput={showInvalidInput && formik.errors.confrimPassword}
-          />
-          <CustomButton
-            buttonText="Confirm"
-            onClick={formik.handleSubmit}
-            setShowInvalidInput={setShowInvalidInput}
-            isLoading={isLoading}
-          />
-        </View>
-      </ScrollView>
-    </View>
+        <InputField
+          type="password"
+          value={formik.values.newPassword}
+          setValue={formik.handleChange('newPassword')}
+          secureTextEntry={true}
+          placeholder="New Password"
+          invalidInput={showInvalidInput && formik.errors.newPassword}
+        />
+        <InputField
+          type="password"
+          value={formik.values.confrimPassword}
+          setValue={formik.handleChange('confrimPassword')}
+          secureTextEntry={true}
+          placeholder="Confirm Password"
+          invalidInput={showInvalidInput && formik.errors.confrimPassword}
+        />
+        <CustomButton
+          buttonText="Confirm"
+          onClick={formik.handleSubmit}
+          setShowInvalidInput={setShowInvalidInput}
+          isLoading={isLoading}
+        />
+      </View>
+    </AuthWrapper>
   );
 }

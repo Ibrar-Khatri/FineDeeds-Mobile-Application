@@ -1,5 +1,8 @@
 import {StyleSheet} from 'react-native';
-import {widthPercentageToDP as vw} from '../../../../responsive/responsive';
+import {
+  heightPercentageToDP as vh,
+  widthPercentageToDP as vw,
+} from '../../../../responsive/responsive';
 
 export default StyleSheet.create({
   mainView: {
@@ -7,7 +10,8 @@ export default StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 20,
+    marginBottom: vh(2),
+    marginTop: vh(5),
   },
   titleStyle: {
     fontFamily: 'Montserrat-Regular',

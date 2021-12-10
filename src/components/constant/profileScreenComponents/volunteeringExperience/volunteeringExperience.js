@@ -15,6 +15,7 @@ import {saveProExperience} from '../../../../../graphql/mutations';
 import {getVolunteerProExperience} from '../../../../../graphql/queries';
 import EmptyDataComponent from '../../../common/emptyDataComponent/emptyDataComponent';
 import CustomSpinner from '../../../common/spinner/spinner';
+import {widthPercentageToDP as vw} from '../../../../responsive/responsive';
 
 export default function VolunteeringExperience(props) {
   let {volunteer} = props;
@@ -106,8 +107,8 @@ export default function VolunteeringExperience(props) {
                   ) : null}
                 </View>
                 <View style={style.iconView}>
-                  <Octicons name="pencil" size={18} color="#f06d06" />
-                  <MaterialIcons name="delete" size={18} color="red" />
+                  <Octicons name="pencil" size={vw(4)} color="#f06d06" />
+                  <MaterialIcons name="delete" size={vw(4)} color="red" />
                 </View>
               </View>
             ))

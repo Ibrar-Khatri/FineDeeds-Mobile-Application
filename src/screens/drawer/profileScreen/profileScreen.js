@@ -12,7 +12,7 @@ import Icon2 from 'react-native-vector-icons/AntDesign';
 import CustomButton from '../../../components/common/button/button';
 import ProfileScreenCardWrapper from '../../../components/constant/profileScreenComponents/profileScreenCardWrapper/profileScreenCardWrapper';
 import ItemsSelectorCard from '../../../components/constant/profileScreenComponents/itemsSelectorCard/itemsSelectorCard';
-import ProductCard from '../../../components/common/productCard/productCard';
+import ProductCard from '../../../components/common/cards/productCard/productCard';
 import style from './profileScreenStyle';
 import CustomSpinner from '../../../components/common/spinner/spinner';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -36,6 +36,7 @@ import {
   PERMISSION_TYPE,
 } from '../../../appPermissions/appPermissions';
 import FlatListComponent from '../../../components/common/flatListComponent/flatListComponent';
+import {heightPercentageToDP as vh} from '../../../responsive/responsive';
 
 export default function ProfileScreen() {
   let [isActionSheetOpen, setIsActionSheetOpen] = useState(false);
@@ -151,7 +152,7 @@ export default function ProfileScreen() {
             {(volunteer?.city || volunteer?.country) && (
               <View>
                 <Text style={style.userLocationStyle}>
-                  <Iocn1 name="location-pin" color="#f06d06" size={20} />
+                  <Iocn1 name="location-pin" color="#f06d06" size={vh(2.7)} />
                   {volunteer?.city && `${volunteer.city} ,`}
                   {volunteer?.country && `${volunteer.country} `}
                 </Text>
@@ -169,10 +170,10 @@ export default function ProfileScreen() {
               <View style={style.buttonView}>
                 <CustomButton buttonText="Follow" />
                 <CustomButton
-                  icon={<Icon2 name="message1" color="#fff" size={20} />}
+                  icon={<Icon2 name="message1" color="#fff" size={vh(3)} />}
                 />
                 <CustomButton
-                  icon={<Iocn1 name="thumbs-up" color="#fff" size={20} />}
+                  icon={<Iocn1 name="thumbs-up" color="#fff" size={vh(3)} />}
                 />
               </View>
             </View>
@@ -293,6 +294,7 @@ export default function ProfileScreen() {
               width: 400,
               height: 400,
               cropping: true,
+              mediaType: 'photo',
             }}
             image={image}
             setImage={setImage}

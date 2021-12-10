@@ -142,16 +142,6 @@ export default function DrawerContent(props) {
             }
             update={update}
           />
-
-          {/* <Image
-            source={require('../../../assets/images/fineDeedLogo.png')}
-            style={{
-              height: 60,
-              width: 60,
-              borderRadius: 100,
-              overflow: 'hidden',
-            }}
-          /> */}
           <Text style={style.nameText}>{volunteer?.volunteerName}</Text>
           <Text style={style.roleText}>{volunteer?.__typename}</Text>
         </View>

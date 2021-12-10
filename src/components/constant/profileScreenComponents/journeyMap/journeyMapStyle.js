@@ -93,7 +93,7 @@ export default StyleSheet.create({
     fontFamily: 'Montserrat-SemiBold',
     color: '#fff',
     textAlign: 'center',
-    width: 60,
+    width: vw(15),
     padding: 5,
     fontSize: vw(3.3),
   },

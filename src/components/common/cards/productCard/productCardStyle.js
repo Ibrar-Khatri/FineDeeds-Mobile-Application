@@ -7,7 +7,7 @@ import {
 export default StyleSheet.create({
   productCardMainView: {
     width: vw(50),
-    margin: 5,
+    margin: 10,
   },
   productImage: {
     height: vw(50),

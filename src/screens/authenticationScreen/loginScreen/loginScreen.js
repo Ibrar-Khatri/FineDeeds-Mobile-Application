@@ -1,5 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {View, ScrollView} from 'react-native';
+import {
+  View,
+  ScrollView,
+  KeyboardAvoidingView,
+  Platform,
+  Keyboard,
+} from 'react-native';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {useFormik} from 'formik';
 import {useToast} from 'native-base';
 import {loginValidationSchema} from '../../../shared/validation/authValidation';
@@ -13,6 +20,8 @@ import CustomToast from '../../../components/common/customToast/customToast';
 import {getVolunteerById} from '../../../../graphql/queries';
 import {useLazyQuery} from '@apollo/client';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {flexGrow} from 'styled-system';
+import AuthWrapper from '../../../components/common/authWrapper/authWrapper';
 
 export default function LoginScreen({navigation}) {
   let [isLoading, setIsLoading] = useState(false);
@@ -66,45 +75,43 @@ export default function LoginScreen({navigation}) {
   });
 
   return (
-    <View style={style.mianView}>
-      <ScrollView>
-        <InputFieldsHeader title="Login" subTitle="Be the change" />
-        <View style={style.inputFieldsView}>
-          <InputField
-            type="email"
-            value={formik.values.email}
-            setValue={formik.handleChange('email')}
-            placeholder="Email"
-            invalidInput={showInvalidInput && formik.errors.email}
-            autoCapitalize="none"
-          />
-          <InputField
-            type="password"
-            value={formik.values.password}
-            setValue={formik.handleChange('password')}
-            secureTextEntry={true}
-            placeholder="Password"
-            invalidInput={showInvalidInput && formik.errors.password}
-          />
-          <NavigationLink
-            displayName="Forgot Password?"
-            navigation={navigation}
-            routeName="forgot-password"
-          />
-          <CustomButton
-            buttonText="LOG IN"
-            onClick={formik.handleSubmit}
-            setShowInvalidInput={setShowInvalidInput}
-            isLoading={isLoading}
-          />
-          <NavigationLink
-            text="Don't have an account?"
-            displayName="Click Here"
-            navigation={navigation}
-            routeName="signup"
-          />
-        </View>
-      </ScrollView>
-    </View>
+    <AuthWrapper>
+      <InputFieldsHeader title="Login" subTitle="Be the change" />
+      <View style={style.inputFieldsView}>
+        <InputField
+          type="email"
+          value={formik.values.email}
+          setValue={formik.handleChange('email')}
+          placeholder="Email"
+          invalidInput={showInvalidInput && formik.errors.email}
+          autoCapitalize="none"
+        />
+        <InputField
+          type="password"
+          value={formik.values.password}
+          setValue={formik.handleChange('password')}
+          secureTextEntry={true}
+          placeholder="Password"
+          invalidInput={showInvalidInput && formik.errors.password}
+        />
+        <NavigationLink
+          displayName="Forgot Password?"
+          navigation={navigation}
+          routeName="forgot-password"
+        />
+        <CustomButton
+          buttonText="LOG IN"
+          onClick={formik.handleSubmit}
+          setShowInvalidInput={setShowInvalidInput}
+          isLoading={isLoading}
+        />
+        <NavigationLink
+          text="Don't have an account?"
+          displayName="Click Here"
+          navigation={navigation}
+          routeName="signup"
+        />
+      </View>
+    </AuthWrapper>
   );
 }

@@ -9,6 +9,7 @@ import InputField from '../../../components/common/inputField/inputField';
 import CustomButton from '../../../components/common/button/button';
 import CustomToast from '../../../components/common/customToast/customToast';
 import {confirm, resendSignUp} from '../../../shared/services/authServices';
+import AuthWrapper from '../../../components/common/authWrapper/authWrapper';
 
 export default function ConfirmationEmail({navigation, route}) {
   const {user} = route.params;
@@ -74,33 +75,36 @@ export default function ConfirmationEmail({navigation, route}) {
 
   let [showInvalidInput, setShowInvalidInput] = useState(false);
   return (
-    <View style={style.mianView}>
-      <ScrollView>
-        <InputFieldsHeader title="Confirmation Email" subTitle="Join us now" />
-        <View style={style.inputFieldsView}>
-          <InputField
-            type="number"
-            value={formik.values.confirmationCode}
-            setValue={formik.handleChange('confirmationCode')}
-            placeholder="Enter Code"
-            invalidInput={showInvalidInput && formik.errors.confirmationCode}
-            autoCapitalize="none"
-            keyboardType="numeric"
-          />
-          <CustomButton
-            buttonText="Confirm"
-            onClick={formik.handleSubmit}
-            setShowInvalidInput={setShowInvalidInput}
-            isLoading={isLoading}
-          />
-          <View style={style.textView}>
-            <Text style={style.text1}>Didn't Recieve Code?</Text>
-            <Text style={style.text2} onPress={resenCode}>
-              {codeResend ? '...Loading' : 'Resend Code'}
-            </Text>
-          </View>
+    // <View style={style.mianView}>
+    //   <ScrollView>
+
+    //   </ScrollView>
+    // </View>
+    <AuthWrapper>
+      <InputFieldsHeader title="Confirmation Email" subTitle="Join us now" />
+      <View style={style.inputFieldsView}>
+        <InputField
+          type="number"
+          value={formik.values.confirmationCode}
+          setValue={formik.handleChange('confirmationCode')}
+          placeholder="Enter Code"
+          invalidInput={showInvalidInput && formik.errors.confirmationCode}
+          autoCapitalize="none"
+          keyboardType="numeric"
+        />
+        <CustomButton
+          buttonText="Confirm"
+          onClick={formik.handleSubmit}
+          setShowInvalidInput={setShowInvalidInput}
+          isLoading={isLoading}
+        />
+        <View style={style.textView}>
+          <Text style={style.text1}>Didn't Recieve Code?</Text>
+          <Text style={style.text2} onPress={resenCode}>
+            {codeResend ? '...Loading' : 'Resend Code'}
+          </Text>
         </View>
-      </ScrollView>
-    </View>
+      </View>
+    </AuthWrapper>
   );
 }

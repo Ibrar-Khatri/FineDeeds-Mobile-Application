@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, ScrollView} from 'react-native';
+import {View, ScrollView, KeyboardAvoidingView} from 'react-native';
 import {useFormik} from 'formik';
 import {useToast} from 'native-base';
 import style from './signupScreenStyle';
@@ -12,6 +12,7 @@ import NavigationLink from '../../../components/common/navigationLink/navigation
 import InvalidInput from '../../../components/common/invalidInput/invalidInput';
 import {signup} from '../../../shared/services/authServices';
 import CustomCheckBox from '../../../components/common/customCheckBox/customCheckBox';
+import AuthWrapper from '../../../components/common/authWrapper/authWrapper';
 
 export default function SignupScreen({navigation}) {
   let [acceptTermsAndCond, setAcceptTermsAndCond] = useState(false);
@@ -60,67 +61,65 @@ export default function SignupScreen({navigation}) {
   });
 
   return (
-    <View style={style.mianView}>
-      <ScrollView>
-        <InputFieldsHeader
-          title="Volunteer Sign up"
-          subTitle="Start helping someone today and engage with people who care as much as you do."
+    <AuthWrapper>
+      <InputFieldsHeader
+        title="Volunteer Sign up"
+        subTitle="Start helping someone today and engage with people who care as much as you do."
+      />
+      <View style={style.inputFieldsView}>
+        <InputField
+          type="text"
+          value={formik.values.name}
+          setValue={formik.handleChange('name')}
+          placeholder="Full Name"
+          invalidInput={showInvalidInput && formik.errors.name}
         />
-        <View style={style.inputFieldsView}>
-          <InputField
-            type="text"
-            value={formik.values.name}
-            setValue={formik.handleChange('name')}
-            placeholder="Full Name"
-            invalidInput={showInvalidInput && formik.errors.name}
-          />
-          <InputField
-            type="email"
-            value={formik.values.email}
-            setValue={formik.handleChange('email')}
-            placeholder="Email Address"
-            autoCapitalize="none"
-            invalidInput={showInvalidInput && formik.errors.email}
-          />
-          <InputField
-            type="password"
-            value={formik.values.password}
-            setValue={formik.handleChange('password')}
-            secureTextEntry={true}
-            placeholder="Password"
-            invalidInput={showInvalidInput && formik.errors.password}
-          />
-          <View style={style.termsAndCondView}>
-            <View style={style.checkBoxAndTextView}>
-              <CustomCheckBox
-                isChecked={acceptTermsAndCond}
-                callOnPress={() => setAcceptTermsAndCond(!acceptTermsAndCond)}
-              />
-              <NavigationLink
-                text="I Accept The Finedeeds"
-                displayName="Terms Of Service"
-                navigation={navigation}
-                routeName="terms-and-condition"
-              />
-            </View>
-            {showInvalidInput && !acceptTermsAndCond && (
-              <InvalidInput error="Accept Term Of Service is required" />
-            )}
+        <InputField
+          type="email"
+          value={formik.values.email}
+          setValue={formik.handleChange('email')}
+          placeholder="Email Address"
+          autoCapitalize="none"
+          invalidInput={showInvalidInput && formik.errors.email}
+        />
+        <InputField
+          type="password"
+          value={formik.values.password}
+          setValue={formik.handleChange('password')}
+          secureTextEntry={true}
+          placeholder="Password"
+          invalidInput={showInvalidInput && formik.errors.password}
+        />
+        <View style={style.termsAndCondView}>
+          <View style={style.checkBoxAndTextView}>
+            <CustomCheckBox
+              isChecked={acceptTermsAndCond}
+              callOnPress={() => setAcceptTermsAndCond(!acceptTermsAndCond)}
+            />
+            <NavigationLink
+              text="I Accept The Finedeeds"
+              displayName="Terms Of Service"
+              navigation={navigation}
+              routeName="terms-and-condition"
+            />
           </View>
-          <CustomButton
-            buttonText="SIGNUP"
-            onClick={formik.handleSubmit}
-            setShowInvalidInput={setShowInvalidInput}
-            isLoading={isLoading}
-          />
-          <NavigationLink
-            text="Already have an account?"
-            displayName="Click Here"
-            navigation={navigation}
-            routeName="login"
-          />
+          {showInvalidInput && !acceptTermsAndCond && (
+            <InvalidInput error="Accept Term Of Service is required" />
+          )}
         </View>
-      </ScrollView>
-    </View>
+        <CustomButton
+          buttonText="SIGNUP"
+          onClick={formik.handleSubmit}
+          setShowInvalidInput={setShowInvalidInput}
+          isLoading={isLoading}
+        />
+        <NavigationLink
+          text="Already have an account?"
+          displayName="Click Here"
+          navigation={navigation}
+          routeName="login"
+        />
+      </View>
+    </AuthWrapper>
   );
 }

@@ -12,6 +12,12 @@ target 'fineDeeds' do
     :hermes_enabled => false
   )
 
+  permissions_path = '../node_modules/react-native-permissions/ios'
+  
+  pod 'Permission-Camera', :path => "#{permissions_path}/Camera"
+  pod 'Permission-PhotoLibrary', :path => "#{permissions_path}/PhotoLibrary"
+
+
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
   pod 'react-native-image-base64', :path => '../node_modules/react-native-image-base64'
@@ -25,10 +31,10 @@ target 'fineDeeds' do
   #
   # Note that if you have use_frameworks! enabled, Flipper will not work and
   # you should disable the next line.
-  use_flipper!()
+  # use_flipper!()
 
-  post_install do |installer|
-    react_native_post_install(installer)
-    __apply_Xcode_12_5_M1_post_install_workaround(installer)
-  end
+  # post_install do |installer|
+  #   react_native_post_install(installer)
+  #   __apply_Xcode_12_5_M1_post_install_workaround(installer)
+  # end
 end

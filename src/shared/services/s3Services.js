@@ -1,5 +1,4 @@
 import {Storage} from 'aws-amplify';
-import {NATIVE_PUBLIC_CLOUDFRONT} from '@env';
 import axios from 'axios';
 
 const defaultPrefix = {
