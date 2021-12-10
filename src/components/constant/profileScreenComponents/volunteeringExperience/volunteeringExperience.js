@@ -11,20 +11,27 @@ import DateAndTimePicker from '../../../common/datePicker/datePicker';
 import CustomCheckBox from '../../../common/customCheckBox/customCheckBox';
 import {volunteerAddExperienceValidation} from '../../../../shared/validation/profileValidation';
 import {useLazyQuery, useMutation, useQuery} from '@apollo/client';
-import {saveProExperience} from '../../../../../graphql/mutations';
+import {
+  deleteProExperience,
+  saveProExperience,
+} from '../../../../../graphql/mutations';
 import {getVolunteerProExperience} from '../../../../../graphql/queries';
 import EmptyDataComponent from '../../../common/emptyDataComponent/emptyDataComponent';
 import CustomSpinner from '../../../common/spinner/spinner';
 import {widthPercentageToDP as vw} from '../../../../responsive/responsive';
+import DeleteConfirmationModal from '../../../common/deleteConfirmationModal/deleteConfirmationModal';
 
 export default function VolunteeringExperience(props) {
   let {volunteer} = props;
   let [isModalOpen, setIsModalOpen] = useState(false);
+  let [confirmationModal, setConfirmationModal] = useState(false);
   let [loading, setLoading] = useState(true);
   let [isLoading, setIsLoading] = useState(false);
+  let [removeExpID, setRemoveExpID] = useState();
   let [volunteerExpeience, setVolunteerExpeience] = useState([]);
   let [showInvalidInput, setShowInvalidInput] = useState(false);
   let [saveVolunteerExp, saveVolunteerExpData] = useMutation(saveProExperience);
+  let [deleteExp, deleteExpResponse] = useMutation(deleteProExperience);
   let [getVolunteerProExperienceById, getVolunteerProExperienceData] =
     useLazyQuery(getVolunteerProExperience, {fetchPolicy: 'network-only'});
 
@@ -90,6 +97,29 @@ export default function VolunteeringExperience(props) {
     }
   }
 
+  console.log(deleteExpResponse?.data?.deleteProExperience);
+  if (deleteExpResponse?.data?.deleteProExperience && removeExpID) {
+    let updatedExp = volunteerExpeience.filter(
+      item => item.proExpid !== removeExpID,
+    );
+    setVolunteerExpeience(updatedExp);
+    setConfirmationModal(false);
+    setIsLoading(false);
+    setRemoveExpID('');
+  }
+
+  function deleteVolunteerExp(exp) {
+    setIsLoading(true);
+    deleteExp({
+      variables: {
+        input: {
+          proExpid: removeExpID,
+          volunteerId: volunteer.volunteerId,
+        },
+      },
+    });
+  }
+
   return (
     <View style={style.mainViewVolunteeringExp}>
       {loading ? (
@@ -107,8 +137,16 @@ export default function VolunteeringExperience(props) {
                   ) : null}
                 </View>
                 <View style={style.iconView}>
-                  <Octicons name="pencil" size={vw(4)} color="#f06d06" />
-                  <MaterialIcons name="delete" size={vw(4)} color="red" />
+                  <TouchableOpacity>
+                    <Octicons name="pencil" size={vw(4)} color="#f06d06" />
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => {
+                      setConfirmationModal(true);
+                      setRemoveExpID(item.proExpid);
+                    }}>
+                    <MaterialIcons name="delete" size={vw(4)} color="red" />
+                  </TouchableOpacity>
                 </View>
               </View>
             ))
@@ -199,6 +237,13 @@ export default function VolunteeringExperience(props) {
           </View>
         </ModalWrapper>
       )}
+
+      <DeleteConfirmationModal
+        isModalOpen={confirmationModal}
+        setIsModalOpen={setConfirmationModal}
+        confrimDelete={deleteVolunteerExp}
+        isLoading={isLoading}
+      />
     </View>
   );
 }

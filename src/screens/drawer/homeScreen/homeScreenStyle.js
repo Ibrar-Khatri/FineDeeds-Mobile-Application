@@ -2,6 +2,7 @@ import {StyleSheet} from 'react-native';
 import {
   widthPercentageToDP as vw,
   heightPercentageToDP as vh,
+  adjust,
 } from '../../../responsive/responsive';
 
 export default StyleSheet.create({
@@ -21,7 +22,8 @@ export default StyleSheet.create({
   },
   headingStyle: {
     color: '#fff',
-    fontSize: vw(7.8),
+    fontSize: adjust(28),
+    // fontSize: vw(7.8),
     fontFamily: 'Montserrat-ExtraBold',
   },
   subHeadingStyle: {

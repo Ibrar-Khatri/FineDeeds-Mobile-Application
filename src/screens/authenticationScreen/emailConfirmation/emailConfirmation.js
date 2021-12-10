@@ -85,12 +85,12 @@ export default function ConfirmationEmail({navigation, route}) {
       <View style={style.inputFieldsView}>
         <InputField
           type="number"
+          keyboardType="numeric"
           value={formik.values.confirmationCode}
           setValue={formik.handleChange('confirmationCode')}
           placeholder="Enter Code"
           invalidInput={showInvalidInput && formik.errors.confirmationCode}
           autoCapitalize="none"
-          keyboardType="numeric"
         />
         <CustomButton
           buttonText="Confirm"

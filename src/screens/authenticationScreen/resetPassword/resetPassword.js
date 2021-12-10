@@ -56,7 +56,8 @@ export default function ResetPassword({navigation, route}) {
       />
       <View style={style.inputFieldsView}>
         <InputField
-          type="text"
+          type="number"
+          keyboardType="numeric"
           value={formik.values.confirmationCode}
           setValue={formik.handleChange('confirmationCode')}
           placeholder="Confirmation Code"
