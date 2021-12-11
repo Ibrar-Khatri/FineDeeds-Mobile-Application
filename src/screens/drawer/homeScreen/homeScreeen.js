@@ -73,6 +73,16 @@ export default function HomeScreen(props) {
         )}
 
         <View style={style.bodyView}>
+          <View style={style.dynamicDataView}>
+            <CardTitle title="ACTIVITIES NEAR YOU" showLink={true} />
+            <FlatListComponent
+              data={activities}
+              horizontal={true}
+              showsHorizontalScrollIndicator={true}
+              ListEmptyComponent={<CustomSpinner size="lg" color="#f06d06" />}
+              renderItem={({item, i}) => <ActivitiesCard key={i} data={item} />}
+            />
+          </View>
           <View>
             <CardTitle title="WHAT DO WE OFFER" />
             {whatDoWeOffer.map((item, i) => (
@@ -85,16 +95,6 @@ export default function HomeScreen(props) {
             ))}
           </View>
 
-          <View style={style.dynamicDataView}>
-            <CardTitle title="ACTIVITIES NEAR YOU" showLink={true} />
-            <FlatListComponent
-              data={activities}
-              horizontal={true}
-              showsHorizontalScrollIndicator={true}
-              ListEmptyComponent={<CustomSpinner size="lg" color="#f06d06" />}
-              renderItem={({item, i}) => <ActivitiesCard key={i} data={item} />}
-            />
-          </View>
           <View style={style.dynamicDataView}>
             <CardTitle title="STORIES THAT INSPIRE" showLink={true} />
             <FlatListComponent

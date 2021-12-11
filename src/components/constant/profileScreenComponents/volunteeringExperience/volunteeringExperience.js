@@ -1,8 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Text, TouchableOpacity, View} from 'react-native';
 import {useFormik} from 'formik';
-import Octicons from 'react-native-vector-icons/Octicons';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import CustomButton from '../../../common/button/button';
 import ModalWrapper from '../../../common/modalWrapper/modalWrapper';
 import style from './volunteeringExperienceStyle';
@@ -14,12 +12,15 @@ import {useLazyQuery, useMutation, useQuery} from '@apollo/client';
 import {
   deleteProExperience,
   saveProExperience,
+  updateProExperience,
 } from '../../../../../graphql/mutations';
 import {getVolunteerProExperience} from '../../../../../graphql/queries';
 import EmptyDataComponent from '../../../common/emptyDataComponent/emptyDataComponent';
 import CustomSpinner from '../../../common/spinner/spinner';
-import {widthPercentageToDP as vw} from '../../../../responsive/responsive';
 import DeleteConfirmationModal from '../../../common/deleteConfirmationModal/deleteConfirmationModal';
+import {useToast} from 'native-base';
+import CustomToast from '../../../common/customToast/customToast';
+import ProExperinceCard from './proExperinceCard/proExperinceCard';
 
 export default function VolunteeringExperience(props) {
   let {volunteer} = props;
@@ -27,17 +28,15 @@ export default function VolunteeringExperience(props) {
   let [confirmationModal, setConfirmationModal] = useState(false);
   let [loading, setLoading] = useState(true);
   let [isLoading, setIsLoading] = useState(false);
-  let [removeExpID, setRemoveExpID] = useState();
+  let [proExperienceId, setProExperienceId] = useState();
   let [volunteerExpeience, setVolunteerExpeience] = useState([]);
   let [showInvalidInput, setShowInvalidInput] = useState(false);
-  let [saveVolunteerExp, saveVolunteerExpData] = useMutation(saveProExperience);
-  let [deleteExp, deleteExpResponse] = useMutation(deleteProExperience);
+  let [saveVolunteerExp] = useMutation(saveProExperience);
+  let [updateVolunteerExp] = useMutation(updateProExperience);
+  let [deleteExp] = useMutation(deleteProExperience);
   let [getVolunteerProExperienceById, getVolunteerProExperienceData] =
     useLazyQuery(getVolunteerProExperience, {fetchPolicy: 'network-only'});
-
-  function setModalOpen() {
-    setIsModalOpen(true);
-  }
+  let toast = useToast();
 
   const formik = useFormik({
     initialValues: {
@@ -52,9 +51,44 @@ export default function VolunteeringExperience(props) {
     onSubmit: expDet => {
       setIsLoading(true);
       let experienceData = {...expDet, createdBy: volunteer.volunteerId};
-      saveVolunteerExp({
-        variables: {input: experienceData},
-      });
+      let updateExpDet = {
+        ...expDet,
+        updatedBy: volunteer.volunteerId,
+        proExpid: proExperienceId,
+      };
+
+      proExperienceId
+        ? updateVolunteerExp({
+            variables: {input: updateExpDet},
+          })
+            .then(async exp => {
+              renderToast(
+                'success',
+                'Experience has been successfully updated.',
+              );
+              let update = await volunteerExpeience.map(item =>
+                exp?.data?.updateProExperience.proExpid === item.proExpid
+                  ? exp?.data?.updateProExperience
+                  : item,
+              );
+              setVolunteerExpeience(update);
+            })
+            .catch(err => {
+              renderToast('error', err.message);
+            })
+        : saveVolunteerExp({
+            variables: {input: experienceData},
+          })
+            .then(exp => {
+              renderToast('success', 'Experience has been successfully added.');
+              setVolunteerExpeience([
+                ...volunteerExpeience,
+                exp?.data?.saveProExperience,
+              ]);
+            })
+            .catch(err => {
+              renderToast('error', err.message);
+            });
     },
   });
   useEffect(() => {
@@ -65,27 +99,13 @@ export default function VolunteeringExperience(props) {
     }
   }, [volunteer]);
   useEffect(() => {
-    (async function () {
-      if (getVolunteerProExperienceData?.data?.getVolunteerProExperience) {
-        setLoading(false);
-        setVolunteerExpeience(
-          getVolunteerProExperienceData?.data?.getVolunteerProExperience,
-        );
-      }
-      if (saveVolunteerExpData?.data?.saveProExperience && isLoading) {
-        formik.handleReset();
-        setIsLoading(false);
-        setIsModalOpen(false);
-        await setVolunteerExpeience([
-          ...volunteerExpeience,
-          saveVolunteerExpData?.data?.saveProExperience,
-        ]);
-      }
-    })();
-  }, [
-    getVolunteerProExperienceData,
-    saveVolunteerExpData?.data?.saveProExperience,
-  ]);
+    if (getVolunteerProExperienceData?.data?.getVolunteerProExperience) {
+      setLoading(false);
+      setVolunteerExpeience(
+        getVolunteerProExperienceData?.data?.getVolunteerProExperience,
+      );
+    }
+  }, [getVolunteerProExperienceData]);
 
   function onPressIsCurrent() {
     if (formik.values.isCurrent) {
@@ -97,29 +117,45 @@ export default function VolunteeringExperience(props) {
     }
   }
 
-  console.log(deleteExpResponse?.data?.deleteProExperience);
-  if (deleteExpResponse?.data?.deleteProExperience && removeExpID) {
-    let updatedExp = volunteerExpeience.filter(
-      item => item.proExpid !== removeExpID,
-    );
-    setVolunteerExpeience(updatedExp);
-    setConfirmationModal(false);
-    setIsLoading(false);
-    setRemoveExpID('');
-  }
-
-  function deleteVolunteerExp(exp) {
+  function deleteVolunteerExp() {
     setIsLoading(true);
     deleteExp({
       variables: {
         input: {
-          proExpid: removeExpID,
+          proExpid: proExperienceId,
           volunteerId: volunteer.volunteerId,
         },
       },
-    });
+    })
+      .then(() => {
+        setVolunteerExpeience(
+          volunteerExpeience.filter(item => item.proExpid !== proExperienceId),
+        );
+        renderToast('success', 'Experience has been successfully deleted.');
+      })
+      .catch(err => {
+        renderToast('error', err.message);
+      });
   }
 
+  function renderToast(type, description) {
+    toast.show({
+      placement: 'top',
+      duration: 3000,
+      render: () => <CustomToast type={type} description={description} />,
+    });
+    formik.handleReset();
+    setConfirmationModal(false);
+    setIsLoading(false);
+    setIsModalOpen(false);
+    setProExperienceId('');
+    setShowInvalidInput(false);
+  }
+
+  function closeModal() {
+    setIsModalOpen(false);
+    setProExperienceId('');
+  }
   return (
     <View style={style.mainViewVolunteeringExp}>
       {loading ? (
@@ -128,42 +164,36 @@ export default function VolunteeringExperience(props) {
         <>
           {volunteerExpeience.length > 0 ? (
             volunteerExpeience?.map((item, i) => (
-              <View style={style.volunteerExpView} key={i}>
-                <View style={style.volunteerExpDetView}>
-                  <Text style={style.jobTitle}>{item.jobTitle}</Text>
-                  <Text style={style.jobDes}>{item.orgName}</Text>
-                  {item?.description ? (
-                    <Text style={style.jobDes}>{item?.description}</Text>
-                  ) : null}
-                </View>
-                <View style={style.iconView}>
-                  <TouchableOpacity>
-                    <Octicons name="pencil" size={vw(4)} color="#f06d06" />
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    onPress={() => {
-                      setConfirmationModal(true);
-                      setRemoveExpID(item.proExpid);
-                    }}>
-                    <MaterialIcons name="delete" size={vw(4)} color="red" />
-                  </TouchableOpacity>
-                </View>
-              </View>
+              <ProExperinceCard
+                key={i}
+                data={item}
+                setConfirmationModal={setConfirmationModal}
+                setProExperienceId={setProExperienceId}
+                setIsModalOpen={setIsModalOpen}
+                formik={formik}
+                setShowInvalidInput={setShowInvalidInput}
+              />
             ))
           ) : (
             <EmptyDataComponent title="Experience" />
           )}
           <View style={style.buttonView}>
-            <CustomButton buttonText="Add Experience" onClick={setModalOpen} />
+            <CustomButton
+              buttonText="Add Experience"
+              onClick={() => setIsModalOpen(true)}
+            />
           </View>
         </>
       )}
       {isModalOpen && (
         <ModalWrapper
+          onBackButtonPress={closeModal}
+          onBackdropPress={closeModal}
+          closeModalIcon={closeModal}
           isModalOpen={isModalOpen}
           setIsModalOpen={setIsModalOpen}
           title="Professional Experience"
-          buttonText="Add Experience"
+          buttonText={proExperienceId ? 'Update Experience' : 'Add Experience'}
           isLoading={isLoading}
           onClickFun={() => {
             setShowInvalidInput(true);
@@ -237,13 +267,14 @@ export default function VolunteeringExperience(props) {
           </View>
         </ModalWrapper>
       )}
-
-      <DeleteConfirmationModal
-        isModalOpen={confirmationModal}
-        setIsModalOpen={setConfirmationModal}
-        confrimDelete={deleteVolunteerExp}
-        isLoading={isLoading}
-      />
+      {confirmationModal && (
+        <DeleteConfirmationModal
+          isModalOpen={confirmationModal}
+          setIsModalOpen={setConfirmationModal}
+          confrimDelete={deleteVolunteerExp}
+          isLoading={isLoading}
+        />
+      )}
     </View>
   );
 }

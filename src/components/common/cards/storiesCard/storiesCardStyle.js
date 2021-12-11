@@ -12,11 +12,11 @@ export default StyleSheet.create({
     padding: 10,
     margin: 10,
     alignItems: 'center',
-    width: vw(85),
+    width: vh(45),
   },
   imageStyle: {
     height: vh(27),
-    width: vw(78),
+    width: vh(42),
     alignSelf: 'center',
     borderRadius: 15,
   },
@@ -32,27 +32,27 @@ export default StyleSheet.create({
   textStyle: {
     fontFamily: 'Montserrat-Regular',
     color: '#212529',
-    fontSize: vw(3),
+    fontSize: vh(1.8),
   },
   descriptionView: {
     marginTop: 30,
     marginBottom: 20,
   },
   storyTitle: {
-    fontSize: vw(3.5),
+    fontSize: vh(2.1),
     fontFamily: 'Montserrat-Bold',
     color: '#212529',
   },
   tagsStyles: {
     br: {display: 'none'},
-    h1: {fontSize: vw(3.5), margin: 0, padding: 0},
-    h2: {fontSize: vw(3.5), margin: 0, padding: 0},
-    h3: {fontSize: vw(3.5), margin: 0, padding: 0},
+    h1: {fontSize: vh(1.8), margin: 0, padding: 0},
+    h2: {fontSize: vh(1.8), margin: 0, padding: 0},
+    h3: {fontSize: vh(1.8), margin: 0, padding: 0},
     body: {
       color: '#212529',
-      height: 60,
+      height: 59,
       overflow: 'hidden',
-      fontSize: vw(3.3),
+      fontSize: vh(1.8),
     },
   },
 });

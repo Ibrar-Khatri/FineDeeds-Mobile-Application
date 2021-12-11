@@ -22,8 +22,7 @@ export default StyleSheet.create({
   },
   headingStyle: {
     color: '#fff',
-    fontSize: adjust(28),
-    // fontSize: vw(7.8),
+    fontSize: vh(5),
     fontFamily: 'Montserrat-ExtraBold',
   },
   subHeadingStyle: {
@@ -45,13 +44,13 @@ export default StyleSheet.create({
   joinAsNonProfitTitle: {
     color: '#fff',
     fontFamily: 'Montserrat-Bold',
-    fontSize: vw(6.6),
+    fontSize: vh(3.7),
     marginBottom: 15,
   },
   joinAsNonProfitText: {
     color: '#fff',
     fontFamily: 'Montserrat-Regular',
-    fontSize: vw(3.5),
+    fontSize: vh(2),
     marginBottom: 20,
   },
   registerNowButtonView: {

@@ -12,11 +12,11 @@ export default StyleSheet.create({
     padding: 20,
     margin: 10,
     alignItems: 'center',
-    width: vw(85),
+    width: vh(45),
   },
   bgImageView: {
-    height: vh(27),
-    width: vw(78),
+    height: vh(24),
+    width: vh(40),
     alignSelf: 'center',
     borderRadius: 15,
     display: 'flex',
@@ -25,8 +25,8 @@ export default StyleSheet.create({
     overflow: 'hidden',
   },
   dateCardImage: {
-    height: vw(16),
-    width: vw(13),
+    height: vh(10),
+    width: vh(7),
     marginLeft: 25,
     marginTop: -10,
     display: 'flex',
@@ -36,7 +36,7 @@ export default StyleSheet.create({
   dateStyle: {
     color: '#f06d06',
     fontFamily: 'Montserrat-Bold',
-    fontSize: vw(3.6),
+    fontSize: vh(2.2),
   },
   lineBetMonthAndDate: {
     width: vw(10),
@@ -61,19 +61,19 @@ export default StyleSheet.create({
     fontSize: vw(3),
   },
   cardBody: {
-    width: vw(73),
+    width: vh(39),
   },
   activityTitle: {
     fontFamily: 'Montserrat-Bold',
     color: '#212529',
-    fontSize: vw(3.8),
+    fontSize: vh(2.3),
     paddingTop: 15,
     paddingBottom: 15,
   },
   activityDec: {
     color: '#737373',
     fontFamily: 'Montserrat-Regular',
-    fontSize: vw(3.5),
+    fontSize: vh(1.8),
   },
   locationView: {
     display: 'flex',
@@ -86,17 +86,17 @@ export default StyleSheet.create({
     textAlignVertical: 'center',
     fontFamily: 'Montserrat-SemiBold',
     color: '#212529',
-    fontSize: vw(3.2),
+    fontSize: vh(2),
   },
 
   causes: {
     fontFamily: 'Montserrat-SemiBold',
     color: '#212529',
-    fontSize: vw(3.2),
+    fontSize: vh(2.1),
   },
   causesItem: {
     color: '#737373',
     fontFamily: 'Montserrat-Regular',
-    fontSize: vw(3.5),
+    fontSize: vh(1.8),
   },
 });

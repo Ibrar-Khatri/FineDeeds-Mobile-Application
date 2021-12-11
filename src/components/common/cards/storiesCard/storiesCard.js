@@ -5,6 +5,7 @@ import {Text} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import RenderS3Image from '../../renderS3Image/renderS3Image';
 import RenderHtmlTags from '../../renderHtmlTags/renderHtmlTags';
+import { heightPercentageToDP as vh } from '../../../../responsive/responsive';
 
 export default function StoriesCard({data}) {
   return (
@@ -17,8 +18,8 @@ export default function StoriesCard({data}) {
       <View style={style.cardBodyView}>
         <View style={style.nameAndOrgName}>
           <Text style={style.textStyle}>
-            <Icon name="user" color="#fd7e14" size={15} />
-            {` ${data['createdBy']?.volunteerName}`}
+            <Icon name="user" color="#fd7e14" size={vh(2)} />
+            {`  ${data['createdBy']?.volunteerName}`}
           </Text>
           {data?.orgName && (
             <>

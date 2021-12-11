@@ -167,6 +167,10 @@ export default function ItemsSelectorCard(props) {
     }
   }
 
+  function closeModal() {
+    setIsModalOpen(false);
+  }
+
   return (
     <ProfileScreenCardWrapper>
       <View style={style.titleAndIconView}>
@@ -189,8 +193,10 @@ export default function ItemsSelectorCard(props) {
 
       {isModalOpen && (
         <ModalWrapper
+          onBackButtonPress={closeModal}
+          onBackdropPress={closeModal}
+          closeModalIcon={closeModal}
           isModalOpen={isModalOpen}
-          setIsModalOpen={setIsModalOpen}
           title={modalTitle}
           isLoading={isLoading}
           buttonText="Save Changes"

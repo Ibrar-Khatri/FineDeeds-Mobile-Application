@@ -27,12 +27,12 @@ export default StyleSheet.create({
     fontWeight: '600',
   },
   success: {
-    backgroundColor: '#32AD69',
+    backgroundColor: '#07bc0c',
   },
   info: {
-    backgroundColor: '#45869C',
+    backgroundColor: '#3498db',
   },
   error: {
-    backgroundColor: '#dd4c57',
+    backgroundColor: '#e50019',
   },
 });

@@ -15,7 +15,7 @@ export default StyleSheet.create({
   },
   titleStyle: {
     fontFamily: 'Montserrat-Regular',
-    fontSize: vw(5),
+    fontSize: vh(2.8),
     color: '#212529',
   },
   linkAndTextView: {
@@ -25,7 +25,7 @@ export default StyleSheet.create({
   },
   textStyle: {
     fontFamily: 'Montserrat-Bold',
-    fontSize: vw(3),
+    fontSize: vh(1.7),
     color: '#f06d06',
     marginLeft: 7,
   },

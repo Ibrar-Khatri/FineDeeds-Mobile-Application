@@ -9,28 +9,27 @@ import style from './modalStyleWrapper';
 export default function ModalWrapper(props) {
   let {
     isModalOpen,
-    setIsModalOpen,
     title,
     onClickFun,
     isLoading,
     children,
     buttonText,
+    onBackButtonPress,
+    onBackdropPress,
+    closeModalIcon,
   } = props;
 
-  const toggleModal = () => {
-    setIsModalOpen(!isModalOpen);
-  };
   return (
     <Modal
       isVisible={isModalOpen}
       hasBackdrop={true}
       backdropOpacity={0.5}
-      onBackButtonPress={() => setIsModalOpen(false)}
-      onBackdropPress={() => setIsModalOpen(false)}>
+      onBackButtonPress={onBackButtonPress}
+      onBackdropPress={onBackdropPress}>
       <View style={style.modalMainView}>
         <View style={style.modalHeaderView}>
           <Text style={style.titleStyle}>{title}</Text>
-          <TouchableOpacity onPress={toggleModal}>
+          <TouchableOpacity onPress={closeModalIcon}>
             <Icon name="close" color="#000" size={vh(3)} />
           </TouchableOpacity>
         </View>

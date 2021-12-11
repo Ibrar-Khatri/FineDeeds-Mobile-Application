@@ -1,5 +1,8 @@
 import {StyleSheet} from 'react-native';
-import {widthPercentageToDP as vw} from '../../../../responsive/responsive';
+import {
+  widthPercentageToDP as vw,
+  heightPercentageToDP as vh,
+} from '../../../../responsive/responsive';
 
 export default StyleSheet.create({
   sideDetailCardView: {
@@ -11,8 +14,8 @@ export default StyleSheet.create({
     marginTop: 15,
   },
   imageStyle: {
-    height: vw(15),
-    width: vw(15),
+    height: vh(8),
+    width: vh(8),
   },
   title: {
     textAlign: 'center',
@@ -20,12 +23,12 @@ export default StyleSheet.create({
     marginTop: 10,
     marginBottom: 10,
     color: '#212529',
-    fontSize: vw(4),
+    fontSize: vh(2.5),
   },
   detail: {
     textAlign: 'center',
     fontFamily: 'Montserrat-Regular',
     color: '#212529',
-    fontSize: vw(3.5),
+    fontSize: vh(1.8),
   },
 });

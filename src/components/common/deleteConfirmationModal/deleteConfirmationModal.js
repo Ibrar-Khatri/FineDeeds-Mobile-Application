@@ -4,7 +4,6 @@ import {Text, TouchableOpacity, View} from 'react-native';
 import Modal from 'react-native-modal';
 import Icon from 'react-native-vector-icons/AntDesign';
 import {heightPercentageToDP as vh} from '../../../responsive/responsive';
-import CustomButton from '../button/button';
 import style from './deleteConfirmationModalStyle';
 
 export default function DeleteConfirmationModal(props) {

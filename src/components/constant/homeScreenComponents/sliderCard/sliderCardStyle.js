@@ -7,10 +7,12 @@ import {
 export default StyleSheet.create({
   sliderCardView: {
     display: 'flex',
+    width: vw(80),
+    alignSelf:'center'
   },
   imageStyle: {
-    height: vw(80),
-    width: vw(80),
+    height: vh(45),
+    width: vh(45),
     alignSelf: 'center',
     borderRadius: 20,
     overflow: 'hidden',
@@ -28,7 +30,7 @@ export default StyleSheet.create({
     margin: 15,
     fontFamily: 'Montserrat-SemiBold',
     color: 'rgba(0,0,0,.5)',
-    fontSize: vw(3.5),
+    fontSize: vh(2),
     letterSpacing: 1,
   },
   name: {
@@ -36,7 +38,7 @@ export default StyleSheet.create({
     alignSelf: 'flex-end',
     fontFamily: 'Montserrat-Bold',
     color: 'rgba(0,0,0,.5)',
-    fontSize: vw(4),
+    fontSize: vh(2.5),
     letterSpacing: 1,
   },
 });

@@ -5,6 +5,7 @@ import moment from 'moment';
 import RenderS3Image from '../../renderS3Image/renderS3Image';
 import style from './activitiesCardStyle';
 import Icon from 'react-native-vector-icons/Entypo';
+import { heightPercentageToDP as vh } from '../../../../responsive/responsive';
 export default function ActivitiesCard(props) {
   let {data} = props;
   return (
@@ -37,7 +38,7 @@ export default function ActivitiesCard(props) {
           {data?.activityDescription}
         </Text>
         <View style={style.locationView}>
-          <Icon name="location-pin" color="#f06d06" size={18} />
+          <Icon name="location-pin" color="#f06d06" size={vh(2.2)} />
           <Text style={style.locationText}>{` ${data?.activityAddress}`}</Text>
         </View>
         <Text numberOfLines={1}>

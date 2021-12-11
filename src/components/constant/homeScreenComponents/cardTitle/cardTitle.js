@@ -10,7 +10,7 @@ export default function CardTitle(props) {
       <Text style={style.titleStyle}>{title}</Text>
       {showLink && (
         <TouchableOpacity style={style.linkAndTextView}>
-          <Icon name="refresh" color="#f06d06" size={vw(4.5)} />
+          <Icon name="refresh" color="#f06d06" size={vw(4)} />
           <Text style={style.textStyle}>SEE ALL</Text>
         </TouchableOpacity>
       )}
