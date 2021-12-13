@@ -18,7 +18,6 @@ export default StyleSheet.create({
   textStyle: {
     fontFamily: 'Montserrat-Bold',
     color: '#2b2b2b',
-    fontSize: vw(5),
   },
   focusTextView: {
     borderBottomColor: '#f06d06',

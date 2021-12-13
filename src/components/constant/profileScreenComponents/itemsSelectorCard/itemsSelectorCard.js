@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {TouchableOpacity, Text, View, FlatList} from 'react-native';
+import {TouchableOpacity,  View, FlatList} from 'react-native';
 import {useToast} from 'native-base';
 import {useMutation} from '@apollo/client';
 import Icon from 'react-native-vector-icons/Octicons';
@@ -14,7 +14,11 @@ import {
 } from '../../../../../graphql/mutations';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import EmptyDataComponent from '../../../common/emptyDataComponent/emptyDataComponent';
-import {heightPercentageToDP as vh} from '../../../../responsive/responsive';
+import {
+  heightPercentageToDP as vh,
+  normalize,
+} from '../../../../responsive/responsive';
+import ResponsiveText from '../../../common/responsiveText/responsiveText';
 
 export default function ItemsSelectorCard(props) {
   let {title, selectedItems, volunteer, setVolunteer} = props;
@@ -174,16 +178,20 @@ export default function ItemsSelectorCard(props) {
   return (
     <ProfileScreenCardWrapper>
       <View style={style.titleAndIconView}>
-        <Text style={style.titleStyle}>{title}</Text>
+        <ResponsiveText style={style.titleStyle} size={14}>
+          {title}
+        </ResponsiveText>
         <TouchableOpacity onPress={() => openModal()}>
-          <Icon name="pencil" size={vh(2.8)} color="#f06d06" />
+          <Icon name="pencil" size={normalize(15)} color="#f06d06" />
         </TouchableOpacity>
       </View>
       <View style={style.itemMainView}>
         {selectedItems ? (
           selectedItems?.map((item, i) => (
             <View key={i} style={style.itemView}>
-              <Text style={style.itemText}>{item}</Text>
+              <ResponsiveText style={style.itemText} size={11}>
+                {item}
+              </ResponsiveText>
             </View>
           ))
         ) : (
@@ -211,7 +219,9 @@ export default function ItemsSelectorCard(props) {
                 isChecked={update?.includes(item)}
                 callOnPress={() => handleOnChange(item)}
               />
-              <Text style={style.checkBoxText}>{item}</Text>
+              <ResponsiveText style={style.checkBoxText} size={12}>
+                {item}
+              </ResponsiveText>
             </TouchableOpacity>
           ))}
         </ModalWrapper>

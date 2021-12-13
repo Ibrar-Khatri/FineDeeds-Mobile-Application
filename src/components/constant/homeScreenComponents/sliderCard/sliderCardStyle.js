@@ -7,8 +7,7 @@ import {
 export default StyleSheet.create({
   sliderCardView: {
     display: 'flex',
-    width: vw(80),
-    alignSelf:'center'
+    alignSelf: 'center',
   },
   imageStyle: {
     height: vh(45),
@@ -18,23 +17,23 @@ export default StyleSheet.create({
     overflow: 'hidden',
     marginBottom: 12,
   },
-  rightQuote: {
-    marginLeft: 15,
+  abc: {
+    width: vw(70),
+    alignSelf: 'center',
   },
   leftQuote: {
-    marginRight: 15,
     alignSelf: 'flex-end',
-    marginBottom: 10,
   },
   quote: {
-    margin: 15,
     fontFamily: 'Montserrat-SemiBold',
     color: 'rgba(0,0,0,.5)',
     fontSize: vh(2),
     letterSpacing: 1,
+    marginTop: 15,
+    marginBottom: 15,
   },
   name: {
-    marginRight: 15,
+    marginTop: 15,
     alignSelf: 'flex-end',
     fontFamily: 'Montserrat-Bold',
     color: 'rgba(0,0,0,.5)',

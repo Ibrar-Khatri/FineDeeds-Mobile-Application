@@ -2,6 +2,7 @@ import React from 'react';
 import {Text, View} from 'react-native';
 import style from './navigationLinkStyle';
 import {useNavigationState} from '@react-navigation/native';
+import ResponsiveText from '../responsiveText/responsiveText';
 
 export default function NavigationLink(props) {
   let {text, displayName, screenName, navigation, routeName} = props;
@@ -17,10 +18,12 @@ export default function NavigationLink(props) {
 
   return (
     <View style={style.linkView}>
-      <Text style={style.text1}>{text}</Text>
-      <Text style={style.text2} onPress={onPress}>
+      <ResponsiveText style={style.text1} size={12}>
+        {text}
+      </ResponsiveText>
+      <ResponsiveText style={style.text2} onPress={onPress} size={12}>
         {displayName}
-      </Text>
+      </ResponsiveText>
     </View>
   );
 }

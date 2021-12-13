@@ -1,8 +1,8 @@
 import React from 'react';
-import {Text} from 'react-native';
+import ResponsiveText from '../responsiveText/responsiveText';
 import style from './invalidInputStyle';
 
 export default function InvalidInput(props) {
   let {error} = props;
-  return <Text style={style.invalidInput}>{error}</Text>;
+  return <ResponsiveText style={style.invalidInput} size={10}>{error}</ResponsiveText>;
 }

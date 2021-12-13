@@ -1,6 +1,7 @@
+import React from 'react';
 import {useNavigation} from '@react-navigation/core';
-import React, {useState} from 'react';
-import {View, Image, Text, TouchableOpacity} from 'react-native';
+import {View, Image, TouchableOpacity} from 'react-native';
+import ResponsiveText from '../responsiveText/responsiveText';
 import style from './inputFieldsHeaderStyle';
 
 export default function InputFieldsHeader(props) {
@@ -20,11 +21,15 @@ export default function InputFieldsHeader(props) {
         <Image
           source={require('../../../assets/images/fineDeedLogo.png')}
           style={style.fineDeedsLogo}
-          resizeMode="cover"
+          resizeMode="contain"
         />
       </TouchableOpacity>
-      <Text style={style.title}>{title}</Text>
-      <Text style={style.subTitle}>{subTitle}</Text>
+      <ResponsiveText style={style.title} size={28}>
+        {title}
+      </ResponsiveText>
+      <ResponsiveText style={style.subTitle} size={15}>
+        {subTitle}
+      </ResponsiveText>
     </View>
   );
 }

@@ -1,8 +1,6 @@
-import {StyleSheet} from 'react-native';
-import {
-  widthPercentageToDP as vw,
-  heightPercentageToDP as vh,
-} from '../../../../responsive/responsive';
+import {Dimensions, StyleSheet} from 'react-native';
+import {widthPercentageToDP as vw} from '../../../../responsive/responsive';
+const screenWidth = Dimensions.get('window').width;
 
 export default StyleSheet.create({
   scrollView: {
@@ -62,17 +60,14 @@ export default StyleSheet.create({
     borderBottomWidth: 1,
   },
   volunteerNameStyle: {
-    fontSize: vw(3.5),
     fontFamily: 'Montserrat-SemiBold',
     color: '#212529',
   },
   dateStyleAndAttendThisText: {
-    fontSize: vw(3),
     fontFamily: 'Montserrat-Regular',
     color: '#212529',
   },
   titleStyle: {
-    fontSize: vw(3.5),
     fontFamily: 'Montserrat-ExtraBold',
     color: '#212529',
   },
@@ -87,14 +82,14 @@ export default StyleSheet.create({
     margin: 10,
     borderRadius: 8,
     overflow: 'hidden',
+    alignSelf: 'center',
   },
   yearContainerStyle: {
     backgroundColor: '#f06d06',
     fontFamily: 'Montserrat-SemiBold',
     color: '#fff',
     textAlign: 'center',
-    width: vw(15),
+    width: vw(screenWidth < 480 ? 15 : 13),
     padding: 5,
-    fontSize: vw(3.3),
   },
 });

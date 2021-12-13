@@ -1,12 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {
-  FlatList,
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  View,
-  Image,
-} from 'react-native';
+import {ScrollView, TouchableOpacity, View, Image} from 'react-native';
 import Iocn1 from 'react-native-vector-icons/Entypo';
 import Icon2 from 'react-native-vector-icons/AntDesign';
 import CustomButton from '../../../components/common/button/button';
@@ -37,6 +30,7 @@ import {
 } from '../../../appPermissions/appPermissions';
 import FlatListComponent from '../../../components/common/flatListComponent/flatListComponent';
 import {heightPercentageToDP as vh} from '../../../responsive/responsive';
+import ResponsiveText from '../../../components/common/responsiveText/responsiveText';
 
 export default function ProfileScreen() {
   let [isActionSheetOpen, setIsActionSheetOpen] = useState(false);
@@ -148,21 +142,25 @@ export default function ProfileScreen() {
                 imageUrl={image}
               />
             </View>
-            <Text style={style.userNameStyle}>{volunteer?.volunteerName}</Text>
+            <ResponsiveText style={style.userNameStyle} size={16}>
+              {volunteer?.volunteerName}
+            </ResponsiveText>
             {(volunteer?.city || volunteer?.country) && (
-              <View>
-                <Text style={style.userLocationStyle}>
-                  <Iocn1 name="location-pin" color="#f06d06" size={vh(2.7)} />
-                  {volunteer?.city && `${volunteer.city} ,`}
-                  {volunteer?.country && `${volunteer.country} `}
-                </Text>
-              </View>
+              <ResponsiveText style={style.userLocationStyle} size={13}>
+                <Iocn1 name="location-pin" color="#f06d06" size={vh(2.7)} />
+                {volunteer?.city && `${volunteer.city} ,`}
+                {volunteer?.country && `${volunteer.country} `}
+              </ResponsiveText>
             )}
             <View style={style.userFollowersView}>
               {userFollowersDet.map((item, i) => (
                 <View key={i} style={style.userFollower}>
-                  <Text style={style.userFollowerText}>{item.number}</Text>
-                  <Text style={style.userFollowerText}>{item.type}</Text>
+                  <ResponsiveText style={style.userFollowerText} size={10}>
+                    {item.number}
+                  </ResponsiveText>
+                  <ResponsiveText style={style.userFollowerText} size={10}>
+                    {item.type}
+                  </ResponsiveText>
                 </View>
               ))}
             </View>
@@ -180,8 +178,12 @@ export default function ProfileScreen() {
           </View>
           {volunteer?.aboutMe && (
             <ProfileScreenCardWrapper>
-              <Text style={style.aboutTitle}>About</Text>
-              <Text style={style.aboutText}>{volunteer?.aboutMe}</Text>
+              <ResponsiveText style={style.aboutTitle} size={14}>
+                About
+              </ResponsiveText>
+              <ResponsiveText style={style.aboutText} size={12}>
+                {volunteer?.aboutMe}
+              </ResponsiveText>
             </ProfileScreenCardWrapper>
           )}
           <ItemsSelectorCard
@@ -204,26 +206,28 @@ export default function ProfileScreen() {
                   setIsJourneyMap(true);
                   setIsVolunterringExp(false);
                 }}>
-                <Text
+                <ResponsiveText
+                  size={12}
                   style={[
                     style.timeLineHeaderTitle,
                     isJourneyMap && style.focusedHeaderTimeTitle,
                   ]}>
                   Journey map
-                </Text>
+                </ResponsiveText>
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => {
                   setIsJourneyMap(false);
                   setIsVolunterringExp(true);
                 }}>
-                <Text
+                <ResponsiveText
+                  size={12}
                   style={[
                     style.timeLineHeaderTitle,
                     isVolunterringExp && style.focusedHeaderTimeTitle,
                   ]}>
                   Volunteering experience
-                </Text>
+                </ResponsiveText>
               </TouchableOpacity>
             </View>
             {isJourneyMap && (
@@ -237,9 +241,13 @@ export default function ProfileScreen() {
           {activities?.length > 0 && (
             <ProfileScreenCardWrapper>
               <View style={style.titleAndLinkView}>
-                <Text style={style.titleStyle}>Activity</Text>
+                <ResponsiveText style={style.titleStyle} size={14}>
+                  Activity
+                </ResponsiveText>
                 <TouchableOpacity>
-                  <Text style={style.linkStyle}>Sell all</Text>
+                  <ResponsiveText style={style.linkStyle} size={12}>
+                    Sell all
+                  </ResponsiveText>
                 </TouchableOpacity>
               </View>
               <FlatListComponent
@@ -254,12 +262,14 @@ export default function ProfileScreen() {
                       s3Key={`ACTIVITY/${item?.activityId}.webp`}
                     />
                     <View style={style.activityTitleAndPostedByView}>
-                      <Text style={style.activityTitle}>
+                      <ResponsiveText style={style.activityTitle} size={12}>
                         {item.activityName}
-                      </Text>
-                      <Text style={style.activityPostedByText}>
+                      </ResponsiveText>
+                      <ResponsiveText
+                        style={style.activityPostedByText}
+                        size={12}>
                         {volunteer.volunteerName}
-                      </Text>
+                      </ResponsiveText>
                     </View>
                   </TouchableOpacity>
                 )}
@@ -268,9 +278,13 @@ export default function ProfileScreen() {
           )}
           <ProfileScreenCardWrapper>
             <View style={style.titleAndLinkView}>
-              <Text style={style.titleStyle}>Products in charity store</Text>
+              <ResponsiveText style={style.titleStyle} size={14}>
+                Products in charity store
+              </ResponsiveText>
               <TouchableOpacity>
-                <Text style={style.linkStyle}>Sell all</Text>
+                <ResponsiveText style={style.linkStyle} size={12}>
+                  Sell all
+                </ResponsiveText>
               </TouchableOpacity>
             </View>
             {myProducts?.length >= 0 ? (

@@ -3,7 +3,10 @@ import React, {useState} from 'react';
 import {View, Text, TextInput} from 'react-native';
 import DropShadow from 'react-native-drop-shadow';
 import Icon from 'react-native-vector-icons/Entypo';
-import {heightPercentageToDP as vh} from '../../../responsive/responsive';
+import {
+  heightPercentageToDP as vh,
+  normalize,
+} from '../../../responsive/responsive';
 import InvalidInput from '../invalidInput/invalidInput';
 import style from './inputFieldStyle';
 
@@ -52,14 +55,14 @@ export default function InputField(props) {
             (showPassword ? (
               <Icon
                 name="eye"
-                size={vh(2.8)}
+                size={normalize(13)}
                 style={style.iconStyle}
                 onPress={() => setShowPassword(false)}
               />
             ) : (
               <Icon
                 name="eye-with-line"
-                size={vh(2.8)}
+                size={normalize(13)}
                 style={style.iconStyle}
                 onPress={() => setShowPassword(true)}
               />

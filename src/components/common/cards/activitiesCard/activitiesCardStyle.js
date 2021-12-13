@@ -36,13 +36,12 @@ export default StyleSheet.create({
   dateStyle: {
     color: '#f06d06',
     fontFamily: 'Montserrat-Bold',
-    fontSize: vh(2.2),
   },
   lineBetMonthAndDate: {
-    width: vw(10),
+    width: '70%',
     borderBottomColor: '#d3d1d0',
     borderBottomWidth: 1,
-    margin: 4,
+    margin: 3,
   },
   startingOn: {
     backgroundColor: '#f1ae44',
@@ -58,7 +57,6 @@ export default StyleSheet.create({
     color: '#fff',
     fontFamily: 'Montserrat-Bold',
     textAlignVertical: 'center',
-    fontSize: vw(3),
   },
   cardBody: {
     width: vh(39),
@@ -66,14 +64,12 @@ export default StyleSheet.create({
   activityTitle: {
     fontFamily: 'Montserrat-Bold',
     color: '#212529',
-    fontSize: vh(2.3),
     paddingTop: 15,
     paddingBottom: 15,
   },
   activityDec: {
     color: '#737373',
     fontFamily: 'Montserrat-Regular',
-    fontSize: vh(1.8),
   },
   locationView: {
     display: 'flex',
@@ -86,17 +82,14 @@ export default StyleSheet.create({
     textAlignVertical: 'center',
     fontFamily: 'Montserrat-SemiBold',
     color: '#212529',
-    fontSize: vh(2),
   },
 
   causes: {
     fontFamily: 'Montserrat-SemiBold',
     color: '#212529',
-    fontSize: vh(2.1),
   },
   causesItem: {
     color: '#737373',
     fontFamily: 'Montserrat-Regular',
-    fontSize: vh(1.8),
   },
 });

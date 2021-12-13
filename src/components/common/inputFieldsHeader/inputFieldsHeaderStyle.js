@@ -9,8 +9,8 @@ export default StyleSheet.create({
         marginRight: vw(7),
     },
     fineDeedsLogo: {
-        height: 50,
-        width: 60,
+        height: vw(12),
+        width: vw(12),
     },
     title: {
         fontSize: vw(9),
@@ -22,7 +22,6 @@ export default StyleSheet.create({
     },
     subTitle: {
         color: '#212529',
-        fontSize: vw(4.5),
         fontWeight: '300',
         textAlign: 'center'
     }

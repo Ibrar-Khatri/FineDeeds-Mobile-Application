@@ -5,7 +5,8 @@ import moment from 'moment';
 import RenderS3Image from '../../renderS3Image/renderS3Image';
 import style from './activitiesCardStyle';
 import Icon from 'react-native-vector-icons/Entypo';
-import { heightPercentageToDP as vh } from '../../../../responsive/responsive';
+import {heightPercentageToDP as vh} from '../../../../responsive/responsive';
+import ResponsiveText from '../../responsiveText/responsiveText';
 export default function ActivitiesCard(props) {
   let {data} = props;
   return (
@@ -18,34 +19,40 @@ export default function ActivitiesCard(props) {
           source={require('../../../../assets/images/rounded.png')}
           style={style.dateCardImage}
           resizeMode="cover">
-          <Text style={style.dateStyle}>
+          <ResponsiveText style={style.dateStyle} size={12}>
             {moment(data?.startDate).format('DD')}
-          </Text>
+          </ResponsiveText>
           <View style={style.lineBetMonthAndDate} />
-          <Text style={style.dateStyle}>
+          <ResponsiveText style={style.dateStyle} size={12}>
             {moment(data?.startDate).format('MMM')}
-          </Text>
+          </ResponsiveText>
         </ImageBackground>
         <View style={style.startingOn}>
-          <Text style={style.startingOnText}>
+          <ResponsiveText style={style.startingOnText} size={10}>
             {`Starting on ${moment(data?.startDate).format('MM/DD/YYYY')}`}
-          </Text>
+          </ResponsiveText>
         </View>
       </RenderS3Image>
       <View style={style.cardBody}>
-        <Text style={style.activityTitle}>{data?.activityName}</Text>
-        <Text style={style.activityDec} numberOfLines={2}>
+        <ResponsiveText style={style.activityTitle} size={13}>
+          {data?.activityName}
+        </ResponsiveText>
+        <ResponsiveText style={style.activityDec} numberOfLines={2} size={10}>
           {data?.activityDescription}
-        </Text>
+        </ResponsiveText>
         <View style={style.locationView}>
           <Icon name="location-pin" color="#f06d06" size={vh(2.2)} />
-          <Text style={style.locationText}>{` ${data?.activityAddress}`}</Text>
+          <ResponsiveText
+            style={style.locationText}
+            size={11}>{` ${data?.activityAddress}`}</ResponsiveText>
         </View>
         <Text numberOfLines={1}>
-          <Text style={style.causes}>Casues</Text>
-          <Text style={style.causesItem}>{` ${data?.activityCauses.join(
-            ', ',
-          )}`}</Text>
+          <ResponsiveText style={style.causes} size={13}>
+            Casues
+          </ResponsiveText>
+          <ResponsiveText
+            style={style.causesItem}
+            size={11}>{` ${data?.activityCauses.join(', ')}`}</ResponsiveText>
         </Text>
       </View>
     </View>

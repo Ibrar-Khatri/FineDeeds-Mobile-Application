@@ -1,6 +1,7 @@
 import {StyleSheet} from 'react-native';
 import {
   heightPercentageToDP as vh,
+  normalize,
   widthPercentageToDP as vw,
 } from '../../../../responsive/responsive';
 
@@ -45,14 +46,14 @@ export default StyleSheet.create({
   },
   tagsStyles: {
     br: {display: 'none'},
-    h1: {fontSize: vh(1.8), margin: 0, padding: 0},
-    h2: {fontSize: vh(1.8), margin: 0, padding: 0},
-    h3: {fontSize: vh(1.8), margin: 0, padding: 0},
+    h1: {fontSize: normalize(10), margin: 0, padding: 0},
+    h2: {fontSize: normalize(10), margin: 0, padding: 0},
+    h3: {fontSize: normalize(10), margin: 0, padding: 0},
     body: {
       color: '#212529',
-      height: 59,
+      height: 56,
       overflow: 'hidden',
-      fontSize: vh(1.8),
+      fontSize: normalize(10),
     },
   },
 });

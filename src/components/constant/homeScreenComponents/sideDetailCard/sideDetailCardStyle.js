@@ -23,12 +23,10 @@ export default StyleSheet.create({
     marginTop: 10,
     marginBottom: 10,
     color: '#212529',
-    fontSize: vh(2.5),
   },
   detail: {
     textAlign: 'center',
     fontFamily: 'Montserrat-Regular',
     color: '#212529',
-    fontSize: vh(1.8),
   },
 });

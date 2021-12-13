@@ -1,6 +1,7 @@
 import {Platform, StyleSheet} from 'react-native';
 import {
   heightPercentageToDP as vh,
+  normalize,
   widthPercentageToDP as vw,
 } from '../../../responsive/responsive';
 
@@ -33,7 +34,7 @@ export default StyleSheet.create({
   },
   input: {
     color: 'black',
-    fontSize: vw(4),
+    fontSize: normalize(14),
     padding: 5,
   },
   inputWidthWithIcon: {

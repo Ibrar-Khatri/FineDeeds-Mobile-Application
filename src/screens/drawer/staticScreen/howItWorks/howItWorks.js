@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
-import {ScrollView, Text, TouchableOpacity} from 'react-native';
+import {ScrollView, TouchableOpacity} from 'react-native';
 import HowItWorksCard from '../../../../components/constant/howItWorkScreenComponents/howItWorkCard/howItWorkCard';
+import ResponsiveText from '../../../../components/common/responsiveText/responsiveText';
 import style from './howItWorksStyle';
 
 export default function HowItWorks() {
@@ -73,9 +74,11 @@ export default function HowItWorks() {
         onPress={() =>
           isVolunteer ? setIsVolunteer(false) : setIsVolunteer(true)
         }>
-        <Text style={[style.textStyle, isVolunteer && style.focusTextStyle]}>
+        <ResponsiveText
+          style={[style.textStyle, isVolunteer && style.focusTextStyle]}
+          size={16}>
           Volunteer
-        </Text>
+        </ResponsiveText>
       </TouchableOpacity>
       {isVolunteer &&
         volunteer.map((item, i) => (
@@ -92,9 +95,11 @@ export default function HowItWorks() {
         onPress={() =>
           isOganization ? setIsOganization(false) : setIsOganization(true)
         }>
-        <Text style={[style.textStyle, isOganization && style.focusTextStyle]}>
+        <ResponsiveText
+          size={15}
+          style={[style.textStyle, isOganization && style.focusTextStyle]}>
           Organization
-        </Text>
+        </ResponsiveText>
       </TouchableOpacity>
       {isOganization &&
         organization.map((item, i) => (

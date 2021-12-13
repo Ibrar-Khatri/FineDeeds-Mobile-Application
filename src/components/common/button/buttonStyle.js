@@ -1,6 +1,4 @@
 import { StyleSheet } from "react-native";
-import { heightPercentageToDP as vh, widthPercentageToDP as vw } from "../../../responsive/responsive";
-
 
 export default StyleSheet.create({
     buttonStyle: {
@@ -9,7 +7,6 @@ export default StyleSheet.create({
     },
     buttonText: {
         color: '#fff',
-        fontSize: vw(4),
         fontWeight: '600',
     }
 })

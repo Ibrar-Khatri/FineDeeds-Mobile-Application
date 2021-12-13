@@ -1,14 +1,18 @@
-import {StyleSheet} from 'react-native';
+import {Dimensions, StyleSheet} from 'react-native';
 import {
   heightPercentageToDP as vh,
+  normalize,
   widthPercentageToDP as vw,
 } from '../../../responsive/responsive';
+
+const screenWidth = Dimensions.get('window').width;
 
 export default StyleSheet.create({
   drawerActiveTintColor: 'red',
   drawerInactiveTintColor: 'blue',
   drawerLabelStyle: {
     fontFamily: 'Montserrat-SemiBold',
+    fontSize: normalize(screenWidth > 480 && 11 ),
   },
   activeTintColor: '#f06d06',
   inactiveTintColor: '#212529',
@@ -35,8 +39,8 @@ export default StyleSheet.create({
     padding: 20,
   },
   profileImageStyle: {
-    height: vh(12),
-    width: vh(12),
+    height: vh(10),
+    width: vh(10),
     borderRadius: 100,
     overflow: 'hidden',
   },

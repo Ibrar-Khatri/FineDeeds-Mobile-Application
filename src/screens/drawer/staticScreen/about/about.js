@@ -1,6 +1,7 @@
 import {View} from 'native-base';
 import React from 'react';
 import {Image, ScrollView, Text} from 'react-native';
+import ResponsiveText from '../../../../components/common/responsiveText/responsiveText';
 import style from './aboutStyle';
 
 export default function About() {
@@ -8,7 +9,9 @@ export default function About() {
     <ScrollView>
       <View style={style.aboutMainView}>
         <View style={style.titleView}>
-          <Text style={style.titleText}>About Finedeeds</Text>
+          <ResponsiveText style={style.titleText} size={18}>
+            About Finedeeds
+          </ResponsiveText>
         </View>
         <Image
           source={require('../../../../assets/images/ripple_effect_of_goodness.png')}
@@ -17,56 +20,56 @@ export default function About() {
         />
         <View style={style.contentView}>
           <View style={style.contentParaView}>
-            <Text style={style.contentText}>
+            <ResponsiveText style={style.contentText} size={12}>
               Finedeeds has a simple mission,{' '}
-              <Text style={style.higlightedText}>
+              <ResponsiveText style={style.higlightedText} size={12}>
                 to connect every person who needs help to every person who could
                 help
-              </Text>{' '}
+              </ResponsiveText>{' '}
               . We strive to bring the world together, making it more
               inclusive,loving, and caring. We enable people to drive change
               through their time and talent.
-            </Text>
+            </ResponsiveText>
           </View>
           <View style={style.contentParaView}>
-            <Text style={style.contentText}>
+            <ResponsiveText style={style.contentText} size={12}>
               Finedeeds provides you a platform to engage with nonprofits in a
               meaningful way. While monetary or material donations are a way to
               help those in need, there is a gap in the humanitarian aid
               sector.The gaps are:
-            </Text>
-            <Text style={style.contentText}>
+            </ResponsiveText>
+            <ResponsiveText style={style.contentText} size={12}>
               - Non-profit organizations struggle to find volunteers to work
               when they need them.
-            </Text>
-            <Text style={style.contentText}>
+            </ResponsiveText>
+            <ResponsiveText style={style.contentText} size={12}>
               - They also lack resources who can handle their admin,
               marketing,promotional, or specific events related to ad-hoc work
               or have to spend a fortune on that. Money that could otherwise be
               used to achieve its goals.
-            </Text>
-            <Text style={style.contentText}>
+            </ResponsiveText>
+            <ResponsiveText style={style.contentText} size={12}>
               - There are people who want to help non-profits by means of their
               skills and in their own time but they do not find the right
               opportunities.
-            </Text>
-            <Text style={style.contentText}>
+            </ResponsiveText>
+            <ResponsiveText style={style.contentText} size={12}>
               - The stories of goodness are often lost, we need them to reach
               out to the world and inspire others so that we motivate people to
               come out and help others
-            </Text>
+            </ResponsiveText>
           </View>
           <View style={style.contentParaView}>
-            <Text style={style.contentText}>
+            <ResponsiveText style={style.contentText} size={12}>
               Finedeeds lets you connect with like-minded people, share your
               stories, inspire others. We are a goodness platform - where we
               provide a common interface for non-profits and volunteers to
               engage with each other and{' '}
-              <Text style={style.higlightedText}>
+              <ResponsiveText style={style.higlightedText} size={12}>
                 create a ripple effect of goodness
-              </Text>{' '}
+              </ResponsiveText>{' '}
               around them.
-            </Text>
+            </ResponsiveText>
           </View>
         </View>
       </View>

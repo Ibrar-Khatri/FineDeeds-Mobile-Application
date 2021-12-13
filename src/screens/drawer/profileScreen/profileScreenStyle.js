@@ -1,9 +1,9 @@
-import {View} from 'native-base';
-import {StyleSheet} from 'react-native';
+import {Dimensions, StyleSheet} from 'react-native';
 import {
   heightPercentageToDP as vh,
   widthPercentageToDP as vw,
 } from '../../../responsive/responsive';
+const screenWidth = Dimensions.get('window').width;
 
 export default StyleSheet.create({
   profileView: {
@@ -21,6 +21,8 @@ export default StyleSheet.create({
   profileImageView: {
     height: vw(29),
     width: vw(29),
+    height: vw(screenWidth < 480 ? 28 : 22),
+    width: vw(screenWidth < 480 ? 28 : 22),
     marginTop: vh(-10),
     backgroundColor: '#fff',
     borderRadius: 100,
@@ -28,8 +30,8 @@ export default StyleSheet.create({
     alignItems: 'center',
   },
   profileImageStyle: {
-    height: vw(27),
-    width: vw(27),
+    height: vw(screenWidth < 480 ? 25 : 20),
+    width: vw(screenWidth < 480 ? 25 : 20),
     borderRadius: 100,
     overflow: 'hidden',
     borderColor: '#c3c3c3',
@@ -37,12 +39,10 @@ export default StyleSheet.create({
   },
   userNameStyle: {
     color: '#212529',
-    fontSize: vw(5),
     fontFamily: 'Montserrat-SemiBold',
   },
   userLocationStyle: {
     color: '#212529',
-    fontSize: vw(4),
     fontFamily: 'Montserrat-Regular',
   },
   userFollowersView: {
@@ -58,25 +58,22 @@ export default StyleSheet.create({
   userFollowerText: {
     color: '#212529',
     fontFamily: 'Montserrat-SemiBold',
-    fontSize: vw(3),
   },
   buttonView: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-around',
-    width: vw(50),
+    width: vw(45),
     marginTop: 20,
   },
   aboutTitle: {
     fontFamily: 'Montserrat-Bold',
     color: '#212529',
-    fontSize: vw(4),
     marginBottom: 15,
   },
   aboutText: {
     fontFamily: 'Montserrat-Regular',
     color: '#212529',
-    fontSize: vw(3.5),
     marginBottom: 15,
   },
   titleAndLinkView: {
@@ -87,40 +84,35 @@ export default StyleSheet.create({
   titleStyle: {
     fontFamily: 'Montserrat-Bold',
     color: '#212529',
-    fontSize: vw(4),
     marginBottom: 15,
   },
   linkStyle: {
     fontFamily: 'Montserrat-Bold',
     color: '#f06d06',
-    fontSize: vw(4),
     marginBottom: 15,
   },
   activityView: {
-    height: vh(13),
-    width: vw(80),
+    width: vw(screenWidth < 480 ? 70 : 60),
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
     borderWidth: 1,
     borderColor: '#dee2e6',
-    marginLeft: vw(5),
     paddingLeft: vw(5),
+    margin: 5,
   },
   activityImageStyle: {
-    height: vw(20),
-    width: vw(20),
+    height: vw(screenWidth < 480 ? 20 : 14),
+    width: vw(screenWidth < 480 ? 20 : 14),
   },
   activityTitleAndPostedByView: {marginLeft: 15},
   activityTitle: {
     fontFamily: 'Montserrat-Bold',
     color: '#212529',
-    fontSize: vw(3.5),
   },
   activityPostedByText: {
     fontFamily: 'Montserrat-Regular',
     color: '#212529',
-    fontSize: vw(3.5),
   },
   timeLineHeader: {
     display: 'flex',
@@ -131,7 +123,6 @@ export default StyleSheet.create({
   timeLineHeaderTitle: {
     color: '#2b2b2b',
     fontFamily: 'Poppins-SemiBold',
-    fontSize: vw(3.8),
   },
   focusedHeaderTimeTitle: {
     color: '#f06d06',

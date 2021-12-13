@@ -5,7 +5,8 @@ import {Text} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import RenderS3Image from '../../renderS3Image/renderS3Image';
 import RenderHtmlTags from '../../renderHtmlTags/renderHtmlTags';
-import { heightPercentageToDP as vh } from '../../../../responsive/responsive';
+import {heightPercentageToDP as vh} from '../../../../responsive/responsive';
+import ResponsiveText from '../../responsiveText/responsiveText';
 
 export default function StoriesCard({data}) {
   return (
@@ -17,19 +18,25 @@ export default function StoriesCard({data}) {
       />
       <View style={style.cardBodyView}>
         <View style={style.nameAndOrgName}>
-          <Text style={style.textStyle}>
+          <ResponsiveText style={style.textStyle} size={10}>
             <Icon name="user" color="#fd7e14" size={vh(2)} />
             {`  ${data['createdBy']?.volunteerName}`}
-          </Text>
+          </ResponsiveText>
           {data?.orgName && (
             <>
-              <Text style={style.textStyle}>--</Text>
-              <Text style={style.textStyle}>{data?.orgName}</Text>
+              <ResponsiveText style={style.textStyle} size={10}>
+                --
+              </ResponsiveText>
+              <ResponsiveText style={style.textStyle} size={10}>
+                {data?.orgName}
+              </ResponsiveText>
             </>
           )}
         </View>
         <View style={style.descriptionView}>
-          <Text style={style.storyTitle}>{data?.title}</Text>
+          <ResponsiveText style={style.storyTitle} size={13}>
+            {data?.title}
+          </ResponsiveText>
           <RenderHtmlTags
             source={{
               html: data?.story,

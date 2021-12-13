@@ -1,13 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import {useLazyQuery} from '@apollo/client';
-import {ScrollView, View, Text, TouchableOpacity, Image} from 'react-native';
+import {ScrollView, View, TouchableOpacity} from 'react-native';
 import Timeline from 'react-native-timeline-flatlist';
 import moment from 'moment';
-import {getVolunteerPublishedStories} from '../../../../../graphql/queries';
 import style from './journeyMapStyle';
 import EmptyDataComponent from '../../../common/emptyDataComponent/emptyDataComponent';
 import CustomSpinner from '../../../common/spinner/spinner';
 import RenderS3Image from '../../../common/renderS3Image/renderS3Image';
+import ResponsiveText from '../../../common/responsiveText/responsiveText';
 
 export default function JourneyMap(props) {
   let [isLoading, setIsLoading] = useState(true);
@@ -47,7 +47,9 @@ export default function JourneyMap(props) {
     <ScrollView nestedScrollEnabled={true} style={style.scrollView}>
       {Object.keys(stories).map((year, ind) => (
         <View key={ind}>
-          <Text style={style.yearContainerStyle}>{year}</Text>
+          <ResponsiveText style={style.yearContainerStyle} size={12}>
+            {year}
+          </ResponsiveText>
           <Timeline
             data={stories[year]}
             lineColor={style.lineColor}
@@ -70,31 +72,32 @@ export default function JourneyMap(props) {
                     <View style={style.journeyMapStoryCard}>
                       <View style={style.headerStyle}>
                         <View>
-                          <Text style={style.volunteerNameStyle}>
+                          <ResponsiveText
+                            style={style.volunteerNameStyle}
+                            size={12}>
                             {item.createdBy.volunteerName}
-                          </Text>
-                          <Text style={style.dateStyleAndAttendThisText}>
+                          </ResponsiveText>
+                          <ResponsiveText
+                            size={11}
+                            style={style.dateStyleAndAttendThisText}>
                             attend this
-                          </Text>
+                          </ResponsiveText>
                         </View>
-                        <Text style={style.dateStyleAndAttendThisText}>
-                          {moment(item.createdAt).format('D-MMM-YYYY')}{' '}
-                        </Text>
+                        <ResponsiveText
+                          size={11}
+                          style={style.dateStyleAndAttendThisText}>
+                          {moment(item.createdAt).format('D-MMM-YYYY')}
+                        </ResponsiveText>
                       </View>
                       <View style={style.imageAndTitleView}>
-                        <Text style={style.titleStyle}>{item?.title}</Text>
+                        <ResponsiveText style={style.titleStyle} size={12}>
+                          {item?.title}
+                        </ResponsiveText>
                         <RenderS3Image
                           resizeMode="cover"
                           style={style.imageStyle}
                           s3Key={`STORY/${item?.storyId}.webp`}
                         />
-                        {/* <Image
-                          source={{
-                            uri: 'https://d2eygdx4i21ndl.cloudfront.net/STORY/8e5529a8-6acb-4988-9cba-ccb53b7e59bb.webp',
-                          }}
-                          resizeMode="cover"
-                          style={style.imageStyle}
-                        /> */}
                       </View>
                     </View>
                   </TouchableOpacity>

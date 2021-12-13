@@ -6,7 +6,6 @@ import {
 
 let contentText = {
   color: '#848383',
-  fontSize: vw(3.5),
 };
 
 export default StyleSheet.create({
@@ -24,7 +23,6 @@ export default StyleSheet.create({
     justifyContent: 'center',
   },
   titleText: {
-    fontSize: vw(6),
     color: '#212529',
     textAlign: 'center',
     fontFamily: 'Merriweather-Black',

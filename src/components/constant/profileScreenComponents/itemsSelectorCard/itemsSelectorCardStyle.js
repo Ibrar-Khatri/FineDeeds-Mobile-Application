@@ -13,7 +13,6 @@ export default StyleSheet.create({
   titleStyle: {
     fontFamily: 'Montserrat-Bold',
     color: '#212529',
-    fontSize: vw(4),
     marginBottom: 15,
   },
   itemMainView: {
@@ -35,7 +34,6 @@ export default StyleSheet.create({
   itemText: {
     color: 'rgba(0,0,0,.6)',
     fontFamily: 'Montserrat-SemiBold',
-    fontSize: vw(3.5),
   },
   checkBoxAndTextView: {
     display: 'flex',
@@ -45,6 +43,5 @@ export default StyleSheet.create({
   },
   checkBoxText: {
     color: 'rgba(0,0,0,.6)',
-    fontSize: vw(3.4),
   },
 });

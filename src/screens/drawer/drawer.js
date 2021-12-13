@@ -37,6 +37,7 @@ export default function DrawerNavigation({navigation}) {
           <Image
             source={require('../../assets/images/fineDeedLogo.png')}
             style={style.finededLogo}
+            resizeMode='contain'
           />
         ),
         drawerType: 'front',

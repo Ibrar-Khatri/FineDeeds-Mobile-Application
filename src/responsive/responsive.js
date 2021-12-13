@@ -85,4 +85,23 @@ const adjust = size => {
   return size;
 };
 
-export {widthPercentageToDP, heightPercentageToDP, aggregate, adjust};
+const scale = screenWidth / 320;
+
+function normalize(size) {
+  size = screenWidth < 480 ? size : size - 3;
+  const newSize = size * scale;
+
+  if (Platform.OS === 'ios') {
+    return Math.round(PixelRatio.roundToNearestPixel(newSize));
+  } else {
+    return Math.round(PixelRatio.roundToNearestPixel(newSize)) - 2;
+  }
+}
+
+export {
+  widthPercentageToDP,
+  heightPercentageToDP,
+  aggregate,
+  adjust,
+  normalize,
+};

@@ -20,6 +20,7 @@ import {
   sliderContent,
 } from '../../../shared/helperData/homeScreen';
 import ActivitiesCard from '../../../components/common/cards/activitiesCard/activitiesCard';
+import ResponsiveText from '../../../components/common/responsiveText/responsiveText';
 
 export default function HomeScreen(props) {
   let {isUserAuthenticated} = props;
@@ -53,10 +54,12 @@ export default function HomeScreen(props) {
               source={require('../../../assets/images/jumbotrun.png')}
               style={style.imageStyle}>
               <View style={style.headingAndSubHeadingView}>
-                <Text style={style.headingStyle}>
+                <ResponsiveText style={style.headingStyle} size={24}>
                   One Step Towards a Better World
-                </Text>
-                <Text style={style.subHeadingStyle}>Be the change</Text>
+                </ResponsiveText>
+                <ResponsiveText style={style.subHeadingStyle} size={18}>
+                  Be the change
+                </ResponsiveText>
               </View>
             </ImageBackground>
             <View style={style.sideDetailCardView}>
@@ -110,10 +113,10 @@ export default function HomeScreen(props) {
             <ImageBackground
               source={require('../../../assets/images/become-nonprofit.png')}>
               <View style={style.joinAsNonProfittextView}>
-                <Text style={style.joinAsNonProfitTitle}>
+                <ResponsiveText style={style.joinAsNonProfitTitle} size={20}>
                   Join as a non-profit
-                </Text>
-                <Text style={style.joinAsNonProfitText}>
+                </ResponsiveText>
+                <ResponsiveText style={style.joinAsNonProfitText} size={12}>
                   Finedeeds allows non-profits to improve almost every aspect of
                   their operations – from internal efficiency to contributor
                   interactions, and fundraising – with a greater focus on
@@ -122,7 +125,7 @@ export default function HomeScreen(props) {
                   fundraise and launch projects, and engage share the same with
                   their members bringing real-time communication and high-level
                   of transparency of operations.
-                </Text>
+                </ResponsiveText>
                 <View style={style.registerNowButtonView}>
                   <CustomButton buttonText="Register Now" />
                 </View>

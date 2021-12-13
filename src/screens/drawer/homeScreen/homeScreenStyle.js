@@ -22,13 +22,11 @@ export default StyleSheet.create({
   },
   headingStyle: {
     color: '#fff',
-    fontSize: vh(5),
     fontFamily: 'Montserrat-ExtraBold',
   },
   subHeadingStyle: {
     color: '#fff',
     fontFamily: 'Montserrat-ExtraBold',
-    fontSize: vw(6),
   },
   sideDetailCardView: {
     marginTop: 40,
@@ -44,13 +42,11 @@ export default StyleSheet.create({
   joinAsNonProfitTitle: {
     color: '#fff',
     fontFamily: 'Montserrat-Bold',
-    fontSize: vh(3.7),
     marginBottom: 15,
   },
   joinAsNonProfitText: {
     color: '#fff',
     fontFamily: 'Montserrat-Regular',
-    fontSize: vh(2),
     marginBottom: 20,
   },
   registerNowButtonView: {

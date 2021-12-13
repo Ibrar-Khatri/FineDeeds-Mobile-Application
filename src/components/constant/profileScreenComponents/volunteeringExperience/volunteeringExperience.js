@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Text, TouchableOpacity, View} from 'react-native';
+import {TouchableOpacity, View} from 'react-native';
 import {useFormik} from 'formik';
 import CustomButton from '../../../common/button/button';
 import ModalWrapper from '../../../common/modalWrapper/modalWrapper';
@@ -8,7 +8,7 @@ import InputField from '../../../common/inputField/inputField';
 import DateAndTimePicker from '../../../common/datePicker/datePicker';
 import CustomCheckBox from '../../../common/customCheckBox/customCheckBox';
 import {volunteerAddExperienceValidation} from '../../../../shared/validation/profileValidation';
-import {useLazyQuery, useMutation, useQuery} from '@apollo/client';
+import {useLazyQuery, useMutation} from '@apollo/client';
 import {
   deleteProExperience,
   saveProExperience,
@@ -21,6 +21,7 @@ import DeleteConfirmationModal from '../../../common/deleteConfirmationModal/del
 import {useToast} from 'native-base';
 import CustomToast from '../../../common/customToast/customToast';
 import ProExperinceCard from './proExperinceCard/proExperinceCard';
+import ResponsiveText from '../../../common/responsiveText/responsiveText';
 
 export default function VolunteeringExperience(props) {
   let {volunteer} = props;
@@ -202,7 +203,9 @@ export default function VolunteeringExperience(props) {
           isLoading={isLoading}>
           <View style={style.modalMainView}>
             <View>
-              <Text style={style.titleStyle}>Job Title</Text>
+              <ResponsiveText style={style.titleStyle} size={12}>
+                Job Title
+              </ResponsiveText>
               <InputField
                 type="text"
                 value={formik.values.jobTitle}
@@ -211,7 +214,9 @@ export default function VolunteeringExperience(props) {
               />
             </View>
             <View>
-              <Text style={style.titleStyle}>Organisation Name</Text>
+              <ResponsiveText style={style.titleStyle} size={12}>
+                Organisation Name
+              </ResponsiveText>
               <InputField
                 type="text"
                 value={formik.values.orgName}
@@ -220,7 +225,9 @@ export default function VolunteeringExperience(props) {
               />
             </View>
             <View>
-              <Text style={style.titleStyle}>From</Text>
+              <ResponsiveText style={style.titleStyle} size={12}>
+                From
+              </ResponsiveText>
               <DateAndTimePicker
                 value={formik.values.fromDate}
                 setValue={formik.handleChange('fromDate')}
@@ -230,7 +237,9 @@ export default function VolunteeringExperience(props) {
               />
             </View>
             <View>
-              <Text style={style.titleStyle}>To</Text>
+              <ResponsiveText style={style.titleStyle} size={12}>
+                To
+              </ResponsiveText>
               <DateAndTimePicker
                 value={formik.values.endDate}
                 setValue={formik.handleChange('endDate')}
@@ -247,10 +256,15 @@ export default function VolunteeringExperience(props) {
                 isChecked={formik.values.isCurrent}
                 callOnPress={onPressIsCurrent}
               />
-              <Text style={style.checkBoxText}> I currently work here</Text>
+              <ResponsiveText style={style.checkBoxText} size={12}>
+                {' '}
+                I currently work here
+              </ResponsiveText>
             </TouchableOpacity>
             <View>
-              <Text style={style.titleStyle}>Description</Text>
+              <ResponsiveText style={style.titleStyle} size={12}>
+                Description
+              </ResponsiveText>
               <InputField
                 type="text"
                 value={formik.values.description}
@@ -259,10 +273,11 @@ export default function VolunteeringExperience(props) {
                 multiline={true}
                 maxLength={300}
               />
-              <Text
+              <ResponsiveText
+                size={11}
                 style={
                   style.descriptionLengthStyle
-                }>{`${formik.values.description.length}/300`}</Text>
+                }>{`${formik.values.description.length}/300`}</ResponsiveText>
             </View>
           </View>
         </ModalWrapper>

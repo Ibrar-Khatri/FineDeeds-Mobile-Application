@@ -1,9 +1,10 @@
 import React from 'react';
-import {Text, TouchableOpacity, View} from 'react-native';
+import { TouchableOpacity, View} from 'react-native';
 import Octicons from 'react-native-vector-icons/Octicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import {widthPercentageToDP as vw} from '../../../../../responsive/responsive';
+import {normalize, widthPercentageToDP as vw} from '../../../../../responsive/responsive';
 import style from './proExperinceCardStyle';
+import ResponsiveText from '../../../../common/responsiveText/responsiveText';
 
 export default function ProExperinceCard(props) {
   let {
@@ -29,22 +30,26 @@ export default function ProExperinceCard(props) {
   return (
     <View style={style.volunteerExpView}>
       <View style={style.volunteerExpDetView}>
-        <Text style={style.jobTitle}>{data.jobTitle}</Text>
-        <Text style={style.jobDes}>{data.orgName}</Text>
+        <ResponsiveText style={style.jobTitle} size={13}>
+          {data.jobTitle}
+        </ResponsiveText>
+        <ResponsiveText style={style.jobDes} size={11}>
+          {data.orgName}
+        </ResponsiveText>
         {data?.description ? (
-          <Text style={style.jobDes}>{data?.description}</Text>
+          <ResponsiveText style={style.jobDes} size={11}>{data?.description}</ResponsiveText>
         ) : null}
       </View>
       <View style={style.iconView}>
         <TouchableOpacity onPress={updateExp}>
-          <Octicons name="pencil" size={vw(4)} color="#f06d06" />
+          <Octicons name="pencil" size={normalize(14)} color="#f06d06" />
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
             setProExperienceId(data.proExpid);
             setConfirmationModal(true);
           }}>
-          <MaterialIcons name="delete" size={vw(4)} color="red" />
+          <MaterialIcons name="delete" size={normalize(14)} color="red" />
         </TouchableOpacity>
       </View>
     </View>
