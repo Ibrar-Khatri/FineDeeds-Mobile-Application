@@ -1,5 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import {DrawerContentScrollView, DrawerItem} from '@react-navigation/drawer';
+import {
+  DrawerContentScrollView,
+  DrawerItem,
+  DrawerItemList,
+} from '@react-navigation/drawer';
 import {BackHandler, Image, Text, View} from 'react-native';
 import {useDrawerStatus} from '@react-navigation/drawer';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -10,23 +14,28 @@ import {DrawerActions} from '@react-navigation/native';
 import style from './drawerContentStyle';
 
 export default function DrawerContent(props) {
-  let {isUserAuthenticated, setIsUserAuthenticated, volunteer} = props;
+  let {isUserAuthenticated, setIsUserAuthenticated, volunteer, state, ...rest} =
+    props;
   let [index, setIndex] = useState(0);
   let [update, setUpdate] = useState(false);
+  // const newState = {...state};
+  // newState.routes = newState.routes.filter(
+  //   item => item.name !== 'detail-screen',
+  // );
 
   const isDrawerOpen = useDrawerStatus() === 'open';
   useEffect(() => {
     setUpdate(isDrawerOpen);
   }, [isDrawerOpen]);
 
-  BackHandler.addEventListener('hardwareBackPress', () => {
-    if (index === 0) {
-      BackHandler.exitApp();
-    }
-    setIndex(0);
-    props.navigation.navigate('landing-screen');
-    return true;
-  });
+  // BackHandler.addEventListener('hardwareBackPress', () => {
+  //   if (index === 0) {
+  //     BackHandler.exitApp();
+  //   }
+  //   setIndex(0);
+  //   props.navigation.navigate('landing-screen');
+  //   return true;
+  // });
 
   let arry = [
     {
@@ -70,8 +79,8 @@ export default function DrawerContent(props) {
     {
       lable: 'About',
       isFocused: false,
-      screenName: 'static-screen',
-      nestedScreenName: 'about',
+      screenName: 'about',
+      // nestedScreenName: 'about',
       isUserAuthenticated: true,
     },
     {
@@ -83,8 +92,8 @@ export default function DrawerContent(props) {
     {
       lable: 'How It Works',
       isFocused: false,
-      screenName: 'static-screen',
-      nestedScreenName: 'howItWorks',
+      screenName: 'howItWorks',
+      // nestedScreenName: 'howItWorks',
       alwaysShown: true,
     },
     {
@@ -101,9 +110,9 @@ export default function DrawerContent(props) {
     },
   ];
   function darwerItemPress(item, ind) {
-    if (arry[ind].screenName) {
-      setIndex(ind);
-    }
+    // if (arry[ind].screenName) {
+    //   setIndex(ind);
+    // }
 
     if (item.lable === 'Logout') {
       logout()
@@ -126,9 +135,9 @@ export default function DrawerContent(props) {
     }
   }
 
-  if (arry[index].screenName) {
-    arry[index].isFocused = arry[index].isFocused ? false : true;
-  }
+  // if (arry[index].screenName) {
+  //   arry[index].isFocused = arry[index].isFocused ? false : true;
+  // }
 
   return (
     <DrawerContentScrollView {...props}>
@@ -151,6 +160,7 @@ export default function DrawerContent(props) {
           </ResponsiveText>
         </View>
       )}
+      {/* <DrawerItemList  {...props} /> */}
       {arry.map(
         (item, i) =>
           (item.alwaysShown ||
@@ -161,7 +171,7 @@ export default function DrawerContent(props) {
               activeTintColor={style.activeTintColor}
               inactiveTintColor={style.inactiveTintColor}
               activeBackgroundColor={style.activeBackgroundColor}
-              focused={item.isFocused}
+              // focused={item.isFocused}
               labelStyle={style.drawerLabelStyle}
               onPress={() => darwerItemPress(item, i)}
               pressColor={style.pressColor}

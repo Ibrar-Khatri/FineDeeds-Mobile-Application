@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {TouchableOpacity,  View, FlatList} from 'react-native';
+import {TouchableOpacity, View, FlatList} from 'react-native';
 import {useToast} from 'native-base';
 import {useMutation} from '@apollo/client';
 import Icon from 'react-native-vector-icons/Octicons';
@@ -19,6 +19,7 @@ import {
   normalize,
 } from '../../../../responsive/responsive';
 import ResponsiveText from '../../../common/responsiveText/responsiveText';
+import Tag from '../../../common/tag/tag';
 
 export default function ItemsSelectorCard(props) {
   let {title, selectedItems, volunteer, setVolunteer} = props;
@@ -188,11 +189,7 @@ export default function ItemsSelectorCard(props) {
       <View style={style.itemMainView}>
         {selectedItems ? (
           selectedItems?.map((item, i) => (
-            <View key={i} style={style.itemView}>
-              <ResponsiveText style={style.itemText} size={11}>
-                {item}
-              </ResponsiveText>
-            </View>
+            <Tag text={item} borderColor="#f06f07" />
           ))
         ) : (
           <EmptyDataComponent title={title} />

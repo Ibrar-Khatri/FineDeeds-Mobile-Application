@@ -8,6 +8,8 @@ import style from './drawerStyle';
 import {isLoggedIn} from '../../shared/services/authServices';
 import StaticScreens from './staticScreen/staticScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import About from './staticScreen/about/about';
+import HowItWorks from './staticScreen/howItWorks/howItWorks';
 
 const Drawer = createDrawerNavigator();
 
@@ -37,7 +39,7 @@ export default function DrawerNavigation({navigation}) {
           <Image
             source={require('../../assets/images/fineDeedLogo.png')}
             style={style.finededLogo}
-            resizeMode='contain'
+            resizeMode="contain"
           />
         ),
         drawerType: 'front',
@@ -45,6 +47,7 @@ export default function DrawerNavigation({navigation}) {
         drawerInactiveTintColor: '#212529',
         drawerActiveBackgroundColor: '#fff',
       }}
+      backBehavior='order'
       drawerContent={props => (
         <DrawerContent
           {...props}
@@ -64,9 +67,24 @@ export default function DrawerNavigation({navigation}) {
       <Drawer.Screen
         name="profile-screen"
         component={ProfileScreen}
-        options={{drawerLabel: 'Profile'}}
+        options={{drawerLabel: 'Profile', unmountOnBlur: true}}
       />
-      <Drawer.Screen name="static-screen" component={StaticScreens} />
+      {/* {isUserAuthenticated && (
+      )} */}
+      <Drawer.Screen
+        name="about"
+        component={About}
+        options={{drawerLabel: 'About'}}
+      />
+      {/* {isUserAuthenticated && (
+      )} */}
+
+      <Drawer.Screen
+        name="howItWorks"
+        component={HowItWorks}
+        options={{drawerLabel: 'How It Works'}}
+      />
+      {/* <Drawer.Screen name="static-screen" component={StaticScreens} /> */}
     </Drawer.Navigator>
   );
 }

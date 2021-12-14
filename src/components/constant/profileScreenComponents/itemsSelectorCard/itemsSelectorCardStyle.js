@@ -20,21 +20,6 @@ export default StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
   },
-  itemView: {
-    alignContent: 'center',
-    borderWidth: 1,
-    borderColor: '#f06f07',
-    borderRadius: 7,
-    display: 'flex',
-    justifyContent: 'center',
-    padding: 8,
-    marginRight: 10,
-    marginBottom: 8,
-  },
-  itemText: {
-    color: 'rgba(0,0,0,.6)',
-    fontFamily: 'Montserrat-SemiBold',
-  },
   checkBoxAndTextView: {
     display: 'flex',
     flexDirection: 'row',

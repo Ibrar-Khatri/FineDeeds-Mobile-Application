@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text} from 'react-native';
+import {Text, TouchableOpacity} from 'react-native';
 import {View, ImageBackground} from 'react-native';
 import moment from 'moment';
 import RenderS3Image from '../../renderS3Image/renderS3Image';
@@ -7,10 +7,22 @@ import style from './activitiesCardStyle';
 import Icon from 'react-native-vector-icons/Entypo';
 import {heightPercentageToDP as vh} from '../../../../responsive/responsive';
 import ResponsiveText from '../../responsiveText/responsiveText';
+import {useNavigation} from '@react-navigation/native';
+
 export default function ActivitiesCard(props) {
+  let navigation = useNavigation();
   let {data} = props;
   return (
-    <View style={style.activitiesMainView}>
+    <TouchableOpacity
+      style={style.activitiesMainView}
+      activeOpacity={0.7}
+      onPress={() =>
+        navigation.navigate('detail-screen', {
+          initialRouteName: 'activity_detail',
+          data: data,
+          title: data?.activityName,
+        })
+      }>
       <RenderS3Image
         style={style.bgImageView}
         resizeMode="cover"
@@ -55,6 +67,6 @@ export default function ActivitiesCard(props) {
             size={11}>{` ${data?.activityCauses.join(', ')}`}</ResponsiveText>
         </Text>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }

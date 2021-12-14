@@ -31,8 +31,10 @@ import {
 import FlatListComponent from '../../../components/common/flatListComponent/flatListComponent';
 import {heightPercentageToDP as vh} from '../../../responsive/responsive';
 import ResponsiveText from '../../../components/common/responsiveText/responsiveText';
+import {NavigationContainer} from '@react-navigation/native';
 
-export default function ProfileScreen() {
+export default function ProfileScreen(props) {
+  let {route, navigation} = props;
   let [isActionSheetOpen, setIsActionSheetOpen] = useState(false);
   let [isLoading, setIsLoading] = useState(true);
   let [volunteer, setVolunteer] = useState();
@@ -48,8 +50,13 @@ export default function ProfileScreen() {
   useEffect(() => {
     (async function () {
       try {
-        let user = await AsyncStorage.getItem('volunteer');
-        user = JSON.parse(user);
+        let user = route?.params?.volunteer
+          ? route?.params?.volunteer
+          : await AsyncStorage.getItem('volunteer');
+        user = route?.params?.volunteer
+          ? route?.params?.volunteer
+          : JSON.parse(user);
+        console.log(user);
         if (user.volunteerId) {
           setIsLoading(false);
           setVolunteer(user);
@@ -78,6 +85,11 @@ export default function ProfileScreen() {
         console.log('error', e);
       }
     })();
+    return () => {
+      navigation.setParams({
+        volunteer: '',
+      });
+    };
   }, []);
 
   async function invokeActionSheet() {
