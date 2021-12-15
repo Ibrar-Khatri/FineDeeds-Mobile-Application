@@ -1,8 +1,8 @@
 import {Input} from 'native-base';
 import React, {useState} from 'react';
-import {View, Text, TextInput} from 'react-native';
+import {View, Text, TextInput, TouchableOpacity} from 'react-native';
 import DropShadow from 'react-native-drop-shadow';
-import Icon from 'react-native-vector-icons/Entypo';
+import Entypo from 'react-native-vector-icons/Entypo';
 import {
   heightPercentageToDP as vh,
   normalize,
@@ -25,18 +25,21 @@ export default function InputField(props) {
     keyboardType,
     multiline,
     maxLength,
+    icon,
+    onPress,
+    loading,
   } = props;
 
   return (
     <View style={style.inputView}>
-      <DropShadow style={isfocus && style.focusInputStyle}>
-        <View style={style.inputStyle}>
+      <DropShadow style={!loading && isfocus && style.focusInputStyle}>
+        <View style={[style.inputStyle, loading && style.disabledBGColor]}>
           <TextInput
             value={value}
             onChangeText={text => setValue(text)}
             style={[
               style.input,
-              type === 'password'
+              type === 'password' || icon
                 ? style.inputWidthWithIcon
                 : style.inputWidthWithoutIcon,
             ]}
@@ -50,17 +53,22 @@ export default function InputField(props) {
             multiline={multiline}
             maxLength={maxLength}
           />
+          {icon && (
+            <TouchableOpacity onPress={onPress} style={style.iconStyle}>
+              {icon}
+            </TouchableOpacity>
+          )}
 
           {type === 'password' &&
             (showPassword ? (
-              <Icon
+              <Entypo
                 name="eye"
                 size={normalize(13)}
                 style={style.iconStyle}
                 onPress={() => setShowPassword(false)}
               />
             ) : (
-              <Icon
+              <Entypo
                 name="eye-with-line"
                 size={normalize(13)}
                 style={style.iconStyle}

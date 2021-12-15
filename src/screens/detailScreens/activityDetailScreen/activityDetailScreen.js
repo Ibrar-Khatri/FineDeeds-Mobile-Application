@@ -18,6 +18,7 @@ import {
 import style from './activityDetailScreenStyle';
 import {isLoggedIn} from '../../../shared/services/authServices';
 import Tag from '../../../components/common/tag/tag';
+import CommentSection from '../../../components/common/commentSection/comment/commentSection';
 
 export default function ActivityDetailScreen(props) {
   let {data} = props;
@@ -45,6 +46,7 @@ export default function ActivityDetailScreen(props) {
       volunteer: volunteerData?.data?.getVolunteerById,
     });
   }
+
   return (
     <ScrollView style={style.activityDetailScreenView}>
       <RenderS3Image
@@ -140,6 +142,15 @@ export default function ActivityDetailScreen(props) {
             ))}
           </View>
         </View>
+        <CommentSection
+          objType="ACTIVITY"
+          placeholder="Write a comment"
+          objId={data?.activityId}
+          // volunteer={
+          //   volunteerData?.data?.getVolunteerById &&
+          //   volunteerData?.data?.getVolunteerById
+          // }
+        />
       </View>
     </ScrollView>
   );

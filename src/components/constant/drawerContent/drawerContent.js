@@ -79,8 +79,8 @@ export default function DrawerContent(props) {
     {
       lable: 'About',
       isFocused: false,
-      screenName: 'about',
-      // nestedScreenName: 'about',
+      screenName: 'static-screen',
+      nestedScreenName: 'about',
       isUserAuthenticated: true,
     },
     {
@@ -92,8 +92,8 @@ export default function DrawerContent(props) {
     {
       lable: 'How It Works',
       isFocused: false,
-      screenName: 'howItWorks',
-      // nestedScreenName: 'howItWorks',
+      screenName: 'static-screen',
+      nestedScreenName: 'howItWorks',
       alwaysShown: true,
     },
     {

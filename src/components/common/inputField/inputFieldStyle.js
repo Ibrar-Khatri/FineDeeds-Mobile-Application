@@ -22,6 +22,10 @@ export default StyleSheet.create({
     justifyContent: 'space-between',
     backgroundColor: '#fff',
   },
+  disabledBGColor: {
+    backgroundColor: '#e9ecef',
+    opacity: 0.5,
+  },
   focusInputStyle: {
     shadowColor: '#fd7e14',
     shadowOpacity: 1,

@@ -8,8 +8,6 @@ import {
 const screenWidth = Dimensions.get('window').width;
 
 export default StyleSheet.create({
-  drawerActiveTintColor: 'red',
-  drawerInactiveTintColor: 'blue',
   drawerLabelStyle: {
     fontFamily: 'Montserrat-SemiBold',
     fontSize: normalize(screenWidth > 480 && 11 ),
@@ -17,7 +15,7 @@ export default StyleSheet.create({
   activeTintColor: '#f06d06',
   inactiveTintColor: '#212529',
   activeBackgroundColor: '#fff',
-  pressColor: '#fff',
+  pressColor: '#f06d06',
   nameText: {
     color: 'black',
     fontFamily: 'Montserrat-Bold',

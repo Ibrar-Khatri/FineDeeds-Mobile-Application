@@ -47,7 +47,7 @@ export default function DrawerNavigation({navigation}) {
         drawerInactiveTintColor: '#212529',
         drawerActiveBackgroundColor: '#fff',
       }}
-      backBehavior='order'
+      backBehavior="order"
       drawerContent={props => (
         <DrawerContent
           {...props}
@@ -69,22 +69,7 @@ export default function DrawerNavigation({navigation}) {
         component={ProfileScreen}
         options={{drawerLabel: 'Profile', unmountOnBlur: true}}
       />
-      {/* {isUserAuthenticated && (
-      )} */}
-      <Drawer.Screen
-        name="about"
-        component={About}
-        options={{drawerLabel: 'About'}}
-      />
-      {/* {isUserAuthenticated && (
-      )} */}
-
-      <Drawer.Screen
-        name="howItWorks"
-        component={HowItWorks}
-        options={{drawerLabel: 'How It Works'}}
-      />
-      {/* <Drawer.Screen name="static-screen" component={StaticScreens} /> */}
+      <Drawer.Screen name="static-screen" component={StaticScreens} />
     </Drawer.Navigator>
   );
 }
