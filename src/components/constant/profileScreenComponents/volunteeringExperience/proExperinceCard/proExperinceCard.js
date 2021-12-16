@@ -1,8 +1,11 @@
 import React from 'react';
-import { TouchableOpacity, View} from 'react-native';
+import {TouchableOpacity, View} from 'react-native';
 import Octicons from 'react-native-vector-icons/Octicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import {normalize, widthPercentageToDP as vw} from '../../../../../responsive/responsive';
+import {
+  normalize,
+  widthPercentageToDP as vw,
+} from '../../../../../responsive/responsive';
 import style from './proExperinceCardStyle';
 import ResponsiveText from '../../../../common/responsiveText/responsiveText';
 
@@ -14,6 +17,7 @@ export default function ProExperinceCard(props) {
     setIsModalOpen,
     formik,
     setShowInvalidInput,
+    authorized,
   } = props;
 
   function updateExp() {
@@ -37,21 +41,25 @@ export default function ProExperinceCard(props) {
           {data.orgName}
         </ResponsiveText>
         {data?.description ? (
-          <ResponsiveText style={style.jobDes} size={11}>{data?.description}</ResponsiveText>
+          <ResponsiveText style={style.jobDes} size={11}>
+            {data?.description}
+          </ResponsiveText>
         ) : null}
       </View>
-      <View style={style.iconView}>
-        <TouchableOpacity onPress={updateExp}>
-          <Octicons name="pencil" size={normalize(14)} color="#f06d06" />
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => {
-            setProExperienceId(data.proExpid);
-            setConfirmationModal(true);
-          }}>
-          <MaterialIcons name="delete" size={normalize(14)} color="red" />
-        </TouchableOpacity>
-      </View>
+      {authorized && (
+        <View style={style.iconView}>
+          <TouchableOpacity onPress={updateExp}>
+            <Octicons name="pencil" size={normalize(14)} color="#f06d06" />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              setProExperienceId(data.proExpid);
+              setConfirmationModal(true);
+            }}>
+            <MaterialIcons name="delete" size={normalize(14)} color="red" />
+          </TouchableOpacity>
+        </View>
+      )}
     </View>
   );
 }

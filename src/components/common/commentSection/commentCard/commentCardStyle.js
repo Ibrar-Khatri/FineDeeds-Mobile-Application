@@ -15,12 +15,12 @@ export default StyleSheet.create({
   commentSection: {
     display: 'flex',
     width: '80%',
-    marginTop: vh(2),
+    marginTop: vh(1),
     marginLeft: vh(2),
   },
   imageStyle: {
-    height: vw(15),
-    width: vw(15),
+    height: vh(8),
+    width: vh(8),
     borderRadius: 100,
     overflow: 'hidden',
     borderWidth: 3,

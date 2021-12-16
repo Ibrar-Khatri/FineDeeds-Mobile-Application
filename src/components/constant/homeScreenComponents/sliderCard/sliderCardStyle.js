@@ -27,7 +27,6 @@ export default StyleSheet.create({
   quote: {
     fontFamily: 'Montserrat-SemiBold',
     color: 'rgba(0,0,0,.5)',
-    fontSize: vh(2),
     letterSpacing: 1,
     marginTop: 15,
     marginBottom: 15,
@@ -37,7 +36,6 @@ export default StyleSheet.create({
     alignSelf: 'flex-end',
     fontFamily: 'Montserrat-Bold',
     color: 'rgba(0,0,0,.5)',
-    fontSize: vh(2.5),
     letterSpacing: 1,
   },
 });

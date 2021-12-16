@@ -6,23 +6,17 @@ import {
 
 export default StyleSheet.create({
   toastView: {
-    height: vh(8),
-    borderRadius: 20,
+    borderRadius: 15,
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    paddingLeft: vw(4),
-    paddingRight: vw(4),
-    marginLeft: vw(6),
-    marginRight: vw(6),
+    padding: vw(2),
   },
   iconStyle: {
     color: '#D0D3D4',
   },
   toastText: {
-    fontSize: vw(4),
     marginLeft: 10,
-    lineHeight: 15,
     color: '#D0D3D4',
     fontWeight: '600',
   },

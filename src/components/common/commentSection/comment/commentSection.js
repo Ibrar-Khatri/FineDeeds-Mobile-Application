@@ -12,6 +12,7 @@ import ResponsiveText from '../../responsiveText/responsiveText';
 import CommentCard from '../commentCard/commentCard';
 import style from './commentSectionStyle';
 import {AsyncStorage} from '@aws-amplify/core';
+import CustomSpinner from '../../spinner/spinner';
 
 export default function CommentSection(props) {
   const {placeholder, objType, objId} = props;
@@ -25,7 +26,7 @@ export default function CommentSection(props) {
     {loading: addCommentLoading, error: addCommentError},
   ] = useMutation(addComment);
 
-  let commentsList = {comments: [], totalCount: 0, hasMore: false, skip: 0};
+  let commentsList = {comments: null, totalCount: 0, hasMore: false, skip: 0};
 
   if (data?.getComments) {
     const {items, limit, skip, totalCount} = data['getComments'];
@@ -119,7 +120,7 @@ export default function CommentSection(props) {
 
   return (
     <View>
-      <ResponsiveText style={style.commentTitle} size={13}>
+      <ResponsiveText style={style.commentTitle} size={14}>
         COMMENTS
       </ResponsiveText>
       {volunteer && (
@@ -141,7 +142,32 @@ export default function CommentSection(props) {
           }
         />
       )}
-      {!loading && !commentsList['comments'].length ? (
+
+      {commentsList['comments']?.length >= 0 ? (
+        commentsList['comments']?.length > 0 ? (
+          commentsList['comments']?.map((item, i) => {
+            const updatedItem = {...item, commentIndex: i};
+            return (
+              <View style={style.allCommentsView}>
+                <CommentCard
+                  key={i}
+                  item={updatedItem}
+                  objId={objId}
+                  skip={commentsList['skip']}
+                />
+              </View>
+            );
+          })
+        ) : (
+          <ResponsiveText style={style.noCommentStyle} size={15}>
+            No Comments
+          </ResponsiveText>
+        )
+      ) : (
+        <CustomSpinner size="lg" color="#f06d06" />
+      )}
+
+      {/* {!loading && !commentsList['comments'].length ? (
         <ResponsiveText style={style.noCommentStyle} size={15}>
           No Comments
         </ResponsiveText>
@@ -159,7 +185,7 @@ export default function CommentSection(props) {
             </View>
           );
         })
-      )}
+      )} */}
     </View>
   );
 }

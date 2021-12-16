@@ -13,7 +13,7 @@ export default StyleSheet.create({
     justifyContent: 'space-between',
     width: '100%',
     marginTop: 15,
-    paddingBottom: 15,
+    paddingBottom: 7,
     borderBottomColor: ' rgba(0,0,0,.1)',
     borderBottomWidth: 1,
   },

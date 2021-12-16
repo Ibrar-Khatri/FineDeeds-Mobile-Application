@@ -32,6 +32,7 @@ import FlatListComponent from '../../../components/common/flatListComponent/flat
 import {heightPercentageToDP as vh} from '../../../responsive/responsive';
 import ResponsiveText from '../../../components/common/responsiveText/responsiveText';
 import {NavigationContainer} from '@react-navigation/native';
+import {isLoggedIn} from '../../../shared/services/authServices';
 
 export default function ProfileScreen(props) {
   let {route, navigation} = props;
@@ -46,6 +47,7 @@ export default function ProfileScreen(props) {
   let [getProductsById, productsData] = useLazyQuery(getMyProducts);
   let [getstories, storiesData] = useLazyQuery(getVolunteerPublishedStories);
   let [activities, setActivities] = useState(null);
+  let [authorized, setAuthorized] = useState(false);
 
   useEffect(() => {
     (async function () {
@@ -56,8 +58,14 @@ export default function ProfileScreen(props) {
         user = route?.params?.volunteer
           ? route?.params?.volunteer
           : JSON.parse(user);
-        console.log(user);
         if (user.volunteerId) {
+          isLoggedIn()
+            .then(res => {
+              res.attributes.sub === user.volunteerId && setAuthorized(true);
+            })
+            .catch(err => {
+              console.log(err);
+            });
           setIsLoading(false);
           setVolunteer(user);
           getActivitiesById({
@@ -85,6 +93,7 @@ export default function ProfileScreen(props) {
         console.log('error', e);
       }
     })();
+
     return () => {
       navigation.setParams({
         volunteer: '',
@@ -150,7 +159,7 @@ export default function ProfileScreen(props) {
                   volunteer?.volunteerId &&
                   `VOLUNTEER/${volunteer?.volunteerId}.webp`
                 }
-                onClick={invokeActionSheet}
+                onClick={authorized && invokeActionSheet}
                 imageUrl={image}
               />
             </View>
@@ -203,12 +212,14 @@ export default function ProfileScreen(props) {
             title="Skills"
             volunteer={volunteer}
             setVolunteer={setVolunteer}
+            authorized={authorized}
           />
           <ItemsSelectorCard
             selectedItems={volunteer?.causes}
             title="Causes"
             volunteer={volunteer}
             setVolunteer={setVolunteer}
+            authorized={authorized}
           />
 
           <ProfileScreenCardWrapper>
@@ -246,7 +257,10 @@ export default function ProfileScreen(props) {
               <JourneyMap volunteer={volunteer} storiesData={storiesData} />
             )}
             {isVolunterringExp && (
-              <VolunteeringExperience volunteer={volunteer} />
+              <VolunteeringExperience
+                volunteer={volunteer}
+                authorized={authorized}
+              />
             )}
           </ProfileScreenCardWrapper>
 
@@ -267,7 +281,16 @@ export default function ProfileScreen(props) {
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}
                 renderItem={({item, index}) => (
-                  <TouchableOpacity key={index} style={style.activityView}>
+                  <TouchableOpacity
+                    key={index}
+                    style={style.activityView}
+                    onPress={() =>
+                      navigation.navigate('detail-screen', {
+                        initialRouteName: 'activity_detail',
+                        data: item,
+                        title: item?.activityName,
+                      })
+                    }>
                     <RenderS3Image
                       resizeMode="contain"
                       style={style.activityImageStyle}

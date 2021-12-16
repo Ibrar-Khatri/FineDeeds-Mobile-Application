@@ -1,16 +1,27 @@
 import React from 'react';
 import {View} from 'native-base';
 import style from './storiesCardStyle';
-import {Text} from 'react-native';
+import {Text, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import RenderS3Image from '../../renderS3Image/renderS3Image';
 import RenderHtmlTags from '../../renderHtmlTags/renderHtmlTags';
 import {heightPercentageToDP as vh} from '../../../../responsive/responsive';
 import ResponsiveText from '../../responsiveText/responsiveText';
+import {useNavigation} from '@react-navigation/native';
 
-export default function StoriesCard({data}) {
+export default function StoriesCard(props) {
+  let navigation = useNavigation();
+  let {data} = props;
   return (
-    <View style={style.mainView}>
+    <TouchableOpacity
+      style={style.mainView}
+      onPress={() =>
+        navigation.navigate('detail-screen', {
+          initialRouteName: 'story_detail',
+          data: data,
+          title: data?.title,
+        })
+      }>
       <RenderS3Image
         resizeMode="cover"
         style={style.imageStyle}
@@ -45,6 +56,6 @@ export default function StoriesCard({data}) {
           />
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }

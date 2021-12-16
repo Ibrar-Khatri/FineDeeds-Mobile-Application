@@ -2,6 +2,8 @@ import React from 'react';
 import {Image, View, Text} from 'native-base';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import style from './customToastStyle';
+import ResponsiveText from '../responsiveText/responsiveText';
+import {normalize} from '../../../responsive/responsive';
 
 function CustomToast({type, description}) {
   let name;
@@ -14,8 +16,11 @@ function CustomToast({type, description}) {
   }
   return (
     <View style={[style.toastView, style[type]]}>
-      <AntDesign name={name} size={20} style={style.iconStyle} />
-      <Text style={style.toastText}>{description}</Text>
+      <AntDesign name={name} size={normalize(15)} style={style.iconStyle} />
+
+      <ResponsiveText style={style.toastText} size={15}>
+        {description}
+      </ResponsiveText>
     </View>
   );
 }

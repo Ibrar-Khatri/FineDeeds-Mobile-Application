@@ -22,7 +22,7 @@ import ResponsiveText from '../../../common/responsiveText/responsiveText';
 import Tag from '../../../common/tag/tag';
 
 export default function ItemsSelectorCard(props) {
-  let {title, selectedItems, volunteer, setVolunteer} = props;
+  let {title, selectedItems, volunteer, setVolunteer, authorized} = props;
   let [isModalOpen, setIsModalOpen] = useState(false);
   let [modalTitle, setModalTitle] = useState();
   let [allItems, setAllItems] = useState();
@@ -182,14 +182,16 @@ export default function ItemsSelectorCard(props) {
         <ResponsiveText style={style.titleStyle} size={14}>
           {title}
         </ResponsiveText>
-        <TouchableOpacity onPress={() => openModal()}>
-          <Icon name="pencil" size={normalize(15)} color="#f06d06" />
-        </TouchableOpacity>
+        {authorized && (
+          <TouchableOpacity onPress={openModal}>
+            <Icon name="pencil" size={normalize(15)} color="#f06d06" />
+          </TouchableOpacity>
+        )}
       </View>
       <View style={style.itemMainView}>
         {selectedItems ? (
           selectedItems?.map((item, i) => (
-            <Tag text={item} borderColor="#f06f07" />
+            <Tag key={i} text={item} borderColor="#f06f07" />
           ))
         ) : (
           <EmptyDataComponent title={title} />

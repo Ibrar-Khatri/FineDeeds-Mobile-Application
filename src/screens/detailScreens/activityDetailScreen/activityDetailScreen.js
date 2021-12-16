@@ -1,7 +1,6 @@
+import React, {useEffect, useState} from 'react';
 import {useLazyQuery} from '@apollo/client';
 import {useNavigation} from '@react-navigation/native';
-import moment from 'moment';
-import React, {useEffect, useState} from 'react';
 import {ScrollView, Text, TouchableOpacity, View} from 'react-native';
 import Icon from 'react-native-vector-icons/Entypo';
 import {getVolunteerById} from '../../../../graphql/queries';
@@ -19,6 +18,7 @@ import style from './activityDetailScreenStyle';
 import {isLoggedIn} from '../../../shared/services/authServices';
 import Tag from '../../../components/common/tag/tag';
 import CommentSection from '../../../components/common/commentSection/comment/commentSection';
+import CustomSpinner from '../../../components/common/spinner/spinner';
 
 export default function ActivityDetailScreen(props) {
   let {data} = props;
@@ -96,33 +96,37 @@ export default function ActivityDetailScreen(props) {
           styles={style.inforCardView}
         />
 
-        {volunteerData?.data?.getVolunteerById && (
-          <TouchableOpacity
-            style={style.profileView}
-            activeOpacity={0.5}
-            onPress={viewProfile}>
-            <View style={style.profileImageView}>
-              <RenderS3Image
-                s3Key={`VOLUNTEER/${data?.createdBy}.webp`}
-                style={style.profileImage}
-              />
-            </View>
-            <View style={style.volunteerNameView}>
-              <ResponsiveText size={13} style={style.volunteerName}>
-                {volunteerData?.data?.getVolunteerById?.volunteerName}
-              </ResponsiveText>
-              <ResponsiveText size={12} style={style.volunteerHost}>
-                Activity
-              </ResponsiveText>
-            </View>
-          </TouchableOpacity>
+        {volunteerData?.data?.getVolunteerById ? (
+          <>
+            <TouchableOpacity
+              style={style.profileView}
+              activeOpacity={0.5}
+              onPress={viewProfile}>
+              <View style={style.profileImageView}>
+                <RenderS3Image
+                  s3Key={`VOLUNTEER/${data?.createdBy}.webp`}
+                  style={style.profileImage}
+                />
+              </View>
+              <View style={style.volunteerNameView}>
+                <ResponsiveText size={13} style={style.volunteerName}>
+                  {volunteerData?.data?.getVolunteerById?.volunteerName}
+                </ResponsiveText>
+                <ResponsiveText size={12} style={style.volunteerHost}>
+                  Activity
+                </ResponsiveText>
+              </View>
+            </TouchableOpacity>
+            <CustomButton
+              buttonText={
+                isUserAuthenticated ? 'PARTICIPATE' : 'LOGIN TO PARTICIPATE'
+              }
+            />
+          </>
+        ) : (
+          <CustomSpinner size="lg" color="#f06d06" />
         )}
 
-        <CustomButton
-          buttonText={
-            isUserAuthenticated ? 'PARTICIPATE' : 'LOGIN TO PARTICIPATE'
-          }
-        />
         <View style={style.participantView}>
           <ResponsiveText size={13} style={style.participantTitle}>
             PARTICIPANTS
@@ -146,10 +150,6 @@ export default function ActivityDetailScreen(props) {
           objType="ACTIVITY"
           placeholder="Write a comment"
           objId={data?.activityId}
-          // volunteer={
-          //   volunteerData?.data?.getVolunteerById &&
-          //   volunteerData?.data?.getVolunteerById
-          // }
         />
       </View>
     </ScrollView>

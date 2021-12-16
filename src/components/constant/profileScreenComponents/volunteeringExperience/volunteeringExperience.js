@@ -24,7 +24,7 @@ import ProExperinceCard from './proExperinceCard/proExperinceCard';
 import ResponsiveText from '../../../common/responsiveText/responsiveText';
 
 export default function VolunteeringExperience(props) {
-  let {volunteer} = props;
+  let {volunteer, authorized} = props;
   let [isModalOpen, setIsModalOpen] = useState(false);
   let [confirmationModal, setConfirmationModal] = useState(false);
   let [loading, setLoading] = useState(true);
@@ -173,17 +173,20 @@ export default function VolunteeringExperience(props) {
                 setIsModalOpen={setIsModalOpen}
                 formik={formik}
                 setShowInvalidInput={setShowInvalidInput}
+                authorized={authorized}
               />
             ))
           ) : (
             <EmptyDataComponent title="Experience" />
           )}
-          <View style={style.buttonView}>
-            <CustomButton
-              buttonText="Add Experience"
-              onClick={() => setIsModalOpen(true)}
-            />
-          </View>
+          {authorized && (
+            <View style={style.buttonView}>
+              <CustomButton
+                buttonText="Add Experience"
+                onClick={() => setIsModalOpen(true)}
+              />
+            </View>
+          )}
         </>
       )}
       {isModalOpen && (

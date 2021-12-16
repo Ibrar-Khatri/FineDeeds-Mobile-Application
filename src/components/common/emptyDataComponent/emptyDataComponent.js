@@ -2,6 +2,7 @@ import React from 'react';
 import {View, Text} from 'react-native';
 import {Image} from 'native-base';
 import style from './emptyDataComponentStyle';
+import ResponsiveText from '../responsiveText/responsiveText';
 
 export default function EmptyDataComponent(props) {
   let {title} = props;
@@ -12,7 +13,9 @@ export default function EmptyDataComponent(props) {
         alt="empty"
         size={60}
       />
-      <Text style={style.textStyle}>{`No ${title}`}</Text>
+      <ResponsiveText
+        style={style.textStyle}
+        size={12}>{`No ${title}`}</ResponsiveText>
     </View>
   );
 }

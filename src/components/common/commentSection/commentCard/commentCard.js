@@ -128,21 +128,21 @@ export default function CommentCard(props) {
         />
         <View style={style.commentSection}>
           <View style={style.volunteerNameView}>
-            <ResponsiveText size={14} style={style.volunName}>
+            <ResponsiveText size={13} style={style.volunName}>
               {item['createdBy']['volunteerName']}
             </ResponsiveText>
             <ResponsiveText size={12} style={style.since}>
               {moment(item['createdAt']).fromNow()}
             </ResponsiveText>
           </View>
-          <ResponsiveText size={14} style={style.comment}>
+          <ResponsiveText size={13} style={style.comment}>
             {item['comment']}
           </ResponsiveText>
           {loggedInVol?.volunteerId === item?.createdBy?.volunteerId && (
             <TouchableOpacity
               style={style.removeCommentView}
               onPress={removeCommentConfirmation}>
-              <ResponsiveText size={14} style={style.removeComment}>
+              <ResponsiveText size={13} style={style.removeComment}>
                 Delete
               </ResponsiveText>
             </TouchableOpacity>

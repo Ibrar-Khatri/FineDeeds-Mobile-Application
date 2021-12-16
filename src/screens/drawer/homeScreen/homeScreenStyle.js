@@ -54,7 +54,7 @@ export default StyleSheet.create({
   },
   slickView: {
     marginTop: 50,
-    height: vw(135),
+    height: vh(70),
   },
   slickDotStyle: {
     display: 'none',
