@@ -150,7 +150,7 @@ export default function CommentSection(props) {
             return (
               <View style={style.allCommentsView}>
                 <CommentCard
-                  key={i}
+                  key={Date.now()}
                   item={updatedItem}
                   objId={objId}
                   skip={commentsList['skip']}

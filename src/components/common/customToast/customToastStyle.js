@@ -12,12 +12,9 @@ export default StyleSheet.create({
     alignItems: 'center',
     padding: vw(2),
   },
-  iconStyle: {
-    color: '#D0D3D4',
-  },
   toastText: {
     marginLeft: 10,
-    color: '#D0D3D4',
+    color: '#fff',
     fontWeight: '600',
   },
   success: {
@@ -28,5 +25,8 @@ export default StyleSheet.create({
   },
   error: {
     backgroundColor: '#e50019',
+  },
+  warning: {
+    backgroundColor: '#f1c40f',
   },
 });

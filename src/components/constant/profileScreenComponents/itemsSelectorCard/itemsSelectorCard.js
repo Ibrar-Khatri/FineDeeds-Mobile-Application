@@ -189,7 +189,7 @@ export default function ItemsSelectorCard(props) {
         )}
       </View>
       <View style={style.itemMainView}>
-        {selectedItems ? (
+        {selectedItems?.length ? (
           selectedItems?.map((item, i) => (
             <Tag key={i} text={item} borderColor="#f06f07" />
           ))

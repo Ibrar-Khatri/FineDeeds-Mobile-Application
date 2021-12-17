@@ -30,6 +30,7 @@ export default StyleSheet.create({
     marginTop: vh(4),
     borderBottomColor: '#ebebeb',
     borderBottomWidth: 1,
+    paddingBottom: vh(2),
     marginBottom: vh(2),
   },
   iconView: {
@@ -67,7 +68,7 @@ export default StyleSheet.create({
   publishView: {
     borderBottomColor: '#ebebeb',
     borderBottomWidth: 1,
-    paddingBottom: vh(2),
+    padding: vh(1),
   },
   publishedBy: {
     color: '#212529',
@@ -110,6 +111,10 @@ export default StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  likeText: {
+    color: '#212529',
+    fontFamily: 'Montserrat-Regular',
+  },
   storiesLength: {
     color: '#212529',
     fontFamily: 'Montserrat-Regular',
@@ -121,5 +126,6 @@ export default StyleSheet.create({
   },
   CommentSectionView: {
     padding: 5,
+    marginBottom: 15,
   },
 });

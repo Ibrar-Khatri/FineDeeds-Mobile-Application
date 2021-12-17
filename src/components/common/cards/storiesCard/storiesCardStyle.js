@@ -33,14 +33,12 @@ export default StyleSheet.create({
   textStyle: {
     fontFamily: 'Montserrat-Regular',
     color: '#212529',
-    fontSize: vh(1.8),
   },
   descriptionView: {
     marginTop: 30,
     marginBottom: 20,
   },
   storyTitle: {
-    fontSize: vh(2.1),
     fontFamily: 'Montserrat-Bold',
     color: '#212529',
   },

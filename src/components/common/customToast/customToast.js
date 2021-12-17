@@ -13,11 +13,12 @@ function CustomToast({type, description}) {
     name = 'exclamationcircle';
   } else if (type === 'error') {
     name = 'closecircle';
+  } else if (type === 'warning') {
+    name = 'warning';
   }
   return (
     <View style={[style.toastView, style[type]]}>
-      <AntDesign name={name} size={normalize(15)} style={style.iconStyle} />
-
+      <AntDesign name={name} size={normalize(15)} color="#fff" />
       <ResponsiveText style={style.toastText} size={15}>
         {description}
       </ResponsiveText>
