@@ -47,7 +47,7 @@ export default function DrawerNavigation({navigation}) {
         drawerInactiveTintColor: '#212529',
         drawerActiveBackgroundColor: '#fff',
       }}
-      backBehavior="order"
+      backBehavior="history"
       drawerContent={props => (
         <DrawerContent
           {...props}

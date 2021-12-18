@@ -111,8 +111,9 @@ export default function CommentCard(props) {
 
   function viewProfile() {
     if (volunteerData?.data?.getVolunteerById)
-      navigation.navigate('profile-screen', {
-        volunteer: volunteerData?.data?.getVolunteerById,
+      navigation.push('drawer', {
+        screen: 'profile-screen',
+        params: {volunteer: volunteerData?.data?.getVolunteerById},
       });
   }
 

@@ -285,7 +285,7 @@ export default function ProfileScreen(props) {
                     key={index}
                     style={style.activityView}
                     onPress={() =>
-                      navigation.navigate('detail-screen', {
+                      navigation.push('detail-screen', {
                         initialRouteName: 'activity_detail',
                         data: item,
                         title: item?.activityName,

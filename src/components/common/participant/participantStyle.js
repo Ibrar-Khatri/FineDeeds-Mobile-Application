@@ -2,7 +2,7 @@ import {StyleSheet} from 'react-native';
 import {
   heightPercentageToDP as vh,
   widthPercentageToDP as vw,
-} from '../../../../responsive/responsive';
+} from '../../../responsive/responsive';
 
 export default StyleSheet.create({
   CommentCardMainView: {
@@ -10,15 +10,7 @@ export default StyleSheet.create({
     flexDirection: 'row',
     width: '100%',
     justifyContent: 'flex-start',
-    marginBottom: vh(2),
-  },
-  commentSection: {
-    display: 'flex',
-    width: '80%',
-    marginTop: vh(1),
-    marginLeft: vh(2),
-    borderRadius: 10,
-    padding: 10,
+    alignItems: 'center',
   },
   imageStyle: {
     height: vh(8),
@@ -28,10 +20,16 @@ export default StyleSheet.create({
     borderWidth: 3,
     borderColor: '#fd7e14',
   },
+
+  commentSection: {
+    display: 'flex',
+    width: '80%',
+    marginLeft: vh(2),
+  },
+
   volunteerNameView: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
   },
   volunName: {
     color: '#212529',

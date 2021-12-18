@@ -8,11 +8,13 @@ import EmptyDataComponent from '../../../common/emptyDataComponent/emptyDataComp
 import CustomSpinner from '../../../common/spinner/spinner';
 import RenderS3Image from '../../../common/renderS3Image/renderS3Image';
 import ResponsiveText from '../../../common/responsiveText/responsiveText';
+import {useNavigation} from '@react-navigation/native';
 
 export default function JourneyMap(props) {
   let [isLoading, setIsLoading] = useState(true);
   let {storiesData} = props;
   let [stories, setStories] = useState(null);
+  let navigation = useNavigation();
 
   const createTimelineAccordingToYear = async storiesData => {
     let timeline = null;
@@ -68,37 +70,44 @@ export default function JourneyMap(props) {
               return (
                 <View style={style.journeyMapStoryCardMainView} key={i}>
                   <View style={style.triangleStyle} />
-                  <TouchableOpacity activeOpacity={1}>
-                    <View style={style.journeyMapStoryCard}>
-                      <View style={style.headerStyle}>
-                        <View>
-                          <ResponsiveText
-                            style={style.volunteerNameStyle}
-                            size={12}>
-                            {item.createdBy.volunteerName}
-                          </ResponsiveText>
-                          <ResponsiveText
-                            size={11}
-                            style={style.dateStyleAndAttendThisText}>
-                            attend this
-                          </ResponsiveText>
-                        </View>
+                  <TouchableOpacity
+                    activeOpacity={0.5}
+                    onPress={() =>
+                      navigation.navigate('detail-screen', {
+                        initialRouteName: 'story_detail',
+                        data: item,
+                        title: item?.title,
+                      })
+                    }
+                    style={style.journeyMapStoryCard}>
+                    <View style={style.headerStyle}>
+                      <View>
+                        <ResponsiveText
+                          style={style.volunteerNameStyle}
+                          size={12}>
+                          {item.createdBy.volunteerName}
+                        </ResponsiveText>
                         <ResponsiveText
                           size={11}
                           style={style.dateStyleAndAttendThisText}>
-                          {moment(item.createdAt).format('D-MMM-YYYY')}
+                          attend this
                         </ResponsiveText>
                       </View>
-                      <View style={style.imageAndTitleView}>
-                        <ResponsiveText style={style.titleStyle} size={12}>
-                          {item?.title}
-                        </ResponsiveText>
-                        <RenderS3Image
-                          resizeMode="cover"
-                          style={style.imageStyle}
-                          s3Key={`STORY/${item?.storyId}.webp`}
-                        />
-                      </View>
+                      <ResponsiveText
+                        size={11}
+                        style={style.dateStyleAndAttendThisText}>
+                        {moment(item.createdAt).format('D-MMM-YYYY')}
+                      </ResponsiveText>
+                    </View>
+                    <View style={style.imageAndTitleView}>
+                      <ResponsiveText style={style.titleStyle} size={12}>
+                        {item?.title}
+                      </ResponsiveText>
+                      <RenderS3Image
+                        resizeMode="cover"
+                        style={style.imageStyle}
+                        s3Key={`STORY/${item?.storyId}.webp`}
+                      />
                     </View>
                   </TouchableOpacity>
                 </View>

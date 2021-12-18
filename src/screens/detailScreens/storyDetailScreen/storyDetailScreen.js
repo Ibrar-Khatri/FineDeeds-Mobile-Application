@@ -21,8 +21,9 @@ import style from './storyDetailScreenStyle';
 import {normalize} from '../../../responsive/responsive';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {likeStory} from '../../../../graphql/mutations';
-import {useToast} from 'native-base';
+import {Actionsheet, useToast} from 'native-base';
 import CustomToast from '../../../components/common/customToast/customToast';
+import Participant from '../../../components/common/participant/participant';
 
 export default function StoryDetailScreen(props) {
   const {data: storyDet} = props;
@@ -37,7 +38,8 @@ export default function StoryDetailScreen(props) {
   });
   let [getVolunteer, volunteerData] = useLazyQuery(getVolunteerById);
   let navigation = useNavigation();
-  const [likes, setLikes] = useState([]);
+  let [likes, setLikes] = useState([]);
+  let [invokeActionSheet, setInvokeActionSheet] = useState(false);
   let toast = useToast();
 
   useEffect(() => {
@@ -132,8 +134,9 @@ export default function StoryDetailScreen(props) {
   }
 
   function viewProfile() {
-    navigation.navigate('profile-screen', {
-      volunteer: volunteerData?.data?.getVolunteerById,
+    navigation.push('drawer', {
+      screen: 'profile-screen',
+      params: {volunteer: volunteerData?.data?.getVolunteerById},
     });
   }
 
@@ -243,9 +246,14 @@ export default function StoryDetailScreen(props) {
                   }
                 />
               </TouchableOpacity>
-              <ResponsiveText size={13} style={style.likeText}>{` ${
-                likes?.length
-              } ${likes?.length > 1 ? 'Likes' : 'Like'}`}</ResponsiveText>
+              <ResponsiveText size={13} style={style.likeLength}>
+                {` ${likes?.length} `}
+              </ResponsiveText>
+              <TouchableOpacity onPress={() => setInvokeActionSheet(true)}>
+                <ResponsiveText size={13} style={style.likeText}>
+                  {likes?.length > 1 ? 'Likes' : 'Like'}
+                </ResponsiveText>
+              </TouchableOpacity>
             </View>
           </View>
           <View style={style.CommentSectionView}>
@@ -259,6 +267,39 @@ export default function StoryDetailScreen(props) {
       ) : (
         <CustomSpinner size="lg" color="#f06d06" />
       )}
+      <Actionsheet isOpen={invokeActionSheet} onClose={setInvokeActionSheet}>
+        <Actionsheet.Content>
+          <Actionsheet.Item style={style.likeTitleView}>
+            <ResponsiveText style={style.likeTitle} size={17}>
+              Likes
+            </ResponsiveText>
+          </Actionsheet.Item>
+
+          {likes.length > 0 ? (
+            likes.map((like, i) => (
+              <Actionsheet.Item key={i}>
+                <Participant likeData={like} />
+              </Actionsheet.Item>
+            ))
+          ) : (
+            <Actionsheet.Item style={style.noLikeItem}>
+              <View style={style.noLikeYetView}>
+                <FontAwesome
+                  name="thumbs-up"
+                  size={normalize(25)}
+                  color="#6c757d"
+                />
+                <ResponsiveText size={15} style={style.noLikeYetTextStyle}>
+                  No likes yet
+                </ResponsiveText>
+                <ResponsiveText size={13} style={style.noLikeYetTextStyle}>
+                  Be the first to like this
+                </ResponsiveText>
+              </View>
+            </Actionsheet.Item>
+          )}
+        </Actionsheet.Content>
+      </Actionsheet>
     </ScrollView>
   );
 }

@@ -111,9 +111,14 @@ export default StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  likeLength: {
+    color: '#212529',
+    fontFamily: 'Montserrat-Regular',
+  },
   likeText: {
     color: '#212529',
     fontFamily: 'Montserrat-Regular',
+    textDecorationLine: 'underline',
   },
   storiesLength: {
     color: '#212529',
@@ -127,5 +132,23 @@ export default StyleSheet.create({
   CommentSectionView: {
     padding: 5,
     marginBottom: 15,
+  },
+  likeTitle: {
+    fontFamily: 'Montserrat-Bold',
+    color: '#343a40',
+  },
+  likeTitleView: {
+    borderBottomColor: '#ebebeb',
+    borderBottomWidth: 2,
+  },
+  noLikeItem: {
+    justifyContent: 'center',
+  },
+  noLikeYetView: {
+    alignItems: 'center',
+  },
+  noLikeYetTextStyle: {
+    color: '#212529',
+    fontFamily: 'Montserrat-Regular',
   },
 });

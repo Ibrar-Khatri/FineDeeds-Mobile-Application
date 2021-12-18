@@ -42,8 +42,9 @@ export default function ActivityDetailScreen(props) {
   }, []);
 
   function viewProfile() {
-    navigation.navigate('profile-screen', {
-      volunteer: volunteerData?.data?.getVolunteerById,
+    navigation.push('drawer', {
+      screen: 'profile-screen',
+      params: {volunteer: volunteerData?.data?.getVolunteerById},
     });
   }
 
