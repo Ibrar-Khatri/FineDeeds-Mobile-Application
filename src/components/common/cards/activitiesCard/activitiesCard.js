@@ -64,7 +64,7 @@ export default function ActivitiesCard(props) {
           </ResponsiveText>
           <ResponsiveText
             style={style.causesItem}
-            size={11}>{` ${data?.activityCauses.join(', ')}`}</ResponsiveText>
+            size={11}>{` ${data?.activityCauses?.join(', ')}`}</ResponsiveText>
         </Text>
       </View>
     </TouchableOpacity>

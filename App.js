@@ -10,6 +10,7 @@ import {ApolloProvider} from '@apollo/client';
 import {FinedeedsAppClient} from './aws_credentials/graphql-client.js';
 import {LogBox} from 'react-native';
 import DetailScreen from './src/screens/detailScreens/detailScreens';
+import ListAllScreen from './src/screens/listAllScreen/listAllScreen';
 
 Amplify.configure({...awsConfig});
 const Stack = createNativeStackNavigator();
@@ -31,6 +32,7 @@ const App = () => {
               component={AuthenticationScreen}
             />
             <Stack.Screen name="detail-screen" component={DetailScreen} />
+            <Stack.Screen name="listAll-screen" component={ListAllScreen} />
           </Stack.Navigator>
         </NavigationContainer>
       </NativeBaseProvider>

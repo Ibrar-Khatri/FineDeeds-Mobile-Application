@@ -1,4 +1,4 @@
-import gql from "graphql-tag";
+import gql from 'graphql-tag';
 
 const isEmailExistInDatabase = gql`
   query isEmailExistInDatabase($email: AWSEmail!) {
@@ -626,6 +626,10 @@ const getPublishedStories = gql`
         orgName
         story
         isPublished
+        createdBy {
+          volunteerId
+          volunteerName
+        }
         createdById
         createdAt
         updatedBy

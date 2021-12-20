@@ -77,7 +77,13 @@ export default function HomeScreen(props) {
 
         <View style={style.bodyView}>
           <View style={style.dynamicDataView}>
-            <CardTitle title="ACTIVITIES NEAR YOU" showLink={true} />
+            <CardTitle
+              title="ACTIVITIES NEAR YOU"
+              showLink={true}
+              headerTitle="Activities"
+              screenName="listAll-screen"
+              initialRouteName="activity_list"
+            />
             <FlatListComponent
               data={activities}
               horizontal={true}
@@ -99,7 +105,13 @@ export default function HomeScreen(props) {
           </View>
 
           <View style={style.dynamicDataView}>
-            <CardTitle title="STORIES THAT INSPIRE" showLink={true} />
+            <CardTitle
+              title="STORIES THAT INSPIRE"
+              showLink={true}
+              headerTitle="Stories"
+              screenName="listAll-screen"
+              initialRouteName="story_list"
+            />
             <FlatListComponent
               data={stories}
               horizontal={true}

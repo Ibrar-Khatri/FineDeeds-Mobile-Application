@@ -7,7 +7,7 @@ import StoryDetailScreen from './storyDetailScreen/storyDetailScreen';
 const Stack = createNativeStackNavigator();
 
 export default function DetailScreen({route}) {
-  let {initialRouteName, data, title} = route.params;
+  const {initialRouteName, data, title} = route.params;
 
   return (
     <Stack.Navigator
