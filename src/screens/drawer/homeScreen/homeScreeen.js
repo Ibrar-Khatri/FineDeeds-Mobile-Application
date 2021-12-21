@@ -40,10 +40,10 @@ export default function HomeScreen(props) {
 
   !stories &&
     storiesData?.data?.getStories?.items &&
-    setStories(storiesData?.data?.getStories?.items);
+    setStories(storiesData?.data?.getStories?.items.slice(0, 3));
   !activities &&
     activitiesData?.data?.getActivities?.items &&
-    setActivities(activitiesData?.data?.getActivities?.items);
+    setActivities(activitiesData?.data?.getActivities?.items.slice(0, 3));
 
   return (
     <ScrollView>

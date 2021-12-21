@@ -1,12 +1,12 @@
 import React, {useEffect} from 'react';
-import {TouchableOpacity, View} from 'react-native';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import moment from 'moment';
 import RenderS3Image from '../renderS3Image/renderS3Image';
 import ResponsiveText from '../responsiveText/responsiveText';
-import style from './participantStyle';
 import {useLazyQuery} from '@apollo/client';
 import {getVolunteerById} from '../../../../graphql/queries';
 import {useNavigation} from '@react-navigation/native';
+import {heightPercentageToDP as vh} from '../../../responsive/responsive';
 
 export default function Participant(props) {
   let {likeData} = props;
@@ -56,3 +56,54 @@ export default function Participant(props) {
     </TouchableOpacity>
   );
 }
+
+let style = StyleSheet.create({
+  CommentCardMainView: {
+    display: 'flex',
+    flexDirection: 'row',
+    width: '100%',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+  },
+  imageStyle: {
+    height: vh(8),
+    width: vh(8),
+    borderRadius: 100,
+    overflow: 'hidden',
+    borderWidth: 3,
+    borderColor: '#fd7e14',
+  },
+
+  commentSection: {
+    display: 'flex',
+    width: '80%',
+    marginLeft: vh(2),
+  },
+
+  volunteerNameView: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  volunName: {
+    color: '#212529',
+  },
+  since: {
+    fontFamily: 'Montserrat-Regular',
+    color: '#212529',
+    marginLeft: 7,
+  },
+  comment: {
+    marginTop: vh(1),
+    // marginBottom: vh(1),
+    color: '#212529',
+    marginLeft: 7,
+  },
+  removeCommentView: {
+    alignSelf: 'flex-start',
+    marginLeft: 7,
+  },
+  removeComment: {
+    fontFamily: 'Montserrat-Regular',
+    color: '#777',
+  },
+});

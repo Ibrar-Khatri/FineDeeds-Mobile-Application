@@ -1,11 +1,14 @@
 import React from 'react';
-import {Image, View, Text} from 'native-base';
+import {StyleSheet} from 'react-native';
+import {View} from 'native-base';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import style from './customToastStyle';
 import ResponsiveText from '../responsiveText/responsiveText';
-import {normalize} from '../../../responsive/responsive';
+import {
+  normalize,
+  widthPercentageToDP as vw,
+} from '../../../responsive/responsive';
 
-function CustomToast({type, description}) {
+export default function CustomToast({type, description}) {
   let name;
   if (type === 'success') {
     name = 'checkcircle';
@@ -25,4 +28,30 @@ function CustomToast({type, description}) {
     </View>
   );
 }
-export default CustomToast;
+
+let style = StyleSheet.create({
+  toastView: {
+    borderRadius: 15,
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: vw(2),
+  },
+  toastText: {
+    marginLeft: 10,
+    color: '#fff',
+    fontWeight: '600',
+  },
+  success: {
+    backgroundColor: '#07bc0c',
+  },
+  info: {
+    backgroundColor: '#3498db',
+  },
+  error: {
+    backgroundColor: '#e50019',
+  },
+  warning: {
+    backgroundColor: '#f1c40f',
+  },
+});

@@ -1,19 +1,15 @@
 import React from 'react';
+import { StyleSheet } from 'react-native';
 import {Actionsheet, useToast} from 'native-base';
 import ImagePicker from 'react-native-image-crop-picker';
 import Iocn1 from 'react-native-vector-icons/Entypo';
 import Icon3 from 'react-native-vector-icons/MaterialIcons';
-import {
-  Permission,
-  PERMISSION_TYPE,
-} from '../../../appPermissions/appPermissions';
 import CustomToast from '../customToast/customToast';
 import {
   _putFileToS3,
   _removeFileFromS3,
 } from '../../../shared/services/s3Services';
 import {uploadImageInS3Bucket} from '../../../shared/services/helper';
-import style from './imagePickerActionSheetStyle';
 
 export default function ImagePickerActionSheet(props) {
   let {
@@ -150,3 +146,9 @@ export default function ImagePickerActionSheet(props) {
     </Actionsheet>
   );
 }
+
+let style = StyleSheet.create({
+  actionsheetItemCancelText: {
+    justifyContent: 'center',
+  },
+});

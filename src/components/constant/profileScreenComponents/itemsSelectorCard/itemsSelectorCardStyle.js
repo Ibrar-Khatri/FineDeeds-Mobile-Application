@@ -5,16 +5,6 @@ import {
 } from '../../../../responsive/responsive';
 
 export default StyleSheet.create({
-  titleAndIconView: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  titleStyle: {
-    fontFamily: 'Montserrat-Bold',
-    color: '#212529',
-    marginBottom: 15,
-  },
   itemMainView: {
     display: 'flex',
     flexDirection: 'row',

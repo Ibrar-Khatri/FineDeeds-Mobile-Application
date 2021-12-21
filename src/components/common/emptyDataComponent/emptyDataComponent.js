@@ -1,8 +1,8 @@
 import React from 'react';
-import {View, Text} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {Image} from 'native-base';
-import style from './emptyDataComponentStyle';
 import ResponsiveText from '../responsiveText/responsiveText';
+import {widthPercentageToDP as vw} from '../../../responsive/responsive';
 
 export default function EmptyDataComponent(props) {
   let {title} = props;
@@ -19,3 +19,20 @@ export default function EmptyDataComponent(props) {
     </View>
   );
 }
+
+
+
+let style= StyleSheet.create({
+  imageAndTextView: {
+    display: 'flex',
+    alignItems: 'center',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+  },
+  textStyle: {
+    fontSize: vw(3.5),
+    marginTop: 10,
+    fontFamily: 'Montserrat-Bold',
+    color: 'rgba(0,0,0,.5)',
+  },
+});

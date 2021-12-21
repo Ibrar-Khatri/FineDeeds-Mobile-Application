@@ -10,10 +10,14 @@ export default function ListAllItem(props) {
     ListFooterComponent,
     ListEmptyComponent,
   } = props;
+  console.log(data.length, 'data');
   return (
     <FlatList
       data={data}
-      contentContainerStyle={style.scrollViewStyle}
+      contentContainerStyle={[
+        style.contentContainerStyle,
+        data.length === 0 && {justifyContent: 'center'},
+      ]}
       showsVerticalScrollIndicator={false}
       keyExtractor={(item, index) => index.toString()}
       refreshControl={refreshControl}
@@ -27,11 +31,10 @@ export default function ListAllItem(props) {
 }
 
 const style = StyleSheet.create({
-  scrollViewStyle: {
+  contentContainerStyle: {
     display: 'flex',
     alignItems: 'center',
     backgroundColor: '#fff',
     flexGrow: 1,
-    justifyContent: 'center',
   },
 });

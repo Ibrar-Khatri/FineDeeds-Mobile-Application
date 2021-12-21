@@ -73,7 +73,7 @@ export default function JourneyMap(props) {
                   <TouchableOpacity
                     activeOpacity={0.5}
                     onPress={() =>
-                      navigation.navigate('detail-screen', {
+                      navigation.push('detail-screen', {
                         initialRouteName: 'story_detail',
                         data: item,
                         title: item?.title,

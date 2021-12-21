@@ -86,8 +86,10 @@ export default function DrawerContent(props) {
     {
       lable: 'Stories',
       // isFocused: false,
-      screenName: '',
+      screenName:"listAll-screen",
       isUserAuthenticated: true,
+      headerTitle:"Stories",
+      initialRouteName:"story_list",
     },
     {
       lable: 'How It Works',
@@ -131,7 +133,8 @@ export default function DrawerContent(props) {
         ? props.navigation.navigate(item.screenName, {
             screen: item.nestedScreenName,
           })
-        : item.screenName && props.navigation.navigate(item.screenName);
+        : item.screenName && props.navigation.navigate(item.screenName,{initialRouteName: item.initialRouteName,
+          title: item.headerTitle,});
     }
   }
 

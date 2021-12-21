@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import {View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import style from './authWrapperStyle';
 
 export default function AuthWrapper(props) {
   let {children} = props;
@@ -13,3 +12,11 @@ export default function AuthWrapper(props) {
     </KeyboardAwareScrollView>
   );
 }
+
+let style = StyleSheet.create({
+  contentContainerStyle: {
+    justifyContent: 'center',
+    flexGrow: 1,
+    backgroundColor: '#fff',
+  },
+});

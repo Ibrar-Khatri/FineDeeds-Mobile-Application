@@ -1,8 +1,8 @@
 import React from 'react';
 import {useNavigation} from '@react-navigation/core';
-import {View, Image, TouchableOpacity} from 'react-native';
+import {View, Image, TouchableOpacity, StyleSheet} from 'react-native';
 import ResponsiveText from '../responsiveText/responsiveText';
-import style from './inputFieldsHeaderStyle';
+import {widthPercentageToDP as vw} from '../../../responsive/responsive';
 
 export default function InputFieldsHeader(props) {
   let {title, subTitle} = props;
@@ -33,3 +33,29 @@ export default function InputFieldsHeader(props) {
     </View>
   );
 }
+
+let style = StyleSheet.create({
+  mianView: {
+    display: 'flex',
+    alignItems: 'center',
+    marginLeft: vw(7),
+    marginRight: vw(7),
+  },
+  fineDeedsLogo: {
+    height: vw(12),
+    width: vw(12),
+  },
+  title: {
+    fontSize: vw(9),
+    color: 'black',
+    fontFamily: 'Merriweather-Bold',
+    paddingTop: 20,
+    paddingBottom: 20,
+    textAlign: 'center',
+  },
+  subTitle: {
+    color: '#212529',
+    fontWeight: '300',
+    textAlign: 'center',
+  },
+});

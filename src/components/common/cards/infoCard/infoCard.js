@@ -1,7 +1,10 @@
 import React from 'react';
-import {View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import ResponsiveText from '../../responsiveText/responsiveText';
-import style from './infoCardStyle';
+import {
+  heightPercentageToDP as vh,
+  widthPercentageToDP as vw,
+} from '../../../../responsive/responsive';
 
 export default function InfoCard(props) {
   let {title, subTitle, styles} = props;
@@ -16,3 +19,22 @@ export default function InfoCard(props) {
     </View>
   );
 }
+
+let style = StyleSheet.create({
+  infoCardView: {
+    display: 'flex',
+    alignItems: 'center',
+    borderColor: 'rgba(0,0,0,.125)',
+    borderRadius: 10,
+    borderWidth: 1,
+    padding: vw(3),
+  },
+  infoTitle: {
+    color: '#212529',
+    fontFamily: 'Montserrat-Bold',
+  },
+  infoPara: {
+    color: '#212529',
+    fontFamily: 'Montserrat-Regular',
+  },
+});

@@ -1,7 +1,6 @@
 import React from 'react';
 import {Button} from 'native-base';
-import style from './buttonStyle';
-import {Text} from 'react-native';
+import {StyleSheet, Text} from 'react-native';
 import ResponsiveText from '../responsiveText/responsiveText';
 
 export default function CustomButton(props) {
@@ -27,3 +26,14 @@ export default function CustomButton(props) {
     </Button>
   );
 }
+
+let style = StyleSheet.create({
+  buttonStyle: {
+    backgroundColor: '#f06d06',
+    borderRadius: 7,
+  },
+  buttonText: {
+    color: '#fff',
+    fontWeight: '600',
+  },
+});

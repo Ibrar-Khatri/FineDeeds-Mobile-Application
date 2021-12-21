@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {TouchableOpacity, View, FlatList} from 'react-native';
 import {useToast} from 'native-base';
 import {useMutation} from '@apollo/client';
-import Icon from 'react-native-vector-icons/Octicons';
+
 import CustomCheckBox from '../../../common/customCheckBox/customCheckBox';
 import CustomToast from '../../../common/customToast/customToast';
 import ModalWrapper from '../../../common/modalWrapper/modalWrapper';
@@ -14,12 +14,9 @@ import {
 } from '../../../../../graphql/mutations';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import EmptyDataComponent from '../../../common/emptyDataComponent/emptyDataComponent';
-import {
-  heightPercentageToDP as vh,
-  normalize,
-} from '../../../../responsive/responsive';
 import ResponsiveText from '../../../common/responsiveText/responsiveText';
 import Tag from '../../../common/tag/tag';
+import ProfileScreenCardsHeader from '../cardHeader/cardHeader';
 
 export default function ItemsSelectorCard(props) {
   let {title, selectedItems, volunteer, setVolunteer, authorized} = props;
@@ -178,16 +175,11 @@ export default function ItemsSelectorCard(props) {
 
   return (
     <ProfileScreenCardWrapper>
-      <View style={style.titleAndIconView}>
-        <ResponsiveText style={style.titleStyle} size={14}>
-          {title}
-        </ResponsiveText>
-        {authorized && (
-          <TouchableOpacity onPress={openModal}>
-            <Icon name="pencil" size={normalize(15)} color="#f06d06" />
-          </TouchableOpacity>
-        )}
-      </View>
+      <ProfileScreenCardsHeader
+        title={title}
+        icon={authorized && openModal}
+        onPress={authorized && openModal}
+      />
       <View style={style.itemMainView}>
         {selectedItems?.length ? (
           selectedItems?.map((item, i) => (

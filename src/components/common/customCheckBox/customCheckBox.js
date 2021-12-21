@@ -1,8 +1,7 @@
 import React from 'react';
-import {TouchableOpacity} from 'react-native';
+import {StyleSheet, TouchableOpacity} from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {heightPercentageToDP as vh, normalize} from '../../../responsive/responsive';
-import style from './customCheckBoxStyle';
 
 export default function CustomCheckBox(props) {
   let {isChecked, callOnPress} = props;
@@ -16,3 +15,24 @@ export default function CustomCheckBox(props) {
     </TouchableOpacity>
   );
 }
+
+let style= StyleSheet.create({
+  blurCheckBox: {
+    height: vh(3),
+    width: vh(3),
+    borderRadius: 4,
+    marginRight: 8,
+    borderWidth: 1,
+    borderColor: '#ced4da',
+  },
+  focusCheckBox: {
+    backgroundColor: '#fd7e14',
+    height: vh(3),
+    width: vh(3),
+    borderRadius: 4,
+    marginRight: 8,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});

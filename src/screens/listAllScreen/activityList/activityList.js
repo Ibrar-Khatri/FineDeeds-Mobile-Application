@@ -17,56 +17,32 @@ export default function ActivityList(props) {
   const [activities, setActivities] = useState([]);
 
   useEffect(() => {
-    if (data?.getActivities) {
-      if (data?.getActivities?.totalCount > 0) {
-        setActivities(data.getActivities.items);
-        setRefetchLoading(false);
-      } else {
-        setMoreData(false);
-      }
+    if (data?.getActivities?.totalCount > 0) {
+      setActivities(data.getActivities.items);
+      setRefetchLoading(false);
+      data?.getActivities?.totalCount < 6 && setMoreData(false);
     }
   }, [data?.getActivities]);
 
   useEffect(() => {
-    if (volunteerId) {
-      getActivitiesQuery({
-        variables: {
-          ...fetchLimit,
-          volunteerId: volunteerId,
-        },
-      });
-    } else {
-      getActivitiesQuery({
-        variables: {
-          ...fetchLimit,
-          volunteerId: undefined,
-        },
-      });
-    }
+    callQuery({
+      ...fetchLimit,
+    });
   }, []);
 
   function onDataReachEnd() {
     if (moreData && !loading) {
-      setFetchLimit(prevFetchLimit => ({
-        limit: prevFetchLimit.limit,
-        skip: prevFetchLimit.skip + 6,
-      }));
-      if (volunteerId) {
-        getActivitiesQuery({
-          variables: {
-            limit: 6,
-            skip: fetchLimit.skip + 6,
-            volunteerId: volunteerId,
-          },
+      if (data?.getActivities?.totalCount === 6) {
+        setFetchLimit(prevFetchLimit => ({
+          limit: prevFetchLimit.limit,
+          skip: prevFetchLimit.skip + 6,
+        }));
+        callQuery({
+          limit: 6,
+          skip: fetchLimit.skip + 6,
         });
       } else {
-        getActivitiesQuery({
-          variables: {
-            limit: 6,
-            skip: fetchLimit.skip + 6,
-            volunteerId: undefined,
-          },
-        });
+        setMoreData(false);
       }
     }
   }
@@ -76,19 +52,24 @@ export default function ActivityList(props) {
     setRefetchLoading(true);
     setMoreData(true);
     setFetchLimit({limit: 6, skip: 0});
+    callQuery({
+      limit: 6,
+      skip: 0,
+    });
+  }
+
+  function callQuery(fetchLim) {
     if (volunteerId) {
       getActivitiesQuery({
         variables: {
-          limit: 6,
-          skip: 0,
+          ...fetchLim,
           volunteerId: volunteerId,
         },
       });
     } else {
       getActivitiesQuery({
         variables: {
-          limit: 6,
-          skip: 0,
+          ...fetchLim,
           volunteerId: undefined,
         },
       });

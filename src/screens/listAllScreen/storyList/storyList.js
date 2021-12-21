@@ -15,8 +15,9 @@ export default function StoryList(props) {
     ? getVolunteerPublishedStories
     : getPublishedStories;
 
-  const [getStoriesQuery, {error, fetchMore, called, data, loading}] =
-    useLazyQuery(fetchQuery, {fetchPolicy: 'network-only'});
+  const [getStoriesQuery, {data, loading}] = useLazyQuery(fetchQuery, {
+    fetchPolicy: 'network-only',
+  });
 
   const [fetchLimit, setFetchLimit] = useState({limit: 6, skip: 0});
   const [refetchLoading, setRefetchLoading] = useState(false);
@@ -24,56 +25,32 @@ export default function StoryList(props) {
   const [stories, setStories] = useState([]);
 
   useEffect(() => {
-    if (data?.getStories) {
-      if (data?.getStories?.totalCount > 0) {
-        setStories(data.getStories.items);
-        setRefetchLoading(false);
-      } else {
-        setMoreData(false);
-      }
+    if (data?.getStories?.totalCount > 0) {
+      setStories(data.getStories?.items);
+      setRefetchLoading(false);
+      data?.getStories?.totalCount < 6 && setMoreData(false);
     }
   }, [data?.getStories]);
 
   useEffect(() => {
-    if (volunteerId) {
-      getStoriesQuery({
-        variables: {
-          ...fetchLimit,
-          volunteerId: volunteerId,
-        },
-      });
-    } else {
-      getStoriesQuery({
-        variables: {
-          ...fetchLimit,
-          volunteerId: undefined,
-        },
-      });
-    }
+    callQuery({
+      ...fetchLimit,
+    });
   }, []);
 
   function onDataReachEnd() {
-    if (moreData) {
-      setFetchLimit(prevFetchLimit => ({
-        limit: prevFetchLimit.limit,
-        skip: prevFetchLimit.skip + 6,
-      }));
-      if (volunteerId) {
-        getStoriesQuery({
-          variables: {
-            limit: 6,
-            skip: fetchLimit.skip + 6,
-            volunteerId: volunteerId,
-          },
+    if (moreData && !loading) {
+      if (data?.getStories?.totalCount === 6) {
+        setFetchLimit(prevFetchLimit => ({
+          limit: prevFetchLimit.limit,
+          skip: prevFetchLimit.skip + 6,
+        }));
+        callQuery({
+          limit: 6,
+          skip: fetchLimit.skip + 6,
         });
       } else {
-        getStoriesQuery({
-          variables: {
-            limit: 6,
-            skip: fetchLimit.skip + 6,
-            volunteerId: undefined,
-          },
-        });
+        setMoreData(false);
       }
     }
   }
@@ -83,24 +60,107 @@ export default function StoryList(props) {
     setRefetchLoading(true);
     setMoreData(true);
     setFetchLimit({limit: 6, skip: 0});
+    callQuery({
+      limit: 6,
+      skip: 0,
+    });
+  }
+
+  function callQuery(fetchLim) {
     if (volunteerId) {
       getStoriesQuery({
         variables: {
-          ...fetchLimit,
+          ...fetchLim,
           volunteerId: volunteerId,
         },
       });
     } else {
       getStoriesQuery({
         variables: {
-          limit: 6,
-          skip: 0,
+          ...fetchLim,
           volunteerId: undefined,
         },
       });
     }
   }
 
+  // useEffect(() => {
+  //   if (data?.getStories) {
+  //     if (data?.getStories?.totalCount > 0) {
+  //       setStories(data.getStories.items);
+  //       setRefetchLoading(false);
+  //     } else {
+  //       setMoreData(false);
+  //     }
+  //   }
+  // }, [data?.getStories]);
+
+  // useEffect(() => {
+  //   if (volunteerId) {
+  //     getStoriesQuery({
+  //       variables: {
+  //         ...fetchLimit,
+  //         volunteerId: volunteerId,
+  //       },
+  //     });
+  //   } else {
+  //     getStoriesQuery({
+  //       variables: {
+  //         ...fetchLimit,
+  //         volunteerId: undefined,
+  //       },
+  //     });
+  //   }
+  // }, []);
+
+  // function onDataReachEnd() {
+  //   if (moreData) {
+  //     setFetchLimit(prevFetchLimit => ({
+  //       limit: prevFetchLimit.limit,
+  //       skip: prevFetchLimit.skip + 6,
+  //     }));
+  //     if (volunteerId) {
+  //       getStoriesQuery({
+  //         variables: {
+  //           limit: 6,
+  //           skip: fetchLimit.skip + 6,
+  //           volunteerId: volunteerId,
+  //         },
+  //       });
+  //     } else {
+  //       getStoriesQuery({
+  //         variables: {
+  //           limit: 6,
+  //           skip: fetchLimit.skip + 6,
+  //           volunteerId: undefined,
+  //         },
+  //       });
+  //     }
+  //   }
+  // }
+
+  // function refControl() {
+  //   setStories([]);
+  //   setRefetchLoading(true);
+  //   setMoreData(true);
+  //   setFetchLimit({limit: 6, skip: 0});
+  //   if (volunteerId) {
+  //     getStoriesQuery({
+  //       variables: {
+  //         ...fetchLimit,
+  //         volunteerId: volunteerId,
+  //       },
+  //     });
+  //   } else {
+  //     getStoriesQuery({
+  //       variables: {
+  //         limit: 6,
+  //         skip: 0,
+  //         volunteerId: undefined,
+  //       },
+  //     });
+  //   }
+  // }
   return (
     <ListAllItem
       data={stories}

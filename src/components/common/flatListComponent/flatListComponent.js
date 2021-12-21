@@ -1,7 +1,6 @@
 import React from 'react';
-import {FlatList} from 'react-native';
+import {FlatList, StyleSheet} from 'react-native';
 import EmptyDataComponent from '../emptyDataComponent/emptyDataComponent';
-import style from './flatListComponentStyle';
 
 export default function FlatListComponent(props) {
   let {
@@ -30,3 +29,9 @@ export default function FlatListComponent(props) {
     />
   );
 }
+
+let style= StyleSheet.create({
+  contentContainerStyle: {
+    flexGrow: 1,
+  },
+});

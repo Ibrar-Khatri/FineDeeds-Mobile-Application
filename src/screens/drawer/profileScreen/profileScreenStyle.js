@@ -66,11 +66,6 @@ export default StyleSheet.create({
     width: vw(45),
     marginTop: 20,
   },
-  aboutTitle: {
-    fontFamily: 'Montserrat-Bold',
-    color: '#212529',
-    marginBottom: 15,
-  },
   aboutText: {
     fontFamily: 'Montserrat-Regular',
     color: '#212529',

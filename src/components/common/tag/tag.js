@@ -1,6 +1,5 @@
 import React from 'react';
-import {View} from 'native-base';
-import style from './tagStyle';
+import {StyleSheet, View} from 'react-native';
 import ResponsiveText from '../responsiveText/responsiveText';
 
 export default function Tag(props) {
@@ -18,3 +17,22 @@ export default function Tag(props) {
     </View>
   );
 }
+
+let style = StyleSheet.create({
+  itemView: {
+    alignContent: 'center',
+    borderRadius: 7,
+    display: 'flex',
+    justifyContent: 'center',
+    padding: 8,
+    marginRight: 10,
+    marginBottom: 8,
+  },
+  itemText: {
+    color: 'rgba(0,0,0,.6)',
+    fontFamily: 'Montserrat-SemiBold',
+  },
+  borderStyle: {
+    borderWidth: 1,
+  },
+});

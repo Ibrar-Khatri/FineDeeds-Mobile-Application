@@ -213,7 +213,15 @@ export default function StoryDetailScreen(props) {
                     </ResponsiveText>
                   </View>
                 </TouchableOpacity>
-                <TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.push('listAll-screen', {
+                      initialRouteName: 'story_list',
+                      title: 'Stories',
+                      volunteerId:
+                        volunteerData?.data?.getVolunteerById?.volunteerId,
+                    })
+                  }>
                   <ResponsiveText style={style.storiesLength} size={12}>{`${
                     getStoriesCountData?.data?.getVolunteerContributionsCount
                       ?.storiesCount

@@ -1,8 +1,8 @@
 import React from 'react';
-import {Text, View} from 'react-native';
-import style from './navigationLinkStyle';
+import {StyleSheet, View} from 'react-native';
 import {useNavigationState} from '@react-navigation/native';
 import ResponsiveText from '../responsiveText/responsiveText';
+import {widthPercentageToDP as vw} from '../../../responsive/responsive';
 
 export default function NavigationLink(props) {
   let {text, displayName, screenName, navigation, routeName} = props;
@@ -27,3 +27,24 @@ export default function NavigationLink(props) {
     </View>
   );
 }
+
+let style = StyleSheet.create({
+  linkView: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginTop: 10,
+    marginBottom: 10,
+  },
+  text1: {
+    color: 'black',
+    fontWeight: '300',
+    fontSize: vw(3.5),
+  },
+  text2: {
+    color: '#f06d06',
+    fontSize: vw(3.5),
+    fontWeight: '300',
+    paddingLeft: 5,
+  },
+});

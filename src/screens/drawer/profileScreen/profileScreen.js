@@ -17,7 +17,6 @@ import {
   getMyProducts,
   getVolunteerPublishedStories,
 } from '../../../../graphql/queries';
-import EmptyDataComponent from '../../../components/common/emptyDataComponent/emptyDataComponent';
 import RenderS3Image from '../../../components/common/renderS3Image/renderS3Image';
 import {
   _putFileToS3,
@@ -31,8 +30,9 @@ import {
 import FlatListComponent from '../../../components/common/flatListComponent/flatListComponent';
 import {heightPercentageToDP as vh} from '../../../responsive/responsive';
 import ResponsiveText from '../../../components/common/responsiveText/responsiveText';
-import {NavigationContainer} from '@react-navigation/native';
 import {isLoggedIn} from '../../../shared/services/authServices';
+import ProfileScreenCardsHeader from '../../../components/constant/profileScreenComponents/cardHeader/cardHeader';
+import ActivityCard from '../../../components/constant/profileScreenComponents/activityCard/activityCard';
 
 export default function ProfileScreen(props) {
   let {route, navigation} = props;
@@ -199,9 +199,7 @@ export default function ProfileScreen(props) {
           </View>
           {volunteer?.aboutMe && (
             <ProfileScreenCardWrapper>
-              <ResponsiveText style={style.aboutTitle} size={14}>
-                About
-              </ResponsiveText>
+              <ProfileScreenCardsHeader title="About" />
               <ResponsiveText style={style.aboutText} size={12}>
                 {volunteer?.aboutMe}
               </ResponsiveText>
@@ -266,62 +264,30 @@ export default function ProfileScreen(props) {
 
           {activities?.length > 0 && (
             <ProfileScreenCardWrapper>
-              <View style={style.titleAndLinkView}>
-                <ResponsiveText style={style.titleStyle} size={14}>
-                  Activity
-                </ResponsiveText>
-                <TouchableOpacity>
-                  <ResponsiveText style={style.linkStyle} size={12}>
-                    Sell all
-                  </ResponsiveText>
-                </TouchableOpacity>
-              </View>
+              <ProfileScreenCardsHeader
+                title="Activity"
+                headerTitle="Activities"
+                screenName="listAll-screen"
+                initialRouteName="activity_list"
+                volunteerId={volunteer.volunteerId}
+              />
               <FlatListComponent
                 data={activities}
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}
                 renderItem={({item, index}) => (
-                  <TouchableOpacity
-                    key={index}
-                    style={style.activityView}
-                    onPress={() =>
-                      navigation.push('detail-screen', {
-                        initialRouteName: 'activity_detail',
-                        data: item,
-                        title: item?.activityName,
-                      })
-                    }>
-                    <RenderS3Image
-                      resizeMode="contain"
-                      style={style.activityImageStyle}
-                      s3Key={`ACTIVITY/${item?.activityId}.webp`}
-                    />
-                    <View style={style.activityTitleAndPostedByView}>
-                      <ResponsiveText style={style.activityTitle} size={12}>
-                        {item.activityName}
-                      </ResponsiveText>
-                      <ResponsiveText
-                        style={style.activityPostedByText}
-                        size={12}>
-                        {volunteer.volunteerName}
-                      </ResponsiveText>
-                    </View>
-                  </TouchableOpacity>
+                  <ActivityCard key={index} data={item} volunteer={volunteer} />
                 )}
               />
             </ProfileScreenCardWrapper>
           )}
           <ProfileScreenCardWrapper>
-            <View style={style.titleAndLinkView}>
-              <ResponsiveText style={style.titleStyle} size={14}>
-                Products in charity store
-              </ResponsiveText>
-              <TouchableOpacity>
-                <ResponsiveText style={style.linkStyle} size={12}>
-                  Sell all
-                </ResponsiveText>
-              </TouchableOpacity>
-            </View>
+            <ProfileScreenCardsHeader
+              title="Products in charity store"
+              // headerTitle="Products"
+              screenName="listAll-screen"
+              // initialRouteName="activity_list"
+            />
             {myProducts?.length >= 0 ? (
               <FlatListComponent
                 data={myProducts}

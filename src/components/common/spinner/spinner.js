@@ -1,7 +1,6 @@
 import React from 'react';
-import {Center, Spinner, VStack, HStack, Heading} from 'native-base';
-import {View, Text} from 'react-native';
-import style from './spinnerStyle';
+import {Spinner, VStack, HStack, Heading} from 'native-base';
+import {View, StyleSheet} from 'react-native';
 
 export default function CustomSpinner(props) {
   let {size, color} = props;
@@ -16,3 +15,13 @@ export default function CustomSpinner(props) {
     </View>
   );
 }
+
+let style = StyleSheet.create({
+  spinnerStyle: {
+    display: 'flex',
+    alignSelf: 'center',
+    marginTop: 20,
+    marginLeft: 'auto',
+    marginRight: 'auto',
+  },
+});

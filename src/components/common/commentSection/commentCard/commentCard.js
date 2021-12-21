@@ -1,10 +1,9 @@
 import moment from 'moment';
 import React, {useEffect, useState} from 'react';
-import {Text, TouchableOpacity, View} from 'react-native';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {AsyncStorage} from '@aws-amplify/core';
 import RenderS3Image from '../../renderS3Image/renderS3Image';
 import ResponsiveText from '../../responsiveText/responsiveText';
-import style from './commentCardStyle';
 import {useLazyQuery, useMutation} from '@apollo/client';
 import {deleteComment} from '../../../../../graphql/mutations';
 import {getComments, getVolunteerById} from '../../../../../graphql/queries';
@@ -12,6 +11,10 @@ import DeleteConfirmationModal from '../../deleteConfirmationModal/deleteConfirm
 import {useToast} from 'native-base';
 import CustomToast from '../../customToast/customToast';
 import {useNavigation} from '@react-navigation/native';
+import {
+  heightPercentageToDP as vh,
+  widthPercentageToDP as vw,
+} from '../../../../responsive/responsive';
 
 export default function CommentCard(props) {
   let [loggedInVol, setLoggedInVol] = useState();
@@ -161,3 +164,55 @@ export default function CommentCard(props) {
     </>
   );
 }
+
+let style = StyleSheet.create({
+  CommentCardMainView: {
+    display: 'flex',
+    flexDirection: 'row',
+    width: '100%',
+    justifyContent: 'flex-start',
+    marginBottom: vh(2),
+  },
+  commentSection: {
+    display: 'flex',
+    width: '80%',
+    marginTop: vh(1),
+    marginLeft: vh(2),
+    borderRadius: 10,
+    padding: 10,
+  },
+  imageStyle: {
+    height: vh(8),
+    width: vh(8),
+    borderRadius: 100,
+    overflow: 'hidden',
+    borderWidth: 3,
+    borderColor: '#fd7e14',
+  },
+  volunteerNameView: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  volunName: {
+    color: '#212529',
+  },
+  since: {
+    fontFamily: 'Montserrat-Regular',
+    color: '#212529',
+    marginLeft: 7,
+  },
+  comment: {
+    marginTop: vh(1),
+    color: '#212529',
+    marginLeft: 7,
+  },
+  removeCommentView: {
+    alignSelf: 'flex-start',
+    marginLeft: 7,
+  },
+  removeComment: {
+    fontFamily: 'Montserrat-Regular',
+    color: '#777',
+  },
+});

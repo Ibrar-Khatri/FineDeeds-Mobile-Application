@@ -9,7 +9,7 @@ const Stack = createNativeStackNavigator();
 
 export default function ListAllScreen({route}) {
   const {initialRouteName, volunteerId, title} = route.params;
-  console.log(initialRouteName, 'title');
+  console.log(volunteerId, 'volunteerId');
 
   return (
     <Stack.Navigator
