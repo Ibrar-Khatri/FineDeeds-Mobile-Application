@@ -8,7 +8,7 @@ import {widthPercentageToDP as vw} from '../../../../responsive/responsive';
 const screenWidth = Dimensions.get('window').width;
 
 export default function ProductCard(props) {
-  let {productDetail} = props;
+  const {productDetail} = props;
   return (
     <TouchableOpacity style={style.productCardMainView} activeOpacity={0.5}>
       <RenderS3Image

@@ -1,29 +1,32 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, ScrollView, ImageBackground} from 'react-native';
+import {View, ScrollView, ImageBackground, StyleSheet} from 'react-native';
 import Slick from 'react-native-slick';
+import {useLazyQuery} from '@apollo/client';
 import CustomButton from '../../../components/common/button/button';
 import SideDetailCard from '../../../components/constant/homeScreenComponents/sideDetailCard/sideDetailCard';
 import SliderCard from '../../../components/constant/homeScreenComponents/sliderCard/sliderCard';
-import style from './homeScreenStyle';
 import StoriesCard from '../../../components/common/cards/storiesCard/storiesCard';
 import CardTitle from '../../../components/constant/homeScreenComponents/cardTitle/cardTitle';
-import {useLazyQuery} from '@apollo/client';
+import CustomSpinner from '../../../components/common/spinner/spinner';
+import FlatListComponent from '../../../components/common/flatListComponent/flatListComponent';
+import ActivitiesCard from '../../../components/common/cards/activitiesCard/activitiesCard';
+import ResponsiveText from '../../../components/common/responsiveText/responsiveText';
 import {
   getActivities,
   getVolunteerPublishedStories,
 } from '../../../../graphql/queries';
-import CustomSpinner from '../../../components/common/spinner/spinner';
-import FlatListComponent from '../../../components/common/flatListComponent/flatListComponent';
 import {
   sideDetail1,
   whatDoWeOffer,
   sliderContent,
 } from '../../../shared/helperData/homeScreen';
-import ActivitiesCard from '../../../components/common/cards/activitiesCard/activitiesCard';
-import ResponsiveText from '../../../components/common/responsiveText/responsiveText';
+import {
+  widthPercentageToDP as vw,
+  heightPercentageToDP as vh,
+} from '../../../responsive/responsive';
 
 export default function HomeScreen(props) {
-  let {isUserAuthenticated} = props;
+  const {isUserAuthenticated} = props;
   let [getstories, storiesData] = useLazyQuery(getVolunteerPublishedStories);
   let [getRandomActivities, activitiesData] = useLazyQuery(getActivities);
   let [stories, setStories] = useState();
@@ -165,3 +168,65 @@ export default function HomeScreen(props) {
     </ScrollView>
   );
 }
+
+let style = StyleSheet.create({
+  mainView: {
+    backgroundColor: '#fff',
+  },
+  bodyView: {
+    paddingLeft: 20,
+    paddingRight: 20,
+  },
+  imageStyle: {
+    height: vh(35),
+  },
+  headingAndSubHeadingView: {
+    marginTop: vh(12),
+    marginLeft: 20,
+  },
+  headingStyle: {
+    color: '#fff',
+    fontFamily: 'Montserrat-ExtraBold',
+  },
+  subHeadingStyle: {
+    color: '#fff',
+    fontFamily: 'Montserrat-ExtraBold',
+  },
+  sideDetailCardView: {
+    marginTop: 40,
+  },
+  joinAsNonProfitView: {
+    borderRadius: 10,
+    overflow: 'hidden',
+  },
+  joinAsNonProfittextView: {
+    backgroundColor: '#212529c4',
+    padding: 20,
+  },
+  joinAsNonProfitTitle: {
+    color: '#fff',
+    fontFamily: 'Montserrat-Bold',
+    marginBottom: 15,
+  },
+  joinAsNonProfitText: {
+    color: '#fff',
+    fontFamily: 'Montserrat-Regular',
+    marginBottom: 20,
+  },
+  registerNowButtonView: {
+    width: vw(40),
+  },
+  slickView: {
+    marginTop: 50,
+    height: vh(70),
+  },
+  slickDotStyle: {
+    display: 'none',
+  },
+  activeDotStyle: {
+    display: 'none',
+  },
+  dynamicDataView: {
+    marginBottom: 20,
+  },
+});

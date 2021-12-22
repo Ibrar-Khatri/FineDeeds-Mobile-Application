@@ -1,5 +1,5 @@
 import React from 'react';
-import {FlatList, RefreshControl, ScrollView, StyleSheet} from 'react-native';
+import {FlatList, StyleSheet} from 'react-native';
 
 export default function ListAllItem(props) {
   const {
@@ -10,7 +10,6 @@ export default function ListAllItem(props) {
     ListFooterComponent,
     ListEmptyComponent,
   } = props;
-  console.log(data.length, 'data');
   return (
     <FlatList
       data={data}

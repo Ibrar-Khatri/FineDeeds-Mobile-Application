@@ -1,20 +1,21 @@
 import React, {useState} from 'react';
-import {View, Text, ScrollView} from 'react-native';
+import {View, Text, StyleSheet} from 'react-native';
 import {useFormik} from 'formik';
 import {useToast} from 'native-base';
 import {emailConfirmationValidationSchema} from '../../../shared/validation/authValidation';
-import style from './emailConfirmationStyle';
 import InputFieldsHeader from '../../../components/common/inputFieldsHeader/inputFieldsHeader';
 import InputField from '../../../components/common/inputField/inputField';
 import CustomButton from '../../../components/common/button/button';
 import CustomToast from '../../../components/common/customToast/customToast';
 import {confirm, resendSignUp} from '../../../shared/services/authServices';
 import AuthWrapper from '../../../components/common/authWrapper/authWrapper';
+import {widthPercentageToDP as vw} from '../../../responsive/responsive';
 
 export default function ConfirmationEmail({navigation, route}) {
   const {user} = route.params;
   let [isLoading, setIsLoading] = useState(false);
   let [codeResend, setCodeResend] = useState(false);
+  let [showInvalidInput, setShowInvalidInput] = useState(false);
   let toast = useToast();
 
   const formik = useFormik({
@@ -72,14 +73,7 @@ export default function ConfirmationEmail({navigation, route}) {
         });
     }
   }
-
-  let [showInvalidInput, setShowInvalidInput] = useState(false);
   return (
-    // <View style={style.mianView}>
-    //   <ScrollView>
-
-    //   </ScrollView>
-    // </View>
     <AuthWrapper>
       <InputFieldsHeader title="Confirmation Email" subTitle="Join us now" />
       <View style={style.inputFieldsView}>
@@ -108,3 +102,28 @@ export default function ConfirmationEmail({navigation, route}) {
     </AuthWrapper>
   );
 }
+
+let style = StyleSheet.create({
+  inputFieldsView: {
+    marginTop: 30,
+    marginLeft: vw(7),
+    marginRight: vw(7),
+  },
+  textView: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginTop: 10,
+    marginBottom: 10,
+  },
+  text1: {
+    color: 'black',
+    fontWeight: '300',
+  },
+  text2: {
+    color: '#f06d06',
+    fontSize: vw(4),
+    fontWeight: '300',
+    paddingLeft: 5,
+  },
+});

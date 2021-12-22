@@ -1,8 +1,7 @@
 import React, {useState} from 'react';
-import {View, ScrollView} from 'react-native';
+import {View, StyleSheet} from 'react-native';
 import {useFormik} from 'formik';
 import {useToast} from 'native-base';
-import style from './resetPasswordStyle';
 import {resetPasswordValidationSchema} from '../../../shared/validation/authValidation';
 import CustomButton from '../../../components/common/button/button';
 import InputField from '../../../components/common/inputField/inputField';
@@ -10,9 +9,10 @@ import InputFieldsHeader from '../../../components/common/inputFieldsHeader/inpu
 import {confirmNewPassword} from '../../../shared/services/authServices';
 import CustomToast from '../../../components/common/customToast/customToast';
 import AuthWrapper from '../../../components/common/authWrapper/authWrapper';
+import {widthPercentageToDP as vw} from '../../../responsive/responsive';
 
 export default function ResetPassword({navigation, route}) {
-  let {email} = route.params;
+  const {email} = route.params;
 
   let [showInvalidInput, setShowInvalidInput] = useState(false);
   let [isLoading, setIsLoading] = useState(false);
@@ -46,9 +46,6 @@ export default function ResetPassword({navigation, route}) {
   });
 
   return (
-    // <View style={style.mianView}>
-    //   <ScrollView></ScrollView>
-    // </View>
     <AuthWrapper>
       <InputFieldsHeader
         title="Reset Password"
@@ -89,3 +86,11 @@ export default function ResetPassword({navigation, route}) {
     </AuthWrapper>
   );
 }
+
+let style = StyleSheet.create({
+  inputFieldsView: {
+    marginTop: 30,
+    marginLeft: vw(7),
+    marginRight: vw(7),
+  },
+});

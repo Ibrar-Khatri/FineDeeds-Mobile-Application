@@ -3,7 +3,7 @@ import {Image, ImageBackground, TouchableOpacity} from 'react-native';
 import {_getFileFromS3} from '../../../shared/services/s3Services';
 
 export default function RenderS3Image(props) {
-  let {style, resizeMode, s3Key, onClick, imageUrl, update, children} = props;
+  const {style, resizeMode, s3Key, onClick, imageUrl, update, children} = props;
 
   const [image, setImage] = useState('');
 

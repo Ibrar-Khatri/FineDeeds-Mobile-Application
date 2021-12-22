@@ -7,14 +7,13 @@ import DateTimePicker from 'react-native-modal-datetime-picker';
 import DropShadow from 'react-native-drop-shadow';
 import {
   normalize,
-  widthPercentageToDP as vw,
 } from '../../../responsive/responsive';
 
 import ResponsiveText from '../responsiveText/responsiveText';
 
 export default function DateAndTimePicker(props) {
   let [showDatePicker, setShowDatePicker] = useState(false);
-  let {value, setValue, invalidInput, isCurrent, maximumDate} = props;
+  const {value, setValue, invalidInput, isCurrent, maximumDate} = props;
   function setDate(date) {
     setShowDatePicker(false);
     setValue(moment(date).format('YYYY-MM-DD'));
@@ -57,17 +56,6 @@ export default function DateAndTimePicker(props) {
   );
 }
 
-let inputStyle = {
-  padding: 10,
-  borderRadius: 5,
-  borderWidth: 1,
-  borderColor: '#ced4da',
-  display: 'flex',
-  flexDirection: 'row',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-};
-
 let style = StyleSheet.create({
   inputView: {
     width: '100%',
@@ -101,7 +89,6 @@ let style = StyleSheet.create({
   },
   textStyle: {
     color: '#212529',
-    fontSize: vw(4),
     paddingTop: 7,
     paddingBottom: 7,
   },

@@ -3,7 +3,7 @@ import {Spinner, VStack, HStack, Heading} from 'native-base';
 import {View, StyleSheet} from 'react-native';
 
 export default function CustomSpinner(props) {
-  let {size, color} = props;
+  const {size, color} = props;
   return (
     <View style={style.spinnerStyle}>
       <HStack space={2} alignItems="center">

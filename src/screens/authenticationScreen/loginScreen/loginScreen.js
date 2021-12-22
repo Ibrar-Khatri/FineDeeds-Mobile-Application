@@ -1,16 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import {
-  View,
-  ScrollView,
-  KeyboardAvoidingView,
-  Platform,
-  Keyboard,
-} from 'react-native';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import {View, StyleSheet} from 'react-native';
 import {useFormik} from 'formik';
 import {useToast} from 'native-base';
 import {loginValidationSchema} from '../../../shared/validation/authValidation';
-import style from './loginScreenStyle';
 import InputFieldsHeader from '../../../components/common/inputFieldsHeader/inputFieldsHeader';
 import InputField from '../../../components/common/inputField/inputField';
 import CustomButton from '../../../components/common/button/button';
@@ -20,8 +12,8 @@ import CustomToast from '../../../components/common/customToast/customToast';
 import {getVolunteerById} from '../../../../graphql/queries';
 import {useLazyQuery} from '@apollo/client';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {flexGrow} from 'styled-system';
 import AuthWrapper from '../../../components/common/authWrapper/authWrapper';
+import {widthPercentageToDP as vw} from '../../../responsive/responsive';
 
 export default function LoginScreen({navigation}) {
   let [isLoading, setIsLoading] = useState(false);
@@ -115,3 +107,11 @@ export default function LoginScreen({navigation}) {
     </AuthWrapper>
   );
 }
+
+let style = StyleSheet.create({
+  inputFieldsView: {
+    marginTop: 30,
+    marginLeft: vw(7),
+    marginRight: vw(7),
+  },
+});

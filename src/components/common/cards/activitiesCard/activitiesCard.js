@@ -13,7 +13,7 @@ import {
 
 export default function ActivitiesCard(props) {
   let navigation = useNavigation();
-  let {data} = props;
+  const {data} = props;
   return (
     <TouchableOpacity
       style={style.activitiesMainView}
@@ -152,7 +152,6 @@ let style = StyleSheet.create({
     fontFamily: 'Montserrat-SemiBold',
     color: '#212529',
   },
-
   causes: {
     fontFamily: 'Montserrat-SemiBold',
     color: '#212529',

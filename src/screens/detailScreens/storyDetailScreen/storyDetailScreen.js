@@ -1,7 +1,7 @@
 import {useLazyQuery, useMutation} from '@apollo/client';
 import moment from 'moment';
 import React, {useEffect, useState} from 'react';
-import {ScrollView, TouchableOpacity, View} from 'react-native';
+import {ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import Octicons from 'react-native-vector-icons/Octicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -17,8 +17,11 @@ import RenderS3Image from '../../../components/common/renderS3Image/renderS3Imag
 import ResponsiveText from '../../../components/common/responsiveText/responsiveText';
 import CustomSpinner from '../../../components/common/spinner/spinner';
 import {isLoggedIn} from '../../../shared/services/authServices';
-import style from './storyDetailScreenStyle';
-import {normalize} from '../../../responsive/responsive';
+import {
+  normalize,
+  widthPercentageToDP as vw,
+  heightPercentageToDP as vh,
+} from '../../../responsive/responsive';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {likeStory} from '../../../../graphql/mutations';
 import {Actionsheet, useToast} from 'native-base';
@@ -311,3 +314,151 @@ export default function StoryDetailScreen(props) {
     </ScrollView>
   );
 }
+
+let style = StyleSheet.create({
+  storyDetailMainView: {
+    padding: 10,
+    backgroundColor: '#fff',
+  },
+  storyImage: {
+    height: vw(55),
+    width: '100%',
+    borderRadius: 15,
+    overflow: 'hidden',
+    display: 'flex',
+    alignItems: 'flex-start',
+    justifyContent: 'flex-end',
+  },
+  publishDateStyle: {
+    backgroundColor: '#f06d06',
+    padding: 10,
+    borderRadius: 10,
+    fontFamily: 'Montserrat-Regular',
+    color: '#fff',
+  },
+  storyView: {
+    marginTop: vh(4),
+    borderBottomColor: '#ebebeb',
+    borderBottomWidth: 1,
+    paddingBottom: vh(2),
+    marginBottom: vh(2),
+  },
+  iconView: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignSelf: 'flex-end',
+    width: vw(11),
+    justifyContent: 'space-between',
+    marginBottom: 10,
+  },
+  tagsStyles: {
+    br: {display: 'none'},
+    h1: {
+      fontSize: normalize(18),
+      margin: 0,
+      padding: 0,
+      fontWeight: '400',
+    },
+    h2: {
+      fontSize: normalize(16),
+      margin: 0,
+      padding: 0,
+    },
+    h3: {
+      fontSize: normalize(14),
+      margin: 0,
+      padding: 0,
+    },
+    body: {
+      fontSize: normalize(13),
+      color: '#212529',
+      fontFamily: 'Montserrat-Bold',
+    },
+  },
+  publishView: {
+    borderBottomColor: '#ebebeb',
+    borderBottomWidth: 1,
+    padding: vh(1),
+  },
+  publishedBy: {
+    color: '#212529',
+    fontFamily: 'Montserrat-Bold',
+  },
+  publisherDetailMainView: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: 15,
+  },
+  profilImageAndNameView: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+  },
+  profileImageView: {
+    height: vh(8),
+    width: vh(8),
+    borderRadius: 100,
+  },
+  textView: {
+    marginLeft: 15,
+  },
+  volunName: {
+    color: '#212529',
+    fontFamily: 'Montserrat-SemiBold',
+  },
+  shareSection: {
+    paddingTop: 10,
+    paddingBottom: 10,
+    borderBottomColor: '#ebebeb',
+    borderBottomWidth: 1,
+    paddingBottom: vh(2),
+  },
+  likeView: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  likeLength: {
+    color: '#212529',
+    fontFamily: 'Montserrat-Regular',
+  },
+  likeText: {
+    color: '#212529',
+    fontFamily: 'Montserrat-Regular',
+    textDecorationLine: 'underline',
+  },
+  storiesLength: {
+    color: '#212529',
+    fontFamily: 'Montserrat-Regular',
+    textDecorationLine: 'underline',
+  },
+  orgName: {
+    fontFamily: 'Montserrat-Regular',
+    color: '#212529',
+  },
+  CommentSectionView: {
+    padding: 5,
+    marginBottom: 15,
+  },
+  likeTitle: {
+    fontFamily: 'Montserrat-Bold',
+    color: '#343a40',
+  },
+  likeTitleView: {
+    borderBottomColor: '#ebebeb',
+    borderBottomWidth: 2,
+  },
+  noLikeItem: {
+    justifyContent: 'center',
+  },
+  noLikeYetView: {
+    alignItems: 'center',
+  },
+  noLikeYetTextStyle: {
+    color: '#212529',
+    fontFamily: 'Montserrat-Regular',
+  },
+});

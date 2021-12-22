@@ -1,9 +1,8 @@
 import React, {useState} from 'react';
-import {View, Text, ScrollView} from 'react-native';
+import {View, Text, ScrollView, StyleSheet} from 'react-native';
 import {useFormik} from 'formik';
 import {useToast} from 'native-base';
 import {forgotPasswordValidationSchema} from '../../../shared/validation/authValidation';
-import style from './forgotPasswordScreenStyle';
 import InputFieldsHeader from '../../../components/common/inputFieldsHeader/inputFieldsHeader';
 import InputField from '../../../components/common/inputField/inputField';
 import CustomButton from '../../../components/common/button/button';
@@ -11,6 +10,7 @@ import NavigationLink from '../../../components/common/navigationLink/navigation
 import {forgotPassword} from '../../../shared/services/authServices';
 import CustomToast from '../../../components/common/customToast/customToast';
 import AuthWrapper from '../../../components/common/authWrapper/authWrapper';
+import {widthPercentageToDP as vw} from '../../../responsive/responsive';
 
 export default function ForgotPasswordScreen({navigation}) {
   let [isLoading, setIsLoading] = useState(false);
@@ -44,14 +44,6 @@ export default function ForgotPasswordScreen({navigation}) {
   });
 
   return (
-    // <View style={style.mianView}>
-    //   <ScrollView>
-    //     <InputFieldsHeader
-    //       title="Forgot Password"
-    //       subTitle="Please check your email for password reset code"
-    //     />
-    //   </ScrollView>
-    // </View>
     <AuthWrapper>
       <InputFieldsHeader
         title="Forgot Password"
@@ -82,3 +74,11 @@ export default function ForgotPasswordScreen({navigation}) {
     </AuthWrapper>
   );
 }
+
+let style = StyleSheet.create({
+  inputFieldsView: {
+    marginTop: 30,
+    marginLeft: vw(7),
+    marginRight: vw(7),
+  },
+});

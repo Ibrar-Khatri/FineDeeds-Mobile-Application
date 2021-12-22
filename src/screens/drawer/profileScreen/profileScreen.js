@@ -1,41 +1,52 @@
 import React, {useEffect, useState} from 'react';
-import {ScrollView, TouchableOpacity, View, Image} from 'react-native';
+import {
+  ScrollView,
+  TouchableOpacity,
+  View,
+  Image,
+  Dimensions,
+  StyleSheet,
+} from 'react-native';
 import Iocn1 from 'react-native-vector-icons/Entypo';
 import Icon2 from 'react-native-vector-icons/AntDesign';
+import {useLazyQuery} from '@apollo/client';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import CustomButton from '../../../components/common/button/button';
 import ProfileScreenCardWrapper from '../../../components/constant/profileScreenComponents/profileScreenCardWrapper/profileScreenCardWrapper';
 import ItemsSelectorCard from '../../../components/constant/profileScreenComponents/itemsSelectorCard/itemsSelectorCard';
 import ProductCard from '../../../components/common/cards/productCard/productCard';
-import style from './profileScreenStyle';
 import CustomSpinner from '../../../components/common/spinner/spinner';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import VolunteeringExperience from '../../../components/constant/profileScreenComponents/volunteeringExperience/volunteeringExperience';
 import JourneyMap from '../../../components/constant/profileScreenComponents/journeyMap/journeyMap';
-import {useLazyQuery} from '@apollo/client';
+import RenderS3Image from '../../../components/common/renderS3Image/renderS3Image';
+import ImagePickerActionSheet from '../../../components/common/imagePickerActionSheet/imagePickerActionSheet';
+import FlatListComponent from '../../../components/common/flatListComponent/flatListComponent';
+import ResponsiveText from '../../../components/common/responsiveText/responsiveText';
+import ProfileScreenCardsHeader from '../../../components/constant/profileScreenComponents/cardHeader/cardHeader';
+import ActivityCard from '../../../components/constant/profileScreenComponents/activityCard/activityCard';
 import {
   getActivities,
   getMyProducts,
   getVolunteerPublishedStories,
 } from '../../../../graphql/queries';
-import RenderS3Image from '../../../components/common/renderS3Image/renderS3Image';
 import {
   _putFileToS3,
   _removeFileFromS3,
 } from '../../../shared/services/s3Services';
-import ImagePickerActionSheet from '../../../components/common/imagePickerActionSheet/imagePickerActionSheet';
 import {
   Permission,
   PERMISSION_TYPE,
 } from '../../../appPermissions/appPermissions';
-import FlatListComponent from '../../../components/common/flatListComponent/flatListComponent';
-import {heightPercentageToDP as vh} from '../../../responsive/responsive';
-import ResponsiveText from '../../../components/common/responsiveText/responsiveText';
+import {
+  heightPercentageToDP as vh,
+  widthPercentageToDP as vw,
+} from '../../../responsive/responsive';
 import {isLoggedIn} from '../../../shared/services/authServices';
-import ProfileScreenCardsHeader from '../../../components/constant/profileScreenComponents/cardHeader/cardHeader';
-import ActivityCard from '../../../components/constant/profileScreenComponents/activityCard/activityCard';
+
+const screenWidth = Dimensions.get('window').width;
 
 export default function ProfileScreen(props) {
-  let {route, navigation} = props;
+  const {route, navigation} = props;
   let [isActionSheetOpen, setIsActionSheetOpen] = useState(false);
   let [isLoading, setIsLoading] = useState(true);
   let [volunteer, setVolunteer] = useState();
@@ -322,3 +333,86 @@ export default function ProfileScreen(props) {
     </ScrollView>
   );
 }
+
+let style = StyleSheet.create({
+  profileView: {
+    backgroundColor: '#fff',
+    padding: 20,
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  backgroungImage: {
+    height: vw(45),
+    width: vw(95),
+    borderRadius: 20,
+    overflow: 'hidden',
+  },
+  profileImageView: {
+    height: vw(29),
+    width: vw(29),
+    height: vw(screenWidth < 480 ? 28 : 22),
+    width: vw(screenWidth < 480 ? 28 : 22),
+    marginTop: vh(-10),
+    backgroundColor: '#fff',
+    borderRadius: 100,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  profileImageStyle: {
+    height: vw(screenWidth < 480 ? 25 : 20),
+    width: vw(screenWidth < 480 ? 25 : 20),
+    borderRadius: 100,
+    overflow: 'hidden',
+    borderColor: '#c3c3c3',
+    borderWidth: 1,
+  },
+  userNameStyle: {
+    color: '#212529',
+    fontFamily: 'Montserrat-SemiBold',
+  },
+  userLocationStyle: {
+    color: '#212529',
+    fontFamily: 'Montserrat-Regular',
+  },
+  userFollowersView: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    width: vw(80),
+    marginTop: 20,
+  },
+  userFollower: {
+    alignItems: 'center',
+  },
+  userFollowerText: {
+    color: '#212529',
+    fontFamily: 'Montserrat-SemiBold',
+  },
+  buttonView: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    width: vw(45),
+    marginTop: 20,
+  },
+  aboutText: {
+    fontFamily: 'Montserrat-Regular',
+    color: '#212529',
+    marginBottom: 15,
+  },
+  timeLineHeader: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginBottom: 22,
+  },
+  timeLineHeaderTitle: {
+    color: '#2b2b2b',
+    fontFamily: 'Poppins-SemiBold',
+  },
+  focusedHeaderTimeTitle: {
+    color: '#f06d06',
+    borderBottomColor: '#f06d06',
+    borderBottomWidth: 1,
+  },
+});

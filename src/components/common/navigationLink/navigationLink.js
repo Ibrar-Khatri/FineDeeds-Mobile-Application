@@ -5,7 +5,7 @@ import ResponsiveText from '../responsiveText/responsiveText';
 import {widthPercentageToDP as vw} from '../../../responsive/responsive';
 
 export default function NavigationLink(props) {
-  let {text, displayName, screenName, navigation, routeName} = props;
+  const {text, displayName, screenName, navigation, routeName} = props;
   const routes = useNavigationState(state => state);
 
   function onPress() {

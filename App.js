@@ -1,19 +1,12 @@
-import React, {useEffect, useState} from 'react';
-import {NavigationContainer} from '@react-navigation/native';
-import {NativeBaseProvider} from 'native-base';
+import React from 'react';
 import Amplify from 'aws-amplify';
 import awsConfig from './aws_credentials/awsConfig';
-import DrawerNavigation from './src/screens/drawer/drawer';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import AuthenticationScreen from './src/screens/authenticationScreen/authentication';
 import {ApolloProvider} from '@apollo/client';
 import {FinedeedsAppClient} from './aws_credentials/graphql-client.js';
 import {LogBox} from 'react-native';
-import DetailScreen from './src/screens/detailScreens/detailScreens';
-import ListAllScreen from './src/screens/listAllScreen/listAllScreen';
+import AppContainer from './src/components/common/appContainer/appContainer';
 
 Amplify.configure({...awsConfig});
-const Stack = createNativeStackNavigator();
 
 LogBox.ignoreLogs([
   'VirtualizedLists should never be nested',
@@ -23,19 +16,7 @@ LogBox.ignoreLogs([
 const App = () => {
   return (
     <ApolloProvider client={FinedeedsAppClient}>
-      <NativeBaseProvider>
-        <NavigationContainer>
-          <Stack.Navigator screenOptions={{headerShown: false}}>
-            <Stack.Screen name="drawer" component={DrawerNavigation} />
-            <Stack.Screen
-              name="authentication-screen"
-              component={AuthenticationScreen}
-            />
-            <Stack.Screen name="detail-screen" component={DetailScreen} />
-            <Stack.Screen name="listAll-screen" component={ListAllScreen} />
-          </Stack.Navigator>
-        </NavigationContainer>
-      </NativeBaseProvider>
+      <AppContainer />
     </ApolloProvider>
   );
 };

@@ -1,13 +1,11 @@
-import React, {useEffect, useState} from 'react';
-import {TouchableOpacity, View, FlatList} from 'react-native';
+import React, {useState} from 'react';
+import {TouchableOpacity, View, StyleSheet} from 'react-native';
 import {useToast} from 'native-base';
 import {useMutation} from '@apollo/client';
-
 import CustomCheckBox from '../../../common/customCheckBox/customCheckBox';
 import CustomToast from '../../../common/customToast/customToast';
 import ModalWrapper from '../../../common/modalWrapper/modalWrapper';
 import ProfileScreenCardWrapper from '../profileScreenCardWrapper/profileScreenCardWrapper';
-import style from './itemsSelectorCardStyle';
 import {
   updateVolunteerCauses,
   updateVolunteerSkills,
@@ -220,3 +218,20 @@ export default function ItemsSelectorCard(props) {
     </ProfileScreenCardWrapper>
   );
 }
+
+let style = StyleSheet.create({
+  itemMainView: {
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+  checkBoxAndTextView: {
+    display: 'flex',
+    flexDirection: 'row',
+    margin: 10,
+    alignItems: 'center',
+  },
+  checkBoxText: {
+    color: 'rgba(0,0,0,.6)',
+  },
+});

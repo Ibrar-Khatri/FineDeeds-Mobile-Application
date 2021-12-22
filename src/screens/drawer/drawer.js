@@ -1,15 +1,17 @@
 import React, {useEffect, useState} from 'react';
-import {Image} from 'react-native';
+import {Dimensions, Image, Platform, StyleSheet} from 'react-native';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import HomeScreen from './homeScreen/homeScreeen';
 import DrawerContent from '../../components/constant/drawerContent/drawerContent';
 import ProfileScreen from './profileScreen/profileScreen';
-import style from './drawerStyle';
 import {isLoggedIn} from '../../shared/services/authServices';
 import StaticScreens from './staticScreen/staticScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import About from './staticScreen/about/about';
-import HowItWorks from './staticScreen/howItWorks/howItWorks';
+import {
+  heightPercentageToDP as vh,
+  normalize,
+} from '../../responsive/responsive';
+const screenWidth = Dimensions.get('window').width;
 
 const Drawer = createDrawerNavigator();
 
@@ -43,9 +45,9 @@ export default function DrawerNavigation({navigation}) {
           />
         ),
         drawerType: 'front',
-        drawerActiveTintColor: '#f06d06',
-        drawerInactiveTintColor: '#212529',
-        drawerActiveBackgroundColor: '#fff',
+        drawerActiveTintColor: style.drawerActiveTintColor,
+        drawerInactiveTintColor: style.drawerInactiveTintColor,
+        drawerActiveBackgroundColor: style.drawerActiveBackgroundColor,
       }}
       backBehavior="history"
       drawerContent={props => (
@@ -73,3 +75,30 @@ export default function DrawerNavigation({navigation}) {
     </Drawer.Navigator>
   );
 }
+
+let style = StyleSheet.create({
+  headerTitleStyle: {
+    fontFamily: 'Merriweather-Bold',
+    fontSize: normalize(16),
+  },
+  headerStyle: {
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 9,
+    },
+    shadowOpacity: Platform.OS === 'ios' ? 0.2 : 0.48,
+    shadowRadius: 11.95,
+    elevation: 18,
+    height: screenWidth < 480 ? 56 : 70,
+  },
+  finededLogo: {
+    marginRight: 20,
+    height: vh(5),
+    width: vh(5),
+  },
+  drawerActiveTintColor: '#f06d06',
+  drawerInactiveTintColor: '#212529',
+  drawerActiveBackgroundColor: '#fff',
+  headerTintColor: '#212529',
+});

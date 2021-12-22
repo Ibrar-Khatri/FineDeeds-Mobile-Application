@@ -9,7 +9,7 @@ import {useNavigation} from '@react-navigation/native';
 import {heightPercentageToDP as vh} from '../../../responsive/responsive';
 
 export default function Participant(props) {
-  let {likeData} = props;
+  const {likeData} = props;
   let navigation = useNavigation();
   let [getVolunteer, volunteerData] = useLazyQuery(getVolunteerById);
 
@@ -94,7 +94,6 @@ let style = StyleSheet.create({
   },
   comment: {
     marginTop: vh(1),
-    // marginBottom: vh(1),
     color: '#212529',
     marginLeft: 7,
   },

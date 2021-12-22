@@ -1,8 +1,11 @@
 import {View} from 'native-base';
 import React from 'react';
-import {Image, ScrollView, Text} from 'react-native';
+import {Image, ScrollView, StyleSheet, Text} from 'react-native';
 import ResponsiveText from '../../../../components/common/responsiveText/responsiveText';
-import style from './aboutStyle';
+import {
+  heightPercentageToDP as vh,
+  widthPercentageToDP as vw,
+} from '../../../../responsive/responsive';
 
 export default function About() {
   return (
@@ -76,3 +79,42 @@ export default function About() {
     </ScrollView>
   );
 }
+
+let contentText = {
+  color: '#848383',
+};
+
+let style = StyleSheet.create({
+  aboutMainView: {
+    backgroundColor: '#fff',
+  },
+  imageStyle: {
+    height: vw(60),
+    alignSelf: 'center',
+    marginTop: 30,
+  },
+  titleView: {
+    height: vh(15),
+    backgroundColor: '#fffaf4',
+    justifyContent: 'center',
+  },
+  titleText: {
+    color: '#212529',
+    textAlign: 'center',
+    fontFamily: 'Merriweather-Black',
+  },
+  contentView: {
+    margin: 30,
+  },
+  contentParaView: {
+    marginTop: 25,
+  },
+  contentText: {
+    ...contentText,
+    fontFamily: 'Montserrat-Regular',
+  },
+  higlightedText: {
+    ...contentText,
+    fontFamily: 'Montserrat-Bold',
+  },
+});

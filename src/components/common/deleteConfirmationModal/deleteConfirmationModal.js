@@ -3,16 +3,21 @@ import React from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import Modal from 'react-native-modal';
 import Icon from 'react-native-vector-icons/AntDesign';
+import ResponsiveText from '../../../components/common/responsiveText/responsiveText';
 import {
   heightPercentageToDP as vh,
   widthPercentageToDP as vw,
 } from '../../../responsive/responsive';
 
 export default function DeleteConfirmationModal(props) {
-  let {title, isModalOpen, setIsModalOpen, confrimDelete, isLoading} = props;
-  const toggleModal = () => {
-    setIsModalOpen(!isModalOpen);
-  };
+  const {
+    title,
+    isModalOpen,
+    setIsModalOpen,
+    confrimDelete,
+    isLoading,
+    subTitle,
+  } = props;
   return (
     <Modal
       isVisible={isModalOpen}
@@ -22,27 +27,34 @@ export default function DeleteConfirmationModal(props) {
       onBackdropPress={() => setIsModalOpen(false)}>
       <View style={style.modalMainView}>
         <View style={style.modalHeaderView}>
-          <Text style={style.titleStyle}>Delete</Text>
-          <TouchableOpacity onPress={toggleModal}>
-            <Icon name="close" color="#000" size={vh(3)} />
-          </TouchableOpacity>
+          <ResponsiveText size={16} style={style.titleStyle}>
+            {title}
+          </ResponsiveText>
         </View>
-        <Text style={style.bodyText}>
-          Are you sure you want to delete this experience?
-        </Text>
+        <ResponsiveText size={12} style={style.bodyText}>
+          {subTitle}
+        </ResponsiveText>
         <View style={style.modalFooter}>
           <Button
             background="#fff"
             style={style.buttonView}
             onPress={() => setIsModalOpen(false)}>
-            <Text style={{...style.buttonText, color: '#212529'}}>Cancel</Text>
+            <ResponsiveText
+              size={12}
+              style={{...style.buttonText, color: '#212529'}}>
+              Cancel
+            </ResponsiveText>
           </Button>
           <Button
             background="#e82727"
             style={style.buttonView}
             onPress={confrimDelete}
             isLoading={isLoading}>
-            <Text style={{...style.buttonText, color: '#fff'}}>Delete</Text>
+            <ResponsiveText
+              size={12}
+              style={{...style.buttonText, color: '#fff'}}>
+              Delete
+            </ResponsiveText>
           </Button>
         </View>
       </View>
@@ -70,21 +82,19 @@ let style = StyleSheet.create({
     backgroundColor: '#fff',
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
     alignItems: 'center',
-    padding: 15,
-    borderBottomColor: '#212529',
-    borderBottomWidth: 1,
+    padding: 12,
   },
   titleStyle: {
     color: '#212529',
     fontFamily: 'Montserrat-SemiBold',
-    fontWeight: '700',
     fontSize: vw(5),
   },
   buttonView: {
     borderColor: '#ccc',
     borderWidth: 1,
+    marginLeft: 10,
   },
   buttonText: {
     fontFamily: 'Montserrat-Regular',
@@ -94,15 +104,15 @@ let style = StyleSheet.create({
   bodyText: {
     color: '#212529',
     fontSize: vw(3.3),
-    padding: 15,
+    paddingLeft: 12,
+    paddingRight: 12,
   },
   modalFooter: {
-    paddingTop: 8,
+    paddingTop: 15,
     paddingBottom: 8,
     paddingRight: 20,
-    paddingLeft: 20,
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-end',
   },
 });

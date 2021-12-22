@@ -1,18 +1,17 @@
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {Image} from 'react-native';
+import {Image, StyleSheet} from 'react-native';
 import LoginScreen from './loginScreen/loginScreen';
 import SignupScreen from './signupScreen/signupScreen';
 import ForgotPasswordScreen from './forgotPasswordScreen/forgotPasswordScreen';
 import ConfirmationEmail from './emailConfirmation/emailConfirmation';
 import ResetPassword from './resetPassword/resetPassword';
 import TermsAndCondition from './termsAndCondition/termsAndCondition';
-import style from './authenticationScreenStyle';
 
 const Stack = createNativeStackNavigator();
 
 export default function AuthenticationScreen({route}) {
-  let {initialRouteName} = route.params;
+  const {initialRouteName} = route.params;
 
   return (
     <Stack.Navigator
@@ -41,3 +40,14 @@ export default function AuthenticationScreen({route}) {
     </Stack.Navigator>
   );
 }
+
+let style = StyleSheet.create({
+  headerTitleStyle: {
+    color: 'black',
+    fontFamily: 'Merriweather-Bold',
+  },
+  headerRightIcon: {
+    height: 30,
+    width: 35,
+  },
+});

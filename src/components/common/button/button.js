@@ -1,6 +1,6 @@
 import React from 'react';
+import {StyleSheet} from 'react-native';
 import {Button} from 'native-base';
-import {StyleSheet, Text} from 'react-native';
 import ResponsiveText from '../responsiveText/responsiveText';
 
 export default function CustomButton(props) {

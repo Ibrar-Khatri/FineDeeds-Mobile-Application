@@ -1,7 +1,18 @@
-import {View} from 'native-base';
 import React from 'react';
-import style from './profileScreenCardWrapperStyle';
+import {View, StyleSheet} from 'react-native';
 
 export default function ProfileScreenCardWrapper(props) {
-  return <View style={style.cardView}>{props.children}</View>;
+  const {children} = props;
+  return <View style={style.cardView}>{children}</View>;
 }
+
+let style = StyleSheet.create({
+  cardView: {
+    display: 'flex',
+    flexDirection: 'column',
+    backgroundColor: '#fff',
+    marginBottom: 20,
+    padding: 20,
+    borderRadius: 10,
+  },
+});

@@ -3,7 +3,7 @@ import {StyleSheet} from 'react-native';
 import ResponsiveText from '../responsiveText/responsiveText';
 
 export default function InvalidInput(props) {
-  let {error} = props;
+  const {error} = props;
   return (
     <ResponsiveText style={style.invalidInput} size={10}>
       {error}

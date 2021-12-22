@@ -12,7 +12,7 @@ import {
 import {uploadImageInS3Bucket} from '../../../shared/services/helper';
 
 export default function ImagePickerActionSheet(props) {
-  let {
+  const {
     isActionSheetOpen,
     setIsActionSheetOpen,
     option,

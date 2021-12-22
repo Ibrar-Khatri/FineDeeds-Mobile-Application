@@ -1,27 +1,35 @@
 import React, {useEffect, useState} from 'react';
 import {useLazyQuery} from '@apollo/client';
 import {useNavigation} from '@react-navigation/native';
-import {ScrollView, Text, TouchableOpacity, View} from 'react-native';
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/Entypo';
 import {getVolunteerById} from '../../../../graphql/queries';
 import InfoCard from '../../../components/common/cards/infoCard/infoCard';
 import RenderS3Image from '../../../components/common/renderS3Image/renderS3Image';
 import ResponsiveText from '../../../components/common/responsiveText/responsiveText';
 import CustomButton from '../../../components/common/button/button';
-import {heightPercentageToDP as vh} from '../../../responsive/responsive';
+import {
+  heightPercentageToDP as vh,
+  widthPercentageToDP as vw,
+} from '../../../responsive/responsive';
 import {
   newRenderDate,
   renderEndTime,
   renderTime,
 } from '../../../shared/services/helper';
-import style from './activityDetailScreenStyle';
 import {isLoggedIn} from '../../../shared/services/authServices';
 import Tag from '../../../components/common/tag/tag';
 import CommentSection from '../../../components/common/commentSection/comment/commentSection';
 import CustomSpinner from '../../../components/common/spinner/spinner';
 
 export default function ActivityDetailScreen(props) {
-  let {data} = props;
+  const {data} = props;
   let [getVolunteer, volunteerData] = useLazyQuery(getVolunteerById);
   let [isUserAuthenticated, setIsUserAuthenticated] = useState(false);
   let navigation = useNavigation();
@@ -156,3 +164,118 @@ export default function ActivityDetailScreen(props) {
     </ScrollView>
   );
 }
+
+let style = StyleSheet.create({
+  activityDetailScreenView: {
+    backgroundColor: '#fff',
+  },
+  imageStyle: {
+    height: vw(55),
+    width: '100%',
+    borderRadius: 10,
+  },
+  descriptionTitle: {
+    color: '#f06d06',
+    fontFamily: 'Montserrat-SemiBold',
+    padding: 15,
+    borderBottomColor: '#f06d06',
+    borderBottomWidth: 2,
+    display: 'flex',
+    alignSelf: 'flex-start',
+    textAlign: 'center',
+    marginBottom: 15,
+  },
+  activityBodyView: {
+    padding: 15,
+    borderTopColor: '#ebebeb',
+    borderTopWidth: 2,
+    width: '100%',
+  },
+  descriptionStyle: {
+    fontFamily: 'Montserrat-Regular',
+    color: 'rgba(0,0,0,.7)',
+    marginBottom: 15,
+  },
+  locationView: {
+    backgroundColor: '#ffefe2',
+    padding: vw(3),
+    borderRadius: 10,
+    marginBottom: 15,
+  },
+  locationTitle: {
+    fontFamily: 'Montserrat-Bold',
+    color: '#f06d06',
+  },
+  address: {
+    color: '#212529',
+    textAlign: 'center',
+  },
+  addressAndIconView: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  inforCardView: {
+    marginBottom: 20,
+  },
+  profileView: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 15,
+  },
+  profileImageView: {
+    borderColor: '#f06d06',
+    borderWidth: 3,
+    height: vw(16),
+    width: vw(16),
+    borderRadius: 100,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  profileImage: {
+    height: vw(15),
+    width: vw(15),
+    borderRadius: 100,
+    overflow: 'hidden',
+  },
+  volunteerNameView: {
+    marginLeft: 15,
+  },
+  volunteerName: {
+    fontFamily: 'Montserrat-SemiBold',
+    color: '#212529',
+  },
+  volunteerHost: {
+    fontFamily: 'Montserrat-Regular',
+    color: '#888',
+  },
+  participantView: {marginTop: 15, display: 'flex', alignItems: 'center'},
+  participantTitle: {
+    fontFamily: 'Montserrat-Bold',
+    color: '#212529',
+    borderColor: '#ebebeb',
+    borderBottomWidth: 2,
+    padding: vw(3),
+    width: '100%',
+  },
+  noParticipantText: {
+    marginTop: 15,
+    fontFamily: 'Montserrat-Regular',
+    color: '#212529',
+  },
+  causesTitle: {
+    fontFamily: 'Montserrat-Bold',
+    color: '#212529',
+  },
+  causesItemView: {
+    marginTop: 15,
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    width: '85%',
+    alignSelf: 'center',
+    justifyContent: 'center',
+  },
+});

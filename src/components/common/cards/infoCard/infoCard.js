@@ -2,12 +2,11 @@ import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import ResponsiveText from '../../responsiveText/responsiveText';
 import {
-  heightPercentageToDP as vh,
   widthPercentageToDP as vw,
 } from '../../../../responsive/responsive';
 
 export default function InfoCard(props) {
-  let {title, subTitle, styles} = props;
+  const {title, subTitle, styles} = props;
   return (
     <View style={[style.infoCardView, styles]}>
       <ResponsiveText size={13} style={style.infoTitle}>

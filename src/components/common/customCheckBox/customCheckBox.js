@@ -4,7 +4,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {heightPercentageToDP as vh, normalize} from '../../../responsive/responsive';
 
 export default function CustomCheckBox(props) {
-  let {isChecked, callOnPress} = props;
+  const {isChecked, callOnPress} = props;
 
   return (
     <TouchableOpacity

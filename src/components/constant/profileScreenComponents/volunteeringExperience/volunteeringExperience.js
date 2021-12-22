@@ -1,9 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import {TouchableOpacity, View} from 'react-native';
+import {ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {useFormik} from 'formik';
 import CustomButton from '../../../common/button/button';
 import ModalWrapper from '../../../common/modalWrapper/modalWrapper';
-import style from './volunteeringExperienceStyle';
 import InputField from '../../../common/inputField/inputField';
 import DateAndTimePicker from '../../../common/datePicker/datePicker';
 import CustomCheckBox from '../../../common/customCheckBox/customCheckBox';
@@ -18,13 +17,14 @@ import {getVolunteerProExperience} from '../../../../../graphql/queries';
 import EmptyDataComponent from '../../../common/emptyDataComponent/emptyDataComponent';
 import CustomSpinner from '../../../common/spinner/spinner';
 import DeleteConfirmationModal from '../../../common/deleteConfirmationModal/deleteConfirmationModal';
-import {useToast} from 'native-base';
+import {Actionsheet, KeyboardAvoidingView, useToast} from 'native-base';
 import CustomToast from '../../../common/customToast/customToast';
 import ProExperinceCard from './proExperinceCard/proExperinceCard';
 import ResponsiveText from '../../../common/responsiveText/responsiveText';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 export default function VolunteeringExperience(props) {
-  let {volunteer, authorized} = props;
+  const {volunteer, authorized} = props;
   let [isModalOpen, setIsModalOpen] = useState(false);
   let [confirmationModal, setConfirmationModal] = useState(false);
   let [loading, setLoading] = useState(true);
@@ -156,6 +156,7 @@ export default function VolunteeringExperience(props) {
   function closeModal() {
     setIsModalOpen(false);
     setProExperienceId('');
+    formik.handleReset();
   }
   return (
     <View style={style.mainViewVolunteeringExp}>
@@ -190,100 +191,198 @@ export default function VolunteeringExperience(props) {
         </>
       )}
       {isModalOpen && (
-        <ModalWrapper
-          onBackButtonPress={closeModal}
-          onBackdropPress={closeModal}
-          closeModalIcon={closeModal}
-          isModalOpen={isModalOpen}
-          setIsModalOpen={setIsModalOpen}
-          title="Professional Experience"
-          buttonText={proExperienceId ? 'Update Experience' : 'Add Experience'}
-          isLoading={isLoading}
-          onClickFun={() => {
-            setShowInvalidInput(true);
-            formik.handleSubmit();
-          }}
-          isLoading={isLoading}>
-          <View style={style.modalMainView}>
-            <View>
-              <ResponsiveText style={style.titleStyle} size={12}>
-                Job Title
-              </ResponsiveText>
-              <InputField
-                type="text"
-                value={formik.values.jobTitle}
-                setValue={formik.handleChange('jobTitle')}
-                invalidInput={showInvalidInput && formik.errors.jobTitle}
-              />
-            </View>
-            <View>
-              <ResponsiveText style={style.titleStyle} size={12}>
-                Organisation Name
-              </ResponsiveText>
-              <InputField
-                type="text"
-                value={formik.values.orgName}
-                setValue={formik.handleChange('orgName')}
-                invalidInput={showInvalidInput && formik.errors.orgName}
-              />
-            </View>
-            <View>
-              <ResponsiveText style={style.titleStyle} size={12}>
-                From
-              </ResponsiveText>
-              <DateAndTimePicker
-                value={formik.values.fromDate}
-                setValue={formik.handleChange('fromDate')}
-                invalidInput={showInvalidInput && formik.errors.fromDate}
-                disabled={false}
-                maximumDate={new Date()}
-              />
-            </View>
-            <View>
-              <ResponsiveText style={style.titleStyle} size={12}>
-                To
-              </ResponsiveText>
-              <DateAndTimePicker
-                value={formik.values.endDate}
-                setValue={formik.handleChange('endDate')}
-                invalidInput={showInvalidInput && formik.errors.endDate}
-                isCurrent={formik.values.isCurrent}
-                maximumDate={new Date()}
-              />
-            </View>
-            <TouchableOpacity
-              style={style.checkBoxAndTextView}
-              onPress={onPressIsCurrent}
-              activeOpacity={1}>
-              <CustomCheckBox
-                isChecked={formik.values.isCurrent}
-                callOnPress={onPressIsCurrent}
-              />
-              <ResponsiveText style={style.checkBoxText} size={12}>
-                {' '}
-                I currently work here
-              </ResponsiveText>
-            </TouchableOpacity>
-            <View>
-              <ResponsiveText style={style.titleStyle} size={12}>
-                Description
-              </ResponsiveText>
-              <InputField
-                type="text"
-                value={formik.values.description}
-                setValue={formik.handleChange('description')}
-                invalidInput={showInvalidInput && formik.errors.description}
-                multiline={true}
-                maxLength={300}
-              />
-              <ResponsiveText
-                size={11}
-                style={
-                  style.descriptionLengthStyle
-                }>{`${formik.values.description.length}/300`}</ResponsiveText>
-            </View>
-          </View>
-        </ModalWrapper>
+        <Actionsheet
+          isOpen={isModalOpen}
+          onClose={setIsModalOpen}
+          hideDragIndicator={false}>
+          <Actionsheet.Content>
+            <KeyboardAvoidingView
+              h={{
+                base: '400px',
+                lg: 'auto',
+              }}
+              behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+              <ScrollView>
+                <View style={style.modalMainView}>
+                  <View>
+                    <ResponsiveText style={style.titleStyle} size={12}>
+                      Job Title
+                    </ResponsiveText>
+                    <InputField
+                      type="text"
+                      value={formik.values.jobTitle}
+                      setValue={formik.handleChange('jobTitle')}
+                      invalidInput={showInvalidInput && formik.errors.jobTitle}
+                    />
+                  </View>
+                  <View>
+                    <ResponsiveText style={style.titleStyle} size={12}>
+                      Organisation Name
+                    </ResponsiveText>
+                    <InputField
+                      type="text"
+                      value={formik.values.orgName}
+                      setValue={formik.handleChange('orgName')}
+                      invalidInput={showInvalidInput && formik.errors.orgName}
+                    />
+                  </View>
+                  <View>
+                    <ResponsiveText style={style.titleStyle} size={12}>
+                      From
+                    </ResponsiveText>
+                    <DateAndTimePicker
+                      value={formik.values.fromDate}
+                      setValue={formik.handleChange('fromDate')}
+                      invalidInput={showInvalidInput && formik.errors.fromDate}
+                      disabled={false}
+                      maximumDate={new Date()}
+                    />
+                  </View>
+                  <View>
+                    <ResponsiveText style={style.titleStyle} size={12}>
+                      To
+                    </ResponsiveText>
+                    <DateAndTimePicker
+                      value={formik.values.endDate}
+                      setValue={formik.handleChange('endDate')}
+                      invalidInput={showInvalidInput && formik.errors.endDate}
+                      isCurrent={formik.values.isCurrent}
+                      maximumDate={new Date()}
+                    />
+                  </View>
+                  <TouchableOpacity
+                    style={style.checkBoxAndTextView}
+                    onPress={onPressIsCurrent}
+                    activeOpacity={1}>
+                    <CustomCheckBox
+                      isChecked={formik.values.isCurrent}
+                      callOnPress={onPressIsCurrent}
+                    />
+                    <ResponsiveText style={style.checkBoxText} size={12}>
+                      {' '}
+                      I currently work here
+                    </ResponsiveText>
+                  </TouchableOpacity>
+                  <View>
+                    <ResponsiveText style={style.titleStyle} size={12}>
+                      Description
+                    </ResponsiveText>
+                    <InputField
+                      type="text"
+                      value={formik.values.description}
+                      setValue={formik.handleChange('description')}
+                      invalidInput={
+                        showInvalidInput && formik.errors.description
+                      }
+                      multiline={true}
+                      maxLength={300}
+                    />
+                    <ResponsiveText
+                      size={11}
+                      style={
+                        style.descriptionLengthStyle
+                      }>{`${formik.values.description.length}/300`}</ResponsiveText>
+                  </View>
+                </View>
+                <CustomButton buttonText={'buttonText'} />
+              </ScrollView>
+            </KeyboardAvoidingView>
+          </Actionsheet.Content>
+        </Actionsheet>
+        // <ModalWrapper
+        //   onBackButtonPress={closeModal}
+        //   onBackdropPress={closeModal}
+        //   closeModalIcon={closeModal}
+        //   isModalOpen={isModalOpen}
+        //   setIsModalOpen={setIsModalOpen}
+        //   title="Professional Experience"
+        //   buttonText={proExperienceId ? 'Update Experience' : 'Add Experience'}
+        //   isLoading={isLoading}
+        //   onClickFun={() => {
+        //     setShowInvalidInput(true);
+        //     formik.handleSubmit();
+        //   }}
+        //   isLoading={isLoading}>
+        //   <View style={style.modalMainView}>
+        //     <View>
+        //       <ResponsiveText style={style.titleStyle} size={12}>
+        //         Job Title
+        //       </ResponsiveText>
+        //       <InputField
+        //         type="text"
+        //         value={formik.values.jobTitle}
+        //         setValue={formik.handleChange('jobTitle')}
+        //         invalidInput={showInvalidInput && formik.errors.jobTitle}
+        //       />
+        //     </View>
+        //     <View>
+        //       <ResponsiveText style={style.titleStyle} size={12}>
+        //         Organisation Name
+        //       </ResponsiveText>
+        //       <InputField
+        //         type="text"
+        //         value={formik.values.orgName}
+        //         setValue={formik.handleChange('orgName')}
+        //         invalidInput={showInvalidInput && formik.errors.orgName}
+        //       />
+        //     </View>
+        //     <View>
+        //       <ResponsiveText style={style.titleStyle} size={12}>
+        //         From
+        //       </ResponsiveText>
+        //       <DateAndTimePicker
+        //         value={formik.values.fromDate}
+        //         setValue={formik.handleChange('fromDate')}
+        //         invalidInput={showInvalidInput && formik.errors.fromDate}
+        //         disabled={false}
+        //         maximumDate={new Date()}
+        //       />
+        //     </View>
+        //     <View>
+        //       <ResponsiveText style={style.titleStyle} size={12}>
+        //         To
+        //       </ResponsiveText>
+        //       <DateAndTimePicker
+        //         value={formik.values.endDate}
+        //         setValue={formik.handleChange('endDate')}
+        //         invalidInput={showInvalidInput && formik.errors.endDate}
+        //         isCurrent={formik.values.isCurrent}
+        //         maximumDate={new Date()}
+        //       />
+        //     </View>
+        //     <TouchableOpacity
+        //       style={style.checkBoxAndTextView}
+        //       onPress={onPressIsCurrent}
+        //       activeOpacity={1}>
+        //       <CustomCheckBox
+        //         isChecked={formik.values.isCurrent}
+        //         callOnPress={onPressIsCurrent}
+        //       />
+        //       <ResponsiveText style={style.checkBoxText} size={12}>
+        //         {' '}
+        //         I currently work here
+        //       </ResponsiveText>
+        //     </TouchableOpacity>
+        //     <View>
+        //       <ResponsiveText style={style.titleStyle} size={12}>
+        //         Description
+        //       </ResponsiveText>
+        //       <InputField
+        //         type="text"
+        //         value={formik.values.description}
+        //         setValue={formik.handleChange('description')}
+        //         invalidInput={showInvalidInput && formik.errors.description}
+        //         multiline={true}
+        //         maxLength={300}
+        //       />
+        //       <ResponsiveText
+        //         size={11}
+        //         style={
+        //           style.descriptionLengthStyle
+        //         }>{`${formik.values.description.length}/300`}</ResponsiveText>
+        //     </View>
+        //   </View>
+        // </ModalWrapper>
       )}
       {confirmationModal && (
         <DeleteConfirmationModal
@@ -291,8 +390,45 @@ export default function VolunteeringExperience(props) {
           setIsModalOpen={setConfirmationModal}
           confrimDelete={deleteVolunteerExp}
           isLoading={isLoading}
+          subTitle="Are you sure you want to delete this experience?"
+          title="Delete"
         />
       )}
     </View>
   );
 }
+
+let style = StyleSheet.create({
+  mainViewVolunteeringExp: {
+    minHeight: 100,
+    alignItems: 'center',
+    display: 'flex',
+    justifyContent: 'center',
+    padding: 15,
+  },
+  modalMainView: {margin: 15},
+  titleStyle: {
+    fontFamily: 'Montserrat-Regular',
+    color: '#212529',
+  },
+  checkBoxAndTextView: {
+    display: 'flex',
+    flexDirection: 'row',
+    marginBottom: 15,
+    alignItems: 'center',
+  },
+  checkBoxText: {
+    fontFamily: 'Montserrat-Regular',
+    color: '#212529',
+  },
+  descriptionLengthStyle: {
+    fontFamily: 'Montserrat-Regular',
+    color: '#212529',
+    textAlign: 'right',
+    margin: 1,
+  },
+  buttonView: {
+    alignSelf: 'center',
+    marginTop: 20,
+  },
+});

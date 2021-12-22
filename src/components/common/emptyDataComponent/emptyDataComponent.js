@@ -5,7 +5,7 @@ import ResponsiveText from '../responsiveText/responsiveText';
 import {widthPercentageToDP as vw} from '../../../responsive/responsive';
 
 export default function EmptyDataComponent(props) {
-  let {title} = props;
+  const {title} = props;
   return (
     <View style={style.imageAndTextView}>
       <Image

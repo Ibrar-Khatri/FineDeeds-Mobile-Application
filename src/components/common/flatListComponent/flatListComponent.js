@@ -3,7 +3,7 @@ import {FlatList, StyleSheet} from 'react-native';
 import EmptyDataComponent from '../emptyDataComponent/emptyDataComponent';
 
 export default function FlatListComponent(props) {
-  let {
+  const {
     data,
     horizontal,
     showsHorizontalScrollIndicator,

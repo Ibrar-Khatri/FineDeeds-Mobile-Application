@@ -1,8 +1,11 @@
 import React, {useState} from 'react';
-import {ScrollView, TouchableOpacity} from 'react-native';
+import {ScrollView, StyleSheet, TouchableOpacity} from 'react-native';
 import HowItWorksCard from '../../../../components/constant/howItWorkScreenComponents/howItWorkCard/howItWorkCard';
 import ResponsiveText from '../../../../components/common/responsiveText/responsiveText';
-import style from './howItWorksStyle';
+import {
+  heightPercentageToDP as vh,
+  widthPercentageToDP as vw,
+} from '../../../../responsive/responsive';
 
 export default function HowItWorks() {
   let [isOganization, setIsOganization] = useState(true);
@@ -114,3 +117,25 @@ export default function HowItWorks() {
     </ScrollView>
   );
 }
+
+let style = StyleSheet.create({
+  howItWorksMainView: {
+    backgroundColor: '#fff',
+  },
+  textView: {
+    height: vh(8),
+    display: 'flex',
+    justifyContent: 'center',
+    width: vw(90),
+    alignSelf: 'center',
+  },
+  textStyle: {
+    fontFamily: 'Montserrat-Bold',
+    color: '#2b2b2b',
+  },
+  focusTextView: {
+    borderBottomColor: '#f06d06',
+    borderBottomWidth: 1,
+  },
+  focusTextStyle: {color: '#f06d06'},
+});

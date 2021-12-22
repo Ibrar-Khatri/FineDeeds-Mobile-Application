@@ -14,7 +14,7 @@ export default function InputField(props) {
   let [isfocus, setIsFoucs] = useState(false);
   let [showPassword, setShowPassword] = useState(false);
 
-  let {
+  const {
     value,
     setValue,
     type,

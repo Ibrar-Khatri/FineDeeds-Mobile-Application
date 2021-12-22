@@ -1,20 +1,26 @@
 import React, {useEffect, useState} from 'react';
+import {BackHandler, View, Dimensions, StyleSheet} from 'react-native';
 import {
   DrawerContentScrollView,
   DrawerItem,
   DrawerItemList,
 } from '@react-navigation/drawer';
-import {BackHandler, Image, Text, View} from 'react-native';
 import {useDrawerStatus} from '@react-navigation/drawer';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {DrawerActions} from '@react-navigation/native';
 import RenderS3Image from '../../common/renderS3Image/renderS3Image';
 import ResponsiveText from '../../common/responsiveText/responsiveText';
 import {logout} from '../../../shared/services/authServices';
-import {DrawerActions} from '@react-navigation/native';
-import style from './drawerContentStyle';
+import {
+  heightPercentageToDP as vh,
+  normalize,
+  widthPercentageToDP as vw,
+} from '../../../responsive/responsive';
+
+const screenWidth = Dimensions.get('window').width;
 
 export default function DrawerContent(props) {
-  let {isUserAuthenticated, setIsUserAuthenticated, volunteer, state, ...rest} =
+  const {isUserAuthenticated, setIsUserAuthenticated, volunteer, state, ...rest} =
     props;
   let [index, setIndex] = useState(0);
   let [update, setUpdate] = useState(false);
@@ -86,10 +92,10 @@ export default function DrawerContent(props) {
     {
       lable: 'Stories',
       // isFocused: false,
-      screenName:"listAll-screen",
+      screenName: 'listAll-screen',
       isUserAuthenticated: true,
-      headerTitle:"Stories",
-      initialRouteName:"story_list",
+      headerTitle: 'Stories',
+      initialRouteName: 'story_list',
     },
     {
       lable: 'How It Works',
@@ -133,8 +139,11 @@ export default function DrawerContent(props) {
         ? props.navigation.navigate(item.screenName, {
             screen: item.nestedScreenName,
           })
-        : item.screenName && props.navigation.navigate(item.screenName,{initialRouteName: item.initialRouteName,
-          title: item.headerTitle,});
+        : item.screenName &&
+          props.navigation.navigate(item.screenName, {
+            initialRouteName: item.initialRouteName,
+            title: item.headerTitle,
+          });
     }
   }
 
@@ -163,7 +172,6 @@ export default function DrawerContent(props) {
           </ResponsiveText>
         </View>
       )}
-      {/* <DrawerItemList  {...props} /> */}
       {arry.map(
         (item, i) =>
           (item.alwaysShown ||
@@ -184,3 +192,40 @@ export default function DrawerContent(props) {
     </DrawerContentScrollView>
   );
 }
+
+let style = StyleSheet.create({
+  drawerLabelStyle: {
+    fontFamily: 'Montserrat-SemiBold',
+    fontSize: normalize(screenWidth > 480 && 11),
+  },
+  activeTintColor: '#f06d06',
+  inactiveTintColor: '#212529',
+  activeBackgroundColor: '#fff',
+  pressColor: '#f06d06',
+  nameText: {
+    color: 'black',
+    fontFamily: 'Montserrat-Bold',
+    fontSize: vw(4),
+    margin: 5,
+  },
+  roleText: {
+    color: '#212529',
+    fontWeight: '300',
+    fontSize: vw(3.5),
+    fontFamily: 'Montserrat-Regular',
+  },
+  profileView: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderBottomColor: '#B8B8B8',
+    borderBottomWidth: 1,
+    padding: 20,
+  },
+  profileImageStyle: {
+    height: vh(10),
+    width: vh(10),
+    borderRadius: 100,
+    overflow: 'hidden',
+  },
+});

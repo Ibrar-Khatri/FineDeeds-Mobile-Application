@@ -11,10 +11,7 @@ import DeleteConfirmationModal from '../../deleteConfirmationModal/deleteConfirm
 import {useToast} from 'native-base';
 import CustomToast from '../../customToast/customToast';
 import {useNavigation} from '@react-navigation/native';
-import {
-  heightPercentageToDP as vh,
-  widthPercentageToDP as vw,
-} from '../../../../responsive/responsive';
+import {heightPercentageToDP as vh} from '../../../../responsive/responsive';
 
 export default function CommentCard(props) {
   let [loggedInVol, setLoggedInVol] = useState();
@@ -159,6 +156,8 @@ export default function CommentCard(props) {
           setIsModalOpen={setConfirmationModal}
           confrimDelete={handleDeleteComement}
           isLoading={isLoading}
+          subTitle="Are you sure you want to delete this comment?"
+          title="Delete"
         />
       )}
     </>

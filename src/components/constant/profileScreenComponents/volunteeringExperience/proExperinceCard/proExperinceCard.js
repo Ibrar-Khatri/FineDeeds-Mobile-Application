@@ -1,16 +1,15 @@
 import React from 'react';
-import {TouchableOpacity, View} from 'react-native';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import Octicons from 'react-native-vector-icons/Octicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {
   normalize,
   widthPercentageToDP as vw,
 } from '../../../../../responsive/responsive';
-import style from './proExperinceCardStyle';
 import ResponsiveText from '../../../../common/responsiveText/responsiveText';
 
 export default function ProExperinceCard(props) {
-  let {
+  const {
     data,
     setConfirmationModal,
     setProExperienceId,
@@ -63,3 +62,35 @@ export default function ProExperinceCard(props) {
     </View>
   );
 }
+
+let style = StyleSheet.create({
+  volunteerExpDetView: {
+    paddingLeft: 5,
+    width: '85%',
+  },
+  volunteerExpView: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    width: '100%',
+    marginTop: 15,
+    paddingBottom: 7,
+    borderBottomColor: ' rgba(0,0,0,.1)',
+    borderBottomWidth: 1,
+  },
+  jobTitle: {
+    color: '#212529',
+    fontWeight: '500',
+    marginBottom: 5,
+  },
+  jobDes: {
+    color: 'rgba(0,0,0,.5)',
+  },
+  iconView: {
+    display: 'flex',
+    flexDirection: 'row',
+    width: vw(10),
+    justifyContent: 'space-around',
+  },
+});

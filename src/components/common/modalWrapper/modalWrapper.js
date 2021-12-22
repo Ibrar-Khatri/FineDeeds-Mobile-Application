@@ -11,7 +11,7 @@ import CustomButton from '../button/button';
 import ResponsiveText from '../responsiveText/responsiveText';
 
 export default function ModalWrapper(props) {
-  let {
+  const {
     isModalOpen,
     title,
     onClickFun,

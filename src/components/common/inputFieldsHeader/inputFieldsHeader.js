@@ -5,7 +5,7 @@ import ResponsiveText from '../responsiveText/responsiveText';
 import {widthPercentageToDP as vw} from '../../../responsive/responsive';
 
 export default function InputFieldsHeader(props) {
-  let {title, subTitle} = props;
+  const {title, subTitle} = props;
   let navigation = useNavigation();
 
   function onPressIcon() {

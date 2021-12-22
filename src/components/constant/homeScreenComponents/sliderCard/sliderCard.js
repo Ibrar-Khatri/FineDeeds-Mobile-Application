@@ -1,14 +1,17 @@
 import React from 'react';
-import {Text, View, Image} from 'react-native';
+import {View, Image, StyleSheet} from 'react-native';
 import ResponsiveText from '../../../common/responsiveText/responsiveText';
-import style from './sliderCardStyle';
+import {
+  heightPercentageToDP as vh,
+  widthPercentageToDP as vw,
+} from '../../../../responsive/responsive';
 
 export default function SliderCard(props) {
-  let {name, image, quote} = props;
+  const {name, image, quote} = props;
   return (
     <View style={style.sliderCardView}>
       <Image source={image} style={style.imageStyle} resizeMode="contain" />
-      <View style={style.abc}>
+      <View style={style.sliderCardBody}>
         <Image
           source={require('../../../../assets/images/right-quote.png')}
           alt="right-quote"
@@ -29,3 +32,39 @@ export default function SliderCard(props) {
     </View>
   );
 }
+
+let style = StyleSheet.create({
+  sliderCardView: {
+    display: 'flex',
+    alignSelf: 'center',
+  },
+  imageStyle: {
+    height: vh(45),
+    width: vh(45),
+    alignSelf: 'center',
+    borderRadius: 20,
+    overflow: 'hidden',
+    marginBottom: 12,
+  },
+  sliderCardBody: {
+    width: vw(70),
+    alignSelf: 'center',
+  },
+  leftQuote: {
+    alignSelf: 'flex-end',
+  },
+  quote: {
+    fontFamily: 'Montserrat-SemiBold',
+    color: 'rgba(0,0,0,.5)',
+    letterSpacing: 1,
+    marginTop: 15,
+    marginBottom: 15,
+  },
+  name: {
+    marginTop: 15,
+    alignSelf: 'flex-end',
+    fontFamily: 'Montserrat-Bold',
+    color: 'rgba(0,0,0,.5)',
+    letterSpacing: 1,
+  },
+});

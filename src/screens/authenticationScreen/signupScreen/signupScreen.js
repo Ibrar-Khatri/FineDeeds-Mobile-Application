@@ -1,8 +1,7 @@
 import React, {useState} from 'react';
-import {View, ScrollView, KeyboardAvoidingView} from 'react-native';
+import {View, StyleSheet} from 'react-native';
 import {useFormik} from 'formik';
 import {useToast} from 'native-base';
-import style from './signupScreenStyle';
 import {signupValidationSchema} from '../../../shared/validation/authValidation';
 import CustomButton from '../../../components/common/button/button';
 import CustomToast from '../../../components/common/customToast/customToast';
@@ -13,6 +12,7 @@ import InvalidInput from '../../../components/common/invalidInput/invalidInput';
 import {signup} from '../../../shared/services/authServices';
 import CustomCheckBox from '../../../components/common/customCheckBox/customCheckBox';
 import AuthWrapper from '../../../components/common/authWrapper/authWrapper';
+import {widthPercentageToDP as vw} from '../../../responsive/responsive';
 
 export default function SignupScreen({navigation}) {
   let [acceptTermsAndCond, setAcceptTermsAndCond] = useState(false);
@@ -123,3 +123,19 @@ export default function SignupScreen({navigation}) {
     </AuthWrapper>
   );
 }
+
+let style = StyleSheet.create({
+  inputFieldsView: {
+    marginTop: 30,
+    marginLeft: vw(7),
+    marginRight: vw(7),
+  },
+  termsAndCondView: {
+    marginBottom: 15,
+  },
+  checkBoxAndTextView: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+});

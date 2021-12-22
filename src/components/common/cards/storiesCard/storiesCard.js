@@ -9,12 +9,11 @@ import {useNavigation} from '@react-navigation/native';
 import {
   heightPercentageToDP as vh,
   normalize,
-  widthPercentageToDP as vw,
 } from '../../../../responsive/responsive';
 
 export default function StoriesCard(props) {
   let navigation = useNavigation();
-  let {data} = props;
+  const {data} = props;
   return (
     <TouchableOpacity
       style={style.mainView}
