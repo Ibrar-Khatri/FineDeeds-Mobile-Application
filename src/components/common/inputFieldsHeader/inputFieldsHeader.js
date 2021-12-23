@@ -5,14 +5,15 @@ import ResponsiveText from '../responsiveText/responsiveText';
 import {widthPercentageToDP as vw} from '../../../responsive/responsive';
 
 export default function InputFieldsHeader(props) {
-  const {title, subTitle} = props;
+  const {title, subTitle, loading} = props;
   let navigation = useNavigation();
 
   function onPressIcon() {
-    navigation.reset({
-      index: 0,
-      routes: [{name: 'drawer'}],
-    });
+    !loading &&
+      navigation.reset({
+        index: 0,
+        routes: [{name: 'drawer'}],
+      });
   }
 
   return (

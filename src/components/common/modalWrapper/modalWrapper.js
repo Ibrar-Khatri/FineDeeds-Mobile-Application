@@ -1,5 +1,11 @@
 import React from 'react';
-import {ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {
+  Dimensions,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import Modal from 'react-native-modal';
 import Icon from 'react-native-vector-icons/AntDesign';
 import {
@@ -25,18 +31,21 @@ export default function ModalWrapper(props) {
 
   return (
     <Modal
+      style={style.modalStyle}
+      avoidKeyboard={true}
+      coverScreen={true}
       isVisible={isModalOpen}
       hasBackdrop={true}
-      backdropOpacity={0.5}
+      backdropOpacity={0.1}
       onBackButtonPress={onBackButtonPress}
       onBackdropPress={onBackdropPress}>
       <View style={style.modalMainView}>
         <View style={style.modalHeaderView}>
-          <ResponsiveText style={style.titleStyle} size={15}>
+          <ResponsiveText style={style.titleStyle} size={17}>
             {title}
           </ResponsiveText>
-          <TouchableOpacity onPress={closeModalIcon}>
-            <Icon name="close" color="#000" size={normalize(12)} />
+          <TouchableOpacity onPress={closeModalIcon} style={{padding: 5}}>
+            <Icon name="close" color="#000" size={normalize(18)} />
           </TouchableOpacity>
         </View>
         <ScrollView>{children}</ScrollView>
@@ -53,41 +62,30 @@ export default function ModalWrapper(props) {
 }
 
 let style = StyleSheet.create({
+  modalStyle: {
+    margin: 0,
+  },
   modalMainView: {
-    height: vh(50),
+    height: '100%',
+    width: vw(100),
     backgroundColor: '#fff',
-    width: vw(80),
-    alignSelf: 'center',
-    borderRadius: 10,
-    overflow: 'hidden',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 6,
-    },
-    shadowOpacity: 0.39,
-    shadowRadius: 8.3,
-    elevation: 13,
   },
   modalHeaderView: {
-    backgroundColor: '#fff',
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 15,
-    borderBottomColor: '#212529',
+    paddingTop: 10,
+    paddingBottom: 10,
+    borderBottomColor: '#eaeaea',
     borderBottomWidth: 1,
   },
   titleStyle: {
     color: '#212529',
     fontFamily: 'Montserrat-SemiBold',
-    fontWeight: '700',
-    fontSize: vw(5),
+    marginLeft: 15,
   },
   modalFooter: {
-    borderTopColor: '#212529',
-    borderTopWidth: 1,
     backgroundColor: '#fff',
     paddingTop: 8,
     paddingBottom: 8,

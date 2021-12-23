@@ -65,6 +65,7 @@ export default function SignupScreen({navigation}) {
       <InputFieldsHeader
         title="Volunteer Sign up"
         subTitle="Start helping someone today and engage with people who care as much as you do."
+        loading={isLoading}
       />
       <View style={style.inputFieldsView}>
         <InputField

@@ -75,7 +75,11 @@ export default function ConfirmationEmail({navigation, route}) {
   }
   return (
     <AuthWrapper>
-      <InputFieldsHeader title="Confirmation Email" subTitle="Join us now" />
+      <InputFieldsHeader
+        title="Confirmation Email"
+        subTitle="Join us now"
+        loading={isLoading}
+      />
       <View style={style.inputFieldsView}>
         <InputField
           type="number"

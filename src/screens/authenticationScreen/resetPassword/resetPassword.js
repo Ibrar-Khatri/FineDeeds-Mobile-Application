@@ -50,6 +50,7 @@ export default function ResetPassword({navigation, route}) {
       <InputFieldsHeader
         title="Reset Password"
         subTitle="Please check your email for password reset code"
+        loading={isLoading}
       />
       <View style={style.inputFieldsView}>
         <InputField

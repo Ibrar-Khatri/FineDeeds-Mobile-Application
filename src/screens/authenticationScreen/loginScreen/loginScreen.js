@@ -68,7 +68,11 @@ export default function LoginScreen({navigation}) {
 
   return (
     <AuthWrapper>
-      <InputFieldsHeader title="Login" subTitle="Be the change" />
+      <InputFieldsHeader
+        title="Login"
+        subTitle="Be the change"
+        loading={isLoading}
+      />
       <View style={style.inputFieldsView}>
         <InputField
           type="email"

@@ -14,17 +14,19 @@ import {
 export default function ActivitiesCard(props) {
   let navigation = useNavigation();
   const {data} = props;
+
+  function navigateTo() {
+    navigation.navigate('detail-screen', {
+      initialRouteName: 'activity_detail',
+      data: data,
+      title: data?.activityName,
+    });
+  }
   return (
     <TouchableOpacity
       style={style.activitiesMainView}
       activeOpacity={0.7}
-      onPress={() =>
-        navigation.navigate('detail-screen', {
-          initialRouteName: 'activity_detail',
-          data: data,
-          title: data?.activityName,
-        })
-      }>
+      onPress={navigateTo}>
       <RenderS3Image
         style={style.bgImageView}
         resizeMode="cover"

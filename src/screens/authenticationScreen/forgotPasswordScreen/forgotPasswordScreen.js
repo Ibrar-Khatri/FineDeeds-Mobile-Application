@@ -48,6 +48,7 @@ export default function ForgotPasswordScreen({navigation}) {
       <InputFieldsHeader
         title="Forgot Password"
         subTitle="Please check your email for password reset code"
+        loading={isLoading}
       />
       <View style={style.inputFieldsView}>
         <InputField
