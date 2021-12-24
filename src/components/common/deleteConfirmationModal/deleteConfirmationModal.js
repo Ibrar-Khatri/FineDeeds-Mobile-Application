@@ -1,9 +1,8 @@
 import {Button} from 'native-base';
 import React from 'react';
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import Modal from 'react-native-modal';
-import Icon from 'react-native-vector-icons/AntDesign';
-import ResponsiveText from '../../../components/common/responsiveText/responsiveText';
+import {ResponsiveText} from '../../../components/common/common';
 import {
   heightPercentageToDP as vh,
   widthPercentageToDP as vw,

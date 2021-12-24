@@ -8,10 +8,12 @@ import {
 } from 'react-native';
 import Timeline from 'react-native-timeline-flatlist';
 import moment from 'moment';
-import EmptyDataComponent from '../../../common/emptyDataComponent/emptyDataComponent';
-import CustomSpinner from '../../../common/spinner/spinner';
-import RenderS3Image from '../../../common/renderS3Image/renderS3Image';
-import ResponsiveText from '../../../common/responsiveText/responsiveText';
+import {
+  EmptyDataComponent,
+  CustomSpinner,
+  RenderS3Image,
+  ResponsiveText,
+} from '../../../common/common';
 import {useNavigation} from '@react-navigation/native';
 import {widthPercentageToDP as vw} from '../../../../responsive/responsive';
 

@@ -3,12 +3,14 @@ import {View, Text, StyleSheet} from 'react-native';
 import {useFormik} from 'formik';
 import {useToast} from 'native-base';
 import {emailConfirmationValidationSchema} from '../../../shared/validation/authValidation';
-import InputFieldsHeader from '../../../components/common/inputFieldsHeader/inputFieldsHeader';
-import InputField from '../../../components/common/inputField/inputField';
-import CustomButton from '../../../components/common/button/button';
-import CustomToast from '../../../components/common/customToast/customToast';
+import {
+  InputFieldsHeader,
+  InputField,
+  CustomButton,
+  CustomToast,
+  AuthWrapper,
+} from '../../../components/common/common';
 import {confirm, resendSignUp} from '../../../shared/services/authServices';
-import AuthWrapper from '../../../components/common/authWrapper/authWrapper';
 import {widthPercentageToDP as vw} from '../../../responsive/responsive';
 
 export default function ConfirmationEmail({navigation, route}) {

@@ -1,9 +1,7 @@
 import React from 'react';
 import {Image, StyleSheet, View} from 'react-native';
-import ResponsiveText from '../../../common/responsiveText/responsiveText';
-import {
-  widthPercentageToDP as vw,
-} from '../../../../responsive/responsive';
+import {ResponsiveText} from '../../../common/common';
+import {widthPercentageToDP as vw} from '../../../../responsive/responsive';
 
 export default function HowItWorksCard(props) {
   const {index, title, about, image} = props;

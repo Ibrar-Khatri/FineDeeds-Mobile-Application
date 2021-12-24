@@ -3,16 +3,18 @@ import {View, StyleSheet} from 'react-native';
 import {useFormik} from 'formik';
 import {useToast} from 'native-base';
 import {loginValidationSchema} from '../../../shared/validation/authValidation';
-import InputFieldsHeader from '../../../components/common/inputFieldsHeader/inputFieldsHeader';
-import InputField from '../../../components/common/inputField/inputField';
-import CustomButton from '../../../components/common/button/button';
-import NavigationLink from '../../../components/common/navigationLink/navigationLink';
+import {
+  InputFieldsHeader,
+  InputField,
+  CustomButton,
+  NavigationLink,
+  CustomToast,
+  AuthWrapper,
+} from '../../../components/common/common';
 import {login} from '../../../shared/services/authServices';
-import CustomToast from '../../../components/common/customToast/customToast';
 import {getVolunteerById} from '../../../../graphql/queries';
 import {useLazyQuery} from '@apollo/client';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import AuthWrapper from '../../../components/common/authWrapper/authWrapper';
 import {widthPercentageToDP as vw} from '../../../responsive/responsive';
 
 export default function LoginScreen({navigation}) {

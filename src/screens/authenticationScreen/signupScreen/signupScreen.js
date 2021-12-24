@@ -3,15 +3,17 @@ import {View, StyleSheet} from 'react-native';
 import {useFormik} from 'formik';
 import {useToast} from 'native-base';
 import {signupValidationSchema} from '../../../shared/validation/authValidation';
-import CustomButton from '../../../components/common/button/button';
-import CustomToast from '../../../components/common/customToast/customToast';
-import InputField from '../../../components/common/inputField/inputField';
-import InputFieldsHeader from '../../../components/common/inputFieldsHeader/inputFieldsHeader';
-import NavigationLink from '../../../components/common/navigationLink/navigationLink';
-import InvalidInput from '../../../components/common/invalidInput/invalidInput';
+import {
+  CustomButton,
+  CustomToast,
+  InputField,
+  InputFieldsHeader,
+  NavigationLink,
+  InvalidInput,
+  CustomCheckBox,
+  AuthWrapper,
+} from '../../../components/common/common';
 import {signup} from '../../../shared/services/authServices';
-import CustomCheckBox from '../../../components/common/customCheckBox/customCheckBox';
-import AuthWrapper from '../../../components/common/authWrapper/authWrapper';
 import {widthPercentageToDP as vw} from '../../../responsive/responsive';
 
 export default function SignupScreen({navigation}) {

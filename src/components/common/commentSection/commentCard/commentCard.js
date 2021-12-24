@@ -77,7 +77,6 @@ export default function CommentCard(props) {
         },
       })
         .then(({data}) => {
-          console.log(data);
           toast.show({
             placement: 'top',
             duration: 2000,

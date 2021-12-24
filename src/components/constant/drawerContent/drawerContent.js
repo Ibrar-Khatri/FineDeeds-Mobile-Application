@@ -8,8 +8,7 @@ import {
 import {useDrawerStatus} from '@react-navigation/drawer';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {DrawerActions} from '@react-navigation/native';
-import RenderS3Image from '../../common/renderS3Image/renderS3Image';
-import ResponsiveText from '../../common/responsiveText/responsiveText';
+import {RenderS3Image, ResponsiveText} from '../../common/common';
 import {logout} from '../../../shared/services/authServices';
 import {
   heightPercentageToDP as vh,
@@ -20,8 +19,13 @@ import {
 const screenWidth = Dimensions.get('window').width;
 
 export default function DrawerContent(props) {
-  const {isUserAuthenticated, setIsUserAuthenticated, volunteer, state, ...rest} =
-    props;
+  const {
+    isUserAuthenticated,
+    setIsUserAuthenticated,
+    volunteer,
+    state,
+    ...rest
+  } = props;
   let [index, setIndex] = useState(0);
   let [update, setUpdate] = useState(false);
   // const newState = {...state};

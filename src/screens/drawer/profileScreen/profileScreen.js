@@ -11,19 +11,23 @@ import Iocn1 from 'react-native-vector-icons/Entypo';
 import Icon2 from 'react-native-vector-icons/AntDesign';
 import {useLazyQuery} from '@apollo/client';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import CustomButton from '../../../components/common/button/button';
-import ProfileScreenCardWrapper from '../../../components/constant/profileScreenComponents/profileScreenCardWrapper/profileScreenCardWrapper';
-import ItemsSelectorCard from '../../../components/constant/profileScreenComponents/itemsSelectorCard/itemsSelectorCard';
-import ProductCard from '../../../components/common/cards/productCard/productCard';
-import CustomSpinner from '../../../components/common/spinner/spinner';
-import VolunteeringExperience from '../../../components/constant/profileScreenComponents/volunteeringExperience/volunteeringExperience';
-import JourneyMap from '../../../components/constant/profileScreenComponents/journeyMap/journeyMap';
-import RenderS3Image from '../../../components/common/renderS3Image/renderS3Image';
-import ImagePickerActionSheet from '../../../components/common/imagePickerActionSheet/imagePickerActionSheet';
-import FlatListComponent from '../../../components/common/flatListComponent/flatListComponent';
-import ResponsiveText from '../../../components/common/responsiveText/responsiveText';
-import ProfileScreenCardsHeader from '../../../components/constant/profileScreenComponents/cardHeader/cardHeader';
-import ActivityCard from '../../../components/constant/profileScreenComponents/activityCard/activityCard';
+import {
+  CustomButton,
+  ProductCard,
+  CustomSpinner,
+  RenderS3Image,
+  ImagePickerActionSheet,
+  FlatListComponent,
+  ResponsiveText,
+} from '../../../components/common/common';
+import {
+  ProfileScreenCardWrapper,
+  ItemsSelectorCard,
+  VolunteeringExperience,
+  JourneyMap,
+  ProfileScreenCardsHeader,
+  ActivityCard,
+} from '../../../components/constant/profileScreenComponents/index';
 import {
   getActivities,
   getMyProducts,

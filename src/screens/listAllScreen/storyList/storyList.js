@@ -5,9 +5,11 @@ import {
   getPublishedStories,
   getVolunteerPublishedStories,
 } from '../../../../graphql/queries';
-import StoriesCard from '../../../components/common/cards/storiesCard/storiesCard';
-import ListAllItem from '../../../components/common/listAllItem/listAllItem';
-import CustomSpinner from '../../../components/common/spinner/spinner';
+import {
+  StoriesCard,
+  ListAllItem,
+  CustomSpinner,
+} from '../../../components/common/common';
 
 export default function StoryList(props) {
   const {volunteerId} = props;

@@ -2,8 +2,7 @@ import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {Dimensions, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {widthPercentageToDP as vw} from '../../../../responsive/responsive';
-import RenderS3Image from '../../../common/renderS3Image/renderS3Image';
-import ResponsiveText from '../../../common/responsiveText/responsiveText';
+import {RenderS3Image, ResponsiveText} from '../../../common/common';
 const screenWidth = Dimensions.get('window').width;
 
 export default function ActivityCard(props) {

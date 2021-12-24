@@ -2,9 +2,11 @@ import {useLazyQuery} from '@apollo/client';
 import React, {useEffect, useState} from 'react';
 import {Platform, RefreshControl, View} from 'react-native';
 import {getActivities} from '../../../../graphql/queries';
-import ActivitiesCard from '../../../components/common/cards/activitiesCard/activitiesCard';
-import ListAllItem from '../../../components/common/listAllItem/listAllItem';
-import CustomSpinner from '../../../components/common/spinner/spinner';
+import {
+  ActivitiesCard,
+  ListAllItem,
+  CustomSpinner,
+} from '../../../components/common/common';
 
 export default function ActivityList(props) {
   const {volunteerId} = props;

@@ -1,10 +1,10 @@
 import React from 'react';
 import {View, Image, StyleSheet} from 'react-native';
-import ResponsiveText from '../../../common/responsiveText/responsiveText';
+import {ResponsiveText} from '../../../../common/common';
 import {
   heightPercentageToDP as vh,
   widthPercentageToDP as vw,
-} from '../../../../responsive/responsive';
+} from '../../../../../responsive/responsive';
 
 export default function SliderCard(props) {
   const {name, image, quote} = props;
@@ -13,7 +13,7 @@ export default function SliderCard(props) {
       <Image source={image} style={style.imageStyle} resizeMode="contain" />
       <View style={style.sliderCardBody}>
         <Image
-          source={require('../../../../assets/images/right-quote.png')}
+          source={require('../../../../../assets/images/right-quote.png')}
           alt="right-quote"
           style={style.rightQuote}
         />
@@ -21,7 +21,7 @@ export default function SliderCard(props) {
           {quote}
         </ResponsiveText>
         <Image
-          source={require('../../../../assets/images/left-quote.png')}
+          source={require('../../../../../assets/images/left-quote.png')}
           alt="left-quote"
           style={style.leftQuote}
         />

@@ -10,10 +10,14 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Entypo';
 import {getVolunteerById} from '../../../../graphql/queries';
-import InfoCard from '../../../components/common/cards/infoCard/infoCard';
-import RenderS3Image from '../../../components/common/renderS3Image/renderS3Image';
-import ResponsiveText from '../../../components/common/responsiveText/responsiveText';
-import CustomButton from '../../../components/common/button/button';
+import {
+  InfoCard,
+  RenderS3Image,
+  ResponsiveText,
+  CustomButton,
+  CommentSection,
+  CustomSpinner,
+} from '../../../components/common/common';
 import {
   heightPercentageToDP as vh,
   widthPercentageToDP as vw,
@@ -25,8 +29,6 @@ import {
 } from '../../../shared/services/helper';
 import {isLoggedIn} from '../../../shared/services/authServices';
 import Tag from '../../../components/common/tag/tag';
-import CommentSection from '../../../components/common/commentSection/comment/commentSection';
-import CustomSpinner from '../../../components/common/spinner/spinner';
 
 export default function ActivityDetailScreen(props) {
   const {data} = props;

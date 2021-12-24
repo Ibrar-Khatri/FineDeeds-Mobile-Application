@@ -2,18 +2,20 @@ import React, {useState} from 'react';
 import {TouchableOpacity, View, StyleSheet} from 'react-native';
 import {useToast} from 'native-base';
 import {useMutation} from '@apollo/client';
-import CustomCheckBox from '../../../common/customCheckBox/customCheckBox';
-import CustomToast from '../../../common/customToast/customToast';
-import ModalWrapper from '../../../common/modalWrapper/modalWrapper';
+import {
+  CustomCheckBox,
+  CustomToast,
+  ModalWrapper,
+  EmptyDataComponent,
+  ResponsiveText,
+  Tag,
+} from '../../../common/common';
 import ProfileScreenCardWrapper from '../profileScreenCardWrapper/profileScreenCardWrapper';
 import {
   updateVolunteerCauses,
   updateVolunteerSkills,
 } from '../../../../../graphql/mutations';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import EmptyDataComponent from '../../../common/emptyDataComponent/emptyDataComponent';
-import ResponsiveText from '../../../common/responsiveText/responsiveText';
-import Tag from '../../../common/tag/tag';
 import ProfileScreenCardsHeader from '../cardHeader/cardHeader';
 
 export default function ItemsSelectorCard(props) {

@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, ScrollView, StyleSheet} from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
-import ResponsiveText from '../../../components/common/responsiveText/responsiveText';
+import {ResponsiveText} from '../../../components/common/common';
 import {normalize} from '../../../responsive/responsive';
 import termsAndCondition from '../../../shared/helperData/termsAndCondition.json';
 import {

@@ -4,7 +4,7 @@ import awsConfig from './aws_credentials/awsConfig';
 import {ApolloProvider} from '@apollo/client';
 import {FinedeedsAppClient} from './aws_credentials/graphql-client.js';
 import {LogBox} from 'react-native';
-import AppContainer from './src/components/common/appContainer/appContainer';
+import {AppContainer} from './src/components/common/common';
 
 Amplify.configure({...awsConfig});
 

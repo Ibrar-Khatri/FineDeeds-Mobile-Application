@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {ScrollView, StyleSheet, TouchableOpacity} from 'react-native';
 import HowItWorksCard from '../../../../components/constant/howItWorkScreenComponents/howItWorkCard/howItWorkCard';
-import ResponsiveText from '../../../../components/common/responsiveText/responsiveText';
+import {ResponsiveText} from '../../../../components/common/common';
 import {
   heightPercentageToDP as vh,
   widthPercentageToDP as vw,

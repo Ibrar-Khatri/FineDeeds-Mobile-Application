@@ -3,12 +3,14 @@ import {View, StyleSheet} from 'react-native';
 import {useFormik} from 'formik';
 import {useToast} from 'native-base';
 import {resetPasswordValidationSchema} from '../../../shared/validation/authValidation';
-import CustomButton from '../../../components/common/button/button';
-import InputField from '../../../components/common/inputField/inputField';
-import InputFieldsHeader from '../../../components/common/inputFieldsHeader/inputFieldsHeader';
+import {
+  CustomButton,
+  InputField,
+  InputFieldsHeader,
+  CustomToast,
+  AuthWrapper,
+} from '../../../components/common/common';
 import {confirmNewPassword} from '../../../shared/services/authServices';
-import CustomToast from '../../../components/common/customToast/customToast';
-import AuthWrapper from '../../../components/common/authWrapper/authWrapper';
 import {widthPercentageToDP as vw} from '../../../responsive/responsive';
 
 export default function ResetPassword({navigation, route}) {

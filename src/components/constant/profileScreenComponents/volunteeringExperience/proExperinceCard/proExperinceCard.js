@@ -8,7 +8,7 @@ import {
   normalize,
   widthPercentageToDP as vw,
 } from '../../../../../responsive/responsive';
-import ResponsiveText from '../../../../common/responsiveText/responsiveText';
+import {ResponsiveText} from '../../../../common/common';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -74,6 +74,7 @@ export default function ProExperinceCard(props) {
                   <MaterialCommunityIcons
                     name="dots-vertical"
                     size={normalize(17)}
+                    color="#212529"
                   />
                 </TouchableOpacity>
               );
@@ -90,7 +91,7 @@ export default function ProExperinceCard(props) {
               <MaterialIcons
                 name="delete"
                 size={normalize(15)}
-                color="#e82727"
+                color="#212529"
               />
               <ResponsiveText size={14} style={style.menuItemText}>
                 Delete
