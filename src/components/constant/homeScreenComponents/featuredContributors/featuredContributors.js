@@ -5,41 +5,40 @@ import {
   FlatListComponent,
   CustomSpinner,
   OrganizationCard,
+  ContributorCard,
 } from '../../../common/common';
 import {useLazyQuery} from '@apollo/client';
-import {getOrganizations} from '../../../../../graphql/queries';
+import {getContributors} from '../../../../../graphql/queries';
 
-export default function OrganizationNearYou() {
-  let [getOrg, organizationData] = useLazyQuery(getOrganizations);
-  let [organization, setOrganization] = useState();
+export default function FeaturedContributors() {
+  let [getCont, contributorData] = useLazyQuery(getContributors);
+  let [contributors, setContributors] = useState();
 
   useEffect(() => {
-    getOrg({
-      variables: {limit: 3},
+    getCont({
+      variables: {activeContributor: true, limit: 3},
     });
   }, []);
 
-  !organization &&
-    organizationData?.data?.getOrganizations?.items &&
-    setOrganization(
-      organizationData?.data?.getOrganizations?.items.slice(0, 3),
-    );
+  !contributors &&
+    contributorData?.data?.getContributors?.items &&
+    setContributors(contributorData?.data?.getContributors?.items.slice(0, 3));
+
   return (
     <View style={style.mainView}>
       <CardTitle
-        title="ORGANIZATIONS NEAR YOU"
-        subTitle="HELP THEM NOW"
+        subTitle="Featured contributors"
         showLink={true}
-        headerTitle="Non-Profits Near You"
+        headerTitle=""
         screenName="listAll-screen"
         initialRouteName="organization_list"
       />
       <FlatListComponent
-        data={organization}
+        data={contributors}
         horizontal={true}
         showsHorizontalScrollIndicator={true}
         ListEmptyComponent={<CustomSpinner size="lg" color="#f06d06" />}
-        renderItem={({item, i}) => <OrganizationCard key={i} data={item} />}
+        renderItem={({item, i}) => <ContributorCard key={i} data={item} />}
       />
     </View>
   );

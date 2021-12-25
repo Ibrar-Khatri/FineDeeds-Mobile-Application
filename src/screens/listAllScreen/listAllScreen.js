@@ -4,6 +4,7 @@ import ActivityList from './activityList/activityList';
 import {StyleSheet} from 'react-native';
 import {normalize} from '../../responsive/responsive';
 import StoryList from './storyList/storyList';
+import OrganizationList from './organizationList/organizationList';
 
 const Stack = createNativeStackNavigator();
 
@@ -24,6 +25,9 @@ export default function ListAllScreen({route}) {
       </Stack.Screen>
       <Stack.Screen name="story_list">
         {() => <StoryList volunteerId={volunteerId} />}
+      </Stack.Screen>
+      <Stack.Screen name="organization_list">
+        {() => <OrganizationList volunteerId={volunteerId} />}
       </Stack.Screen>
     </Stack.Navigator>
   );

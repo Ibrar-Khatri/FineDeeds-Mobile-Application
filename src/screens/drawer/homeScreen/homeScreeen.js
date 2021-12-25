@@ -9,6 +9,7 @@ import {
   JoinAsNonProfit,
   WorkForThePeople,
   OrganizationNearYou,
+  FeaturedContributors,
 } from '../../../components/constant/homeScreenComponents/index';
 import {
   sideDetail1,
@@ -50,6 +51,7 @@ export default function HomeScreen(props) {
 
         <View style={style.bodyView}>
           <OrganizationNearYou />
+          <FeaturedContributors />
           <ActivitiesNearYou />
           <View>
             <CardTitle subTitle="WHAT DO WE OFFER" />

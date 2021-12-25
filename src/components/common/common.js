@@ -28,6 +28,7 @@ import InfoCard from './cards/infoCard/infoCard';
 import ProductCard from './cards/productCard/productCard';
 import StoriesCard from './cards/storiesCard/storiesCard';
 import OrganizationCard from './cards/organizationCard/organizationCard';
+import ContributorCard from './cards/contributorCard/contributorCard';
 
 export {
   AppContainer,
@@ -57,5 +58,6 @@ export {
   ResponsiveText,
   CustomSpinner,
   Tag,
-  OrganizationCard
+  OrganizationCard,
+  ContributorCard,
 };
