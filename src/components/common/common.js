@@ -29,6 +29,7 @@ import ProductCard from './cards/productCard/productCard';
 import StoriesCard from './cards/storiesCard/storiesCard';
 import OrganizationCard from './cards/organizationCard/organizationCard';
 import ContributorCard from './cards/contributorCard/contributorCard';
+import ProjectCard from './cards/projectCard/projectCard';
 
 export {
   AppContainer,
@@ -60,4 +61,5 @@ export {
   Tag,
   OrganizationCard,
   ContributorCard,
+  ProjectCard,
 };

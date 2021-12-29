@@ -5,6 +5,8 @@ import {StyleSheet} from 'react-native';
 import {normalize} from '../../responsive/responsive';
 import StoryList from './storyList/storyList';
 import OrganizationList from './organizationList/organizationList';
+import ContributorList from './contributorList/contributorList';
+import ProjectList from './projectsList/projectsList';
 
 const Stack = createNativeStackNavigator();
 
@@ -29,6 +31,10 @@ export default function ListAllScreen({route}) {
       <Stack.Screen name="organization_list">
         {() => <OrganizationList volunteerId={volunteerId} />}
       </Stack.Screen>
+      <Stack.Screen name="contributor_list">
+        {() => <ContributorList />}
+      </Stack.Screen>
+      <Stack.Screen name="project_list">{() => <ProjectList />}</Stack.Screen>
     </Stack.Navigator>
   );
 }

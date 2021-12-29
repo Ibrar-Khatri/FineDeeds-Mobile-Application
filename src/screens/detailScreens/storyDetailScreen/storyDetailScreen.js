@@ -1,35 +1,34 @@
+import React, {useEffect, useState} from 'react';
 import {useLazyQuery, useMutation} from '@apollo/client';
 import moment from 'moment';
-import React, {useEffect, useState} from 'react';
 import {ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import Octicons from 'react-native-vector-icons/Octicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {Actionsheet, useToast} from 'native-base';
+import {
+  CommentSection,
+  RenderHtmlTags,
+  ResponsiveText,
+  CustomSpinner,
+  RenderS3Image,
+  CustomToast,
+  Participant,
+} from '../../../components/common/common';
 import {
   getStory,
   getVolunteerById,
   getVolunteerContributionsCount,
-  ResponsiveText,
-  CustomToast,
-  CustomSpinner,
-  Participant,
 } from '../../../../graphql/queries';
-import {
-  CommentSection,
-  RenderHtmlTags,
-  RenderS3Image,
-} from '../../../components/common/common';
-
+import {likeStory} from '../../../../graphql/mutations';
 import {isLoggedIn} from '../../../shared/services/authServices';
 import {
   normalize,
   widthPercentageToDP as vw,
   heightPercentageToDP as vh,
 } from '../../../responsive/responsive';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {likeStory} from '../../../../graphql/mutations';
-import {Actionsheet, useToast} from 'native-base';
 
 export default function StoryDetailScreen(props) {
   const {data: storyDet} = props;

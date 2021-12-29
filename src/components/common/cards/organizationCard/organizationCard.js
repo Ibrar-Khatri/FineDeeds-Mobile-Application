@@ -19,10 +19,10 @@ export default function OrganizationCard(props) {
             s3Key={data && `ORGANIZATION/LOGO/${data?.orgId}.webp`}
             style={style.logoStyle}
           />
-          <ResponsiveText size={16} style={style.orgName}>
+          <ResponsiveText size={14} style={style.orgName}>
             {data?.orgName}
           </ResponsiveText>
-          <ResponsiveText size={14} style={style.orgDesc} numberOfLines={2}>
+          <ResponsiveText size={12} style={style.orgDesc} numberOfLines={2}>
             {data?.description}
           </ResponsiveText>
         </ImageBackground>

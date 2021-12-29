@@ -3,6 +3,7 @@ import CardTitle from './cardTitle/cardTitle';
 import FeaturedContributors from './featuredContributors/featuredContributors';
 import JoinAsNonProfit from './joinAsNonProfit/joinAsNonProfit';
 import OrganizationNearYou from './orgNearYou/orgNearYou';
+import ProjectsNearYou from './projectsNearYou/projectsNearYou';
 import SideDetailCard from './sideDetailCard/sideDetailCard';
 import StoriesThatInspire from './storiesThatInspire/storiesThatInspire';
 import WorkForThePeople from './workForThePeople/workForThePeople';
@@ -15,4 +16,5 @@ export {
   WorkForThePeople,
   OrganizationNearYou,
   FeaturedContributors,
+  ProjectsNearYou,
 };

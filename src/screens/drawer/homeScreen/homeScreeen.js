@@ -10,6 +10,7 @@ import {
   WorkForThePeople,
   OrganizationNearYou,
   FeaturedContributors,
+  ProjectsNearYou,
 } from '../../../components/constant/homeScreenComponents/index';
 import {
   sideDetail1,
@@ -52,6 +53,8 @@ export default function HomeScreen(props) {
         <View style={style.bodyView}>
           <OrganizationNearYou />
           <FeaturedContributors />
+
+          <ProjectsNearYou />
           <ActivitiesNearYou />
           <View>
             <CardTitle subTitle="WHAT DO WE OFFER" />

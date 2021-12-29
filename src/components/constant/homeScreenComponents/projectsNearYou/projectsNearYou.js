@@ -4,41 +4,40 @@ import {CardTitle} from '../../../constant/homeScreenComponents/index';
 import {
   FlatListComponent,
   CustomSpinner,
-  OrganizationCard,
-  ContributorCard,
+  ProjectCard,
 } from '../../../common/common';
 import {useLazyQuery} from '@apollo/client';
-import {getContributors} from '../../../../../graphql/queries';
+import {getProjects} from '../../../../../graphql/queries';
 
-export default function FeaturedContributors() {
-  let [getCont, contributorData] = useLazyQuery(getContributors);
-  let [contributors, setContributors] = useState();
+export default function ProjectsNearYou() {
+  let [getRandomProjects, projectsData] = useLazyQuery(getProjects);
+  let [projects, setProjects] = useState();
 
   useEffect(() => {
-    getCont({
-      variables: {activeContributor: true, limit: 3},
+    getRandomProjects({
+      variables: {limit: 3},
     });
   }, []);
 
-  !contributors &&
-    contributorData?.data?.getContributors?.items &&
-    setContributors(contributorData?.data?.getContributors?.items.slice(0, 3));
+  !projects &&
+    projectsData?.data?.getProjects?.items &&
+    setProjects(projectsData?.data?.getProjects?.items.slice(0, 3));
 
   return (
     <View style={style.mainView}>
       <CardTitle
-        subTitle="Featured contributors"
+        subTitle="PROJECTS NEAR YOU"
         showLink={true}
-        headerTitle="Contributors"
+        headerTitle="Projects"
         screenName="listAll-screen"
-        initialRouteName="contributor_list"
+        initialRouteName="project_list"
       />
       <FlatListComponent
-        data={contributors}
+        data={projects}
         horizontal={true}
         showsHorizontalScrollIndicator={true}
         ListEmptyComponent={<CustomSpinner size="lg" color="#f06d06" />}
-        renderItem={({item, i}) => <ContributorCard key={i} data={item} />}
+        renderItem={({item, i}) => <ProjectCard key={i} data={item} />}
       />
     </View>
   );

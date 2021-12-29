@@ -14,15 +14,15 @@ export default function ContributorCard(props) {
   let navigation = useNavigation();
   const {data} = props;
 
-  //   function navigateTo() {
-  //     navigation.navigate('detail-screen', {
-  //       initialRouteName: 'activity_detail',
-  //       data: data,
-  //       title: data?.activityName,
-  //     });
-  //   }
+  function navigateTo() {
+    navigation.push('drawer', {
+      screen: 'profile-screen',
+      params: {volunteer: data},
+    });
+  }
+
   return (
-    <TouchableOpacity style={style.mainView}>
+    <TouchableOpacity style={style.mainView} onPress={navigateTo}>
       <View style={style.cardHeader}>
         <View style={style.profileImageAndNameView}>
           <View style={style.volunteerNameAndOrgName}>
@@ -31,7 +31,6 @@ export default function ContributorCard(props) {
             </ResponsiveText>
             <ResponsiveText size={13} style={style.orgName}>
               {data?.organization && data?.organization?.orgName}
-              {/* Sylani Foundation */}
             </ResponsiveText>
           </View>
           <RenderS3Image
@@ -47,8 +46,7 @@ export default function ContributorCard(props) {
               />
             )}
             <ResponsiveText size={13} style={style.locationStyle}>
-              {' '}
-              {data?.city && ` ${data.city} ,`}
+              {data?.city && `${data.city} ,`}
               {data?.country && `${data.country} `}
             </ResponsiveText>
           </View>
@@ -62,9 +60,16 @@ export default function ContributorCard(props) {
           </ResponsiveText>
           <View style={style.tagView}>
             {data?.causes?.length > 0 ? (
-              data?.causes.map((item, i) => (
-                <Tag key={i} text={item} borderColor="#f06f07" />
-              ))
+              <>
+                {data?.causes.slice(0, 3).map((item, i) => (
+                  <Tag key={i} text={item} borderColor="#f06f07" />
+                ))}
+                {data?.causes?.length - 3 > 0 && (
+                  <ResponsiveText size={12} style={style.moreTextStyle}>
+                    + {data?.causes?.length - 3} more
+                  </ResponsiveText>
+                )}
+              </>
             ) : (
               <ResponsiveText size={13}>No Causes</ResponsiveText>
             )}
@@ -76,13 +81,23 @@ export default function ContributorCard(props) {
           </ResponsiveText>
           <View style={style.tagView}>
             {data?.skills?.length > 0 ? (
-              data?.skills.map((item, i) => (
-                <ResponsiveText key={i} size={14} style={style.skillsItemStyle}>
-                  {`${item} | `}
-                </ResponsiveText>
-              ))
+              <>
+                {data?.skills.slice(0, 3).map((item, i) => (
+                  <ResponsiveText
+                    key={i}
+                    size={14}
+                    style={style.skillsItemStyle}>
+                    {`${item} | `}
+                  </ResponsiveText>
+                ))}
+              </>
             ) : (
               <ResponsiveText size={13}>No Skills</ResponsiveText>
+            )}
+            {data?.skills?.length - 3 > 0 && (
+              <ResponsiveText size={12} style={style.moreTextStyle}>
+                + {data?.skills?.length - 3} more
+              </ResponsiveText>
             )}
           </View>
         </View>
@@ -92,7 +107,7 @@ export default function ContributorCard(props) {
 }
 let style = StyleSheet.create({
   mainView: {
-    width: vh(47),
+    width: vh(45),
     margin: 10,
     borderRadius: 15,
     overflow: 'hidden',
@@ -131,7 +146,7 @@ let style = StyleSheet.create({
   locationAndButtomView: {
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
     alignItems: 'center',
   },
   locationAndImageView: {
@@ -162,5 +177,12 @@ let style = StyleSheet.create({
     color: '#212529',
     fontFamily: 'Montserrat-Regular',
     fontWeight: '600',
+  },
+  moreTextStyle: {
+    color: '#f16e06',
+    fontFamily: 'Montserrat-SemiBold',
+    textAlignVertical: 'center',
+    marginLeft: 'auto',
+    alignSelf: 'center',
   },
 });
