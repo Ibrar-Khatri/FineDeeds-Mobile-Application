@@ -1,15 +1,24 @@
 import React from 'react';
-import {ImageBackground, StyleSheet, TouchableOpacity} from 'react-native';
-import {heightPercentageToDP as vh} from '../../../../responsive/responsive';
-import {RenderS3Image, ResponsiveText} from '../../common';
+import {
+  Dimensions,
+  ImageBackground,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native';
+import {
+  heightPercentageToDP as vh,
+  widthPercentageToDP as vw,
+} from '../../../../responsive/responsive';
+import {RenderS3Image, ResponsiveText, CardWrapper} from '../../common';
+
+let screenWidth = Dimensions.get('window').width;
 
 export default function OrganizationCard(props) {
   const {data} = props;
   return (
-    <TouchableOpacity style={style.mainView}>
+    <CardWrapper>
       <RenderS3Image
         resizeMode="cover"
-        style={style.bgImageStyle}
         s3Key={data && `ORGANIZATION/IMAGE/${data?.orgId}.webp`}>
         <ImageBackground
           source={require('../../../../assets/images/Rounded-Rectangle-3-copy-3@1X.png')}
@@ -27,27 +36,17 @@ export default function OrganizationCard(props) {
           </ResponsiveText>
         </ImageBackground>
       </RenderS3Image>
-    </TouchableOpacity>
+    </CardWrapper>
   );
 }
 
 let style = StyleSheet.create({
-  mainView: {
-    margin: 10,
-    borderRadius: 15,
-    overflow: 'hidden',
-  },
-  bgImageStyle: {
-    height: vh(30),
-    width: vh(45),
-  },
   imageStyle: {
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'flex-end',
-    padding: 20,
-    height: vh(30),
-    width: vh(45),
+    padding: vw(5),
+    width: vw(screenWidth > 480 ? 65 : 75),
   },
   logoStyle: {height: vh(9), width: vh(9)},
   orgName: {

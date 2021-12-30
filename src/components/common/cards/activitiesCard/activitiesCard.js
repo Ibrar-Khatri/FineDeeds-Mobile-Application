@@ -1,15 +1,16 @@
 import React from 'react';
-import {StyleSheet, Text, TouchableOpacity} from 'react-native';
+import {Dimensions, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import {View, ImageBackground} from 'react-native';
 import moment from 'moment';
 import Icon from 'react-native-vector-icons/Entypo';
 import {useNavigation} from '@react-navigation/native';
-import RenderS3Image from '../../renderS3Image/renderS3Image';
-import ResponsiveText from '../../responsiveText/responsiveText';
+import {RenderS3Image, ResponsiveText, CardWrapper} from '../../common';
 import {
   widthPercentageToDP as vw,
   heightPercentageToDP as vh,
 } from '../../../../responsive/responsive';
+
+let screenWidth = Dimensions.get('window').width;
 
 export default function ActivitiesCard(props) {
   let navigation = useNavigation();
@@ -23,71 +24,66 @@ export default function ActivitiesCard(props) {
     });
   }
   return (
-    <TouchableOpacity
-      style={style.activitiesMainView}
-      activeOpacity={0.7}
-      onPress={navigateTo}>
-      <RenderS3Image
-        style={style.bgImageView}
-        resizeMode="cover"
-        s3Key={data?.activityId && `ACTIVITY/${data?.activityId}.webp`}>
-        <ImageBackground
-          source={require('../../../../assets/images/rounded.png')}
-          style={style.dateCardImage}
-          resizeMode="cover">
-          <ResponsiveText style={style.dateStyle} size={12}>
-            {moment(data?.startDate).format('DD')}
+    <CardWrapper activeOpacity={0.7} onPress={navigateTo}>
+      <View style={style.activitiesMainView}>
+        <RenderS3Image
+          style={style.bgImageView}
+          resizeMode="cover"
+          s3Key={data?.activityId && `ACTIVITY/${data?.activityId}.webp`}>
+          <ImageBackground
+            source={require('../../../../assets/images/rounded.png')}
+            style={style.dateCardImage}
+            resizeMode="cover">
+            <ResponsiveText style={style.dateStyle} size={12}>
+              {moment(data?.startDate).format('DD')}
+            </ResponsiveText>
+            <View style={style.lineBetMonthAndDate} />
+            <ResponsiveText style={style.dateStyle} size={12}>
+              {moment(data?.startDate).format('MMM')}
+            </ResponsiveText>
+          </ImageBackground>
+          <View style={style.startingOn}>
+            <ResponsiveText style={style.startingOnText} size={10}>
+              {`Starting on ${moment(data?.startDate).format('MM/DD/YYYY')}`}
+            </ResponsiveText>
+          </View>
+        </RenderS3Image>
+        <View style={style.cardBody}>
+          <ResponsiveText style={style.activityTitle} size={14}>
+            {data?.activityName}
           </ResponsiveText>
-          <View style={style.lineBetMonthAndDate} />
-          <ResponsiveText style={style.dateStyle} size={12}>
-            {moment(data?.startDate).format('MMM')}
+          <ResponsiveText style={style.activityDec} numberOfLines={2} size={12}>
+            {data?.activityDescription}
           </ResponsiveText>
-        </ImageBackground>
-        <View style={style.startingOn}>
-          <ResponsiveText style={style.startingOnText} size={10}>
-            {`Starting on ${moment(data?.startDate).format('MM/DD/YYYY')}`}
-          </ResponsiveText>
+          <View style={style.locationView}>
+            <Icon name="location-pin" color="#f06d06" size={vh(2.2)} />
+            <ResponsiveText
+              style={style.locationText}
+              size={12}>{` ${data?.activityAddress}`}</ResponsiveText>
+          </View>
+          <Text numberOfLines={1}>
+            <ResponsiveText style={style.causes} size={14}>
+              Casues
+            </ResponsiveText>
+            <ResponsiveText
+              style={style.causesItem}
+              size={12}>{` ${data?.activityCauses?.join(
+              ', ',
+            )}`}</ResponsiveText>
+          </Text>
         </View>
-      </RenderS3Image>
-      <View style={style.cardBody}>
-        <ResponsiveText style={style.activityTitle} size={13}>
-          {data?.activityName}
-        </ResponsiveText>
-        <ResponsiveText style={style.activityDec} numberOfLines={2} size={10}>
-          {data?.activityDescription}
-        </ResponsiveText>
-        <View style={style.locationView}>
-          <Icon name="location-pin" color="#f06d06" size={vh(2.2)} />
-          <ResponsiveText
-            style={style.locationText}
-            size={11}>{` ${data?.activityAddress}`}</ResponsiveText>
-        </View>
-        <Text numberOfLines={1}>
-          <ResponsiveText style={style.causes} size={13}>
-            Casues
-          </ResponsiveText>
-          <ResponsiveText
-            style={style.causesItem}
-            size={11}>{` ${data?.activityCauses?.join(', ')}`}</ResponsiveText>
-        </Text>
       </View>
-    </TouchableOpacity>
+    </CardWrapper>
   );
 }
 
 let style = StyleSheet.create({
   activitiesMainView: {
-    borderColor: '#e8e8e8',
-    borderWidth: 1,
-    borderRadius: 15,
-    padding: 20,
-    margin: 10,
-    alignItems: 'center',
-    width: vh(45),
+    padding: vw(2),
   },
   bgImageView: {
     height: vh(24),
-    width: vh(40),
+    width: vw(screenWidth > 480 ? 60 : 70),
     alignSelf: 'center',
     borderRadius: 15,
     display: 'flex',

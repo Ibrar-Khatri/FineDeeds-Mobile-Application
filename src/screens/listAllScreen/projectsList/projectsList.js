@@ -18,8 +18,8 @@ export default function ProjectList(props) {
   const [projects, setProjects] = useState([]);
 
   useEffect(() => {
-    if (data?.getProjects?.totalCount > 0) {
-      setProjects(data?.getProjects?.items);
+    if (data?.getProjects?.totalCount >= 0) {
+      setProjects([...projects, ...data?.getProjects?.items]);
       setRefetchLoading(false);
       data?.getProjects?.totalCount < 6 && setMoreData(false);
     }
@@ -60,12 +60,11 @@ export default function ProjectList(props) {
   }
 
   function callQuery(fetchLim) {
-    getProjectsQuery();
-    //     {
-    //   variables: {
-    //     ...fetchLim,
-    //   },
-    // }
+    getProjectsQuery({
+      variables: {
+        ...fetchLim,
+      },
+    });
   }
 
   return (
@@ -84,7 +83,7 @@ export default function ProjectList(props) {
         !refetchLoading && <CustomSpinner size="lg" color="#f06d06" />
       }
       ListFooterComponent={
-        projects.length > 0 &&
+        projects?.length > 0 &&
         moreData && <CustomSpinner size="sm" color="#f06d06" />
       }
     />

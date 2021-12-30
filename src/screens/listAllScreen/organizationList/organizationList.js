@@ -1,9 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {useLazyQuery} from '@apollo/client';
-import {Platform, RefreshControl, View} from 'react-native';
-import {getActivities, getOrganizations} from '../../../../graphql/queries';
+import {Platform, RefreshControl} from 'react-native';
+import {getOrganizations} from '../../../../graphql/queries';
 import {
-  ActivitiesCard,
   ListAllItem,
   CustomSpinner,
   OrganizationCard,
@@ -19,8 +18,9 @@ export default function OrganizationList(props) {
   const [organizations, setOrganization] = useState([]);
 
   useEffect(() => {
-    if (data?.getOrganizations?.totalCount > 0) {
-      setOrganization(data.getOrganizations.items);
+    console.log(data?.getOrganizations?.totalCount);
+    if (data?.getOrganizations?.totalCount >= 0) {
+      setOrganization([...organizations, ...data.getOrganizations.items]);
       setRefetchLoading(false);
       data?.getOrganizations?.totalCount < 6 && setMoreData(false);
     }

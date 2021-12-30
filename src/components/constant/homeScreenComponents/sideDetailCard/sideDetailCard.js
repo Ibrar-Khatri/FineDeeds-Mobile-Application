@@ -15,7 +15,7 @@ export default function SideDetailCard(props) {
       <ResponsiveText style={style.title} size={14}>
         {title}
       </ResponsiveText>
-      <ResponsiveText style={style.detail} size={10}>
+      <ResponsiveText style={style.detail} size={12}>
         {detail}
       </ResponsiveText>
     </View>

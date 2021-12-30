@@ -3,7 +3,6 @@ import React, {useEffect, useState} from 'react';
 import {Platform, RefreshControl, View} from 'react-native';
 import {getContributors} from '../../../../graphql/queries';
 import {
-  ActivitiesCard,
   ListAllItem,
   CustomSpinner,
   ContributorCard,
@@ -17,18 +16,17 @@ export default function ContributorList() {
   let [contributors, setContributors] = useState([]);
 
   useEffect(() => {
-    if (data?.getContributors?.totalCount > 0) {
-      setContributors(data.getContributors.items);
+    if (data?.getContributors?.totalCount >= 0) {
+      setContributors([...contributors, ...data.getContributors.items]);
       setRefetchLoading(false);
       data?.getContributors?.totalCount < 6 && setMoreData(false);
     }
   }, [data?.getContributors]);
 
   useEffect(() => {
-    callQuery();
-    //     {
-    //   ...fetchLimit,
-    // }
+    callQuery({
+      ...fetchLimit,
+    });
   }, []);
 
   function onDataReachEnd() {
@@ -38,11 +36,10 @@ export default function ContributorList() {
           limit: prevFetchLimit.limit,
           skip: prevFetchLimit.skip + 6,
         }));
-        callQuery();
-        //     {
-        //   limit: 6,
-        //   skip: fetchLimit.skip + 6,
-        // }
+        callQuery({
+          limit: 6,
+          skip: fetchLimit.skip + 6,
+        });
       } else {
         setMoreData(false);
       }
@@ -52,19 +49,18 @@ export default function ContributorList() {
   function refControl() {
     setContributors([]);
     setRefetchLoading(true);
-    // setMoreData(true);
+    setMoreData(true);
     setFetchLimit({limit: 6, skip: 0});
-    callQuery();
-    //     {
-    //   limit: 6,
-    //   skip: 0,
-    // }
+    callQuery({
+      limit: 6,
+      skip: 0,
+    });
   }
 
   function callQuery(fetchLim) {
     getCont({
       variables: {
-        // ...fetchLim,
+        ...fetchLim,
         activeContributor: true,
       },
     });
@@ -81,14 +77,14 @@ export default function ContributorList() {
           onRefresh={refControl}
         />
       }
-      //   onEndReached={!loading && onDataReachEnd}
+      onEndReached={!loading && onDataReachEnd}
       ListEmptyComponent={
         !refetchLoading && <CustomSpinner size="lg" color="#f06d06" />
       }
-      //   ListFooterComponent={
-      //     contributors.length > 0 &&
-      //     moreData && <CustomSpinner size="sm" color="#f06d06" />
-      //   }
+      ListFooterComponent={
+        contributors.length > 0 &&
+        moreData && <CustomSpinner size="sm" color="#f06d06" />
+      }
     />
   );
 }

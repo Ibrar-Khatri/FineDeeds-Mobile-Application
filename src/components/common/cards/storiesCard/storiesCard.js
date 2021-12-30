@@ -1,13 +1,21 @@
 import React from 'react';
 import {View} from 'native-base';
-import {StyleSheet, TouchableOpacity} from 'react-native';
+import {Dimensions, StyleSheet, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {RenderS3Image, RenderHtmlTags, ResponsiveText} from '../../common';
+import {
+  RenderS3Image,
+  RenderHtmlTags,
+  ResponsiveText,
+  CardWrapper,
+} from '../../common';
 import {useNavigation} from '@react-navigation/native';
 import {
   heightPercentageToDP as vh,
+  widthPercentageToDP as vw,
   normalize,
 } from '../../../../responsive/responsive';
+
+const screenWidth = Dimensions.get('window').width;
 
 export default function StoriesCard(props) {
   let navigation = useNavigation();
@@ -22,58 +30,54 @@ export default function StoriesCard(props) {
   }
 
   return (
-    <TouchableOpacity style={style.mainView} onPress={navigateTo}>
-      <RenderS3Image
-        resizeMode="cover"
-        style={style.imageStyle}
-        s3Key={data?.storyId && `STORY/${data?.storyId}.webp`}
-      />
-      <View style={style.cardBodyView}>
-        <View style={style.nameAndOrgName}>
-          <ResponsiveText style={style.textStyle} size={10}>
-            <Icon name="user" color="#fd7e14" size={vh(2)} />
-            {`  ${data['createdBy']?.volunteerName}`}
-          </ResponsiveText>
-          {data?.orgName && (
-            <>
-              <ResponsiveText style={style.textStyle} size={10}>
-                --
-              </ResponsiveText>
-              <ResponsiveText style={style.textStyle} size={10}>
-                {data?.orgName}
-              </ResponsiveText>
-            </>
-          )}
-        </View>
-        <View style={style.descriptionView}>
-          <ResponsiveText style={style.storyTitle} size={13}>
-            {data?.title}
-          </ResponsiveText>
-          <RenderHtmlTags
-            source={{
-              html: data?.story,
-            }}
-            tagsStyles={style.tagsStyles}
-          />
+    <CardWrapper onPress={navigateTo}>
+      <View style={style.mainView}>
+        <RenderS3Image
+          resizeMode="cover"
+          style={style.imageStyle}
+          s3Key={data?.storyId && `STORY/${data?.storyId}.webp`}
+        />
+        <View style={style.cardBodyView}>
+          <View style={style.nameAndOrgName}>
+            <ResponsiveText style={style.textStyle} size={10}>
+              <Icon name="user" color="#fd7e14" size={vh(2)} />
+              {`  ${data['createdBy']?.volunteerName}`}
+            </ResponsiveText>
+            {data?.orgName && (
+              <>
+                <ResponsiveText style={style.textStyle} size={10}>
+                  --
+                </ResponsiveText>
+                <ResponsiveText style={style.textStyle} size={10}>
+                  {data?.orgName}
+                </ResponsiveText>
+              </>
+            )}
+          </View>
+          <View style={style.descriptionView}>
+            <ResponsiveText style={style.storyTitle} size={13}>
+              {data?.title}
+            </ResponsiveText>
+            <RenderHtmlTags
+              source={{
+                html: data?.story,
+              }}
+              tagsStyles={style.tagsStyles}
+            />
+          </View>
         </View>
       </View>
-    </TouchableOpacity>
+    </CardWrapper>
   );
 }
 
 let style = StyleSheet.create({
   mainView: {
-    borderColor: '#e8e8e8',
-    borderWidth: 1,
-    borderRadius: 15,
-    padding: 10,
-    margin: 10,
-    alignItems: 'center',
-    width: vh(45),
+    padding: 15,
   },
   imageStyle: {
     height: vh(27),
-    width: vh(42),
+    width: vw(screenWidth > 480 ? 60 : 70),
     alignSelf: 'center',
     borderRadius: 15,
   },

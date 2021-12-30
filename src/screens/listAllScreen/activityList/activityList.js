@@ -19,7 +19,7 @@ export default function ActivityList(props) {
   const [activities, setActivities] = useState([]);
 
   useEffect(() => {
-    if (data?.getActivities?.totalCount > 0) {
+    if (data?.getActivities?.totalCount >= 0) {
       setActivities(data.getActivities.items);
       setRefetchLoading(false);
       data?.getActivities?.totalCount < 6 && setMoreData(false);

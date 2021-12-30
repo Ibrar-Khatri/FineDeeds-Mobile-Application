@@ -27,7 +27,7 @@ export default function StoryList(props) {
   const [stories, setStories] = useState([]);
 
   useEffect(() => {
-    if (data?.getStories?.totalCount > 0) {
+    if (data?.getStories?.totalCount >= 0) {
       setStories(data.getStories?.items);
       setRefetchLoading(false);
       data?.getStories?.totalCount < 6 && setMoreData(false);

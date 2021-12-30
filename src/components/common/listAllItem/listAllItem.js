@@ -15,7 +15,7 @@ export default function ListAllItem(props) {
       data={data}
       contentContainerStyle={[
         style.contentContainerStyle,
-        data.length === 0 && {justifyContent: 'center'},
+        data?.length === 0 && {justifyContent: 'center'},
       ]}
       showsVerticalScrollIndicator={false}
       keyExtractor={(item, index) => index.toString()}

@@ -4,6 +4,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import ActivityDetailScreen from './activityDetailScreen/activityDetailScreen';
 import StoryDetailScreen from './storyDetailScreen/storyDetailScreen';
 import {normalize} from '../../responsive/responsive';
+import ProjectDetailScreen from './projectDetailScreen/projectDetailScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -23,6 +24,9 @@ export default function DetailScreen({route}) {
       </Stack.Screen>
       <Stack.Screen name="story_detail">
         {() => <StoryDetailScreen data={data} />}
+      </Stack.Screen>
+      <Stack.Screen name="project_detail">
+        {() => <ProjectDetailScreen data={data} />}
       </Stack.Screen>
     </Stack.Navigator>
   );

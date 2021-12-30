@@ -9,6 +9,7 @@ import {
   normalize,
 } from '../../../../responsive/responsive';
 import {CustomButton} from '../../common';
+import CardWrapper from '../cardWrapper/cardWrapper';
 
 export default function ContributorCard(props) {
   let navigation = useNavigation();
@@ -22,11 +23,11 @@ export default function ContributorCard(props) {
   }
 
   return (
-    <TouchableOpacity style={style.mainView} onPress={navigateTo}>
+    <CardWrapper style={style.mainView} onPress={navigateTo}>
       <View style={style.cardHeader}>
         <View style={style.profileImageAndNameView}>
           <View style={style.volunteerNameAndOrgName}>
-            <ResponsiveText size={18} style={style.volunteerName}>
+            <ResponsiveText size={16} style={style.volunteerName}>
               {data?.volunteerName}
             </ResponsiveText>
             <ResponsiveText size={13} style={style.orgName}>
@@ -102,28 +103,19 @@ export default function ContributorCard(props) {
           </View>
         </View>
       </View>
-    </TouchableOpacity>
+    </CardWrapper>
   );
 }
 let style = StyleSheet.create({
-  mainView: {
-    width: vh(45),
-    margin: 10,
-    borderRadius: 15,
-    overflow: 'hidden',
-    borderColor: '#eaeaea',
-    borderWidth: 1,
-  },
   cardHeader: {
-    height: vh(23),
     padding: 20,
     backgroundColor: '#fff1e5',
-    justifyContent: 'space-between',
   },
   profileImageAndNameView: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
+    marginBottom: vw(3),
   },
   volunteerNameAndOrgName: {
     display: 'flex',
