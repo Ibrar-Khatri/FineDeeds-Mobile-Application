@@ -1,23 +1,28 @@
 import React, {useEffect} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import moment from 'moment';
-import RenderS3Image from '../renderS3Image/renderS3Image';
-import ResponsiveText from '../responsiveText/responsiveText';
+import {RenderS3Image, ResponsiveText} from '../common';
 import {useLazyQuery} from '@apollo/client';
 import {getVolunteerById} from '../../../../graphql/queries';
 import {useNavigation} from '@react-navigation/native';
 import {heightPercentageToDP as vh} from '../../../responsive/responsive';
 
 export default function Participant(props) {
-  const {likeData} = props;
+  const {likeData, data} = props;
   let navigation = useNavigation();
   let [getVolunteer, volunteerData] = useLazyQuery(getVolunteerById);
 
   useEffect(() => {
-    getVolunteer({
-      variables: {volunteerId: likeData?.likedBy?.volunteerId},
-    });
-  }, []);
+    if (likeData || data) {
+      getVolunteer({
+        variables: {
+          volunteerId: likeData
+            ? likeData?.likedBy?.volunteerId
+            : data?.volunteerId,
+        },
+      });
+    }
+  }, [likeData, data]);
 
   function viewProfile() {
     if (volunteerData?.data?.getVolunteerById)
@@ -26,23 +31,30 @@ export default function Participant(props) {
         params: {volunteer: volunteerData?.data?.getVolunteerById},
       });
   }
+  console.log(data);
   return (
     <TouchableOpacity
       style={style.CommentCardMainView}
       activeOpacity={volunteerData?.data?.getVolunteerById ? 0.5 : 1}
       onPress={viewProfile}>
       <RenderS3Image
-        s3Key={`VOLUNTEER/${likeData?.likedBy?.volunteerId}.webp`}
+        s3Key={`VOLUNTEER/${
+          likeData ? likeData?.likedBy?.volunteerId : data?.volunteerId
+        }.webp`}
         style={style.imageStyle}
       />
       <View style={style.commentSection}>
         <View style={style.volunteerNameView}>
           <ResponsiveText size={13} style={style.volunName}>
-            {likeData['likedBy']['volunteerName']}
+            {likeData
+              ? likeData['likedBy']['volunteerName']
+              : data?.volunteerName}
           </ResponsiveText>
-          <ResponsiveText size={12} style={style.since}>
-            {moment(likeData['likedBy']).fromNow()}
-          </ResponsiveText>
+          {likeData && (
+            <ResponsiveText size={12} style={style.since}>
+              {moment(likeData['likedBy']).fromNow()}
+            </ResponsiveText>
+          )}
         </View>
 
         {(likeData?.likedBy?.city || likeData?.likedBy?.country) && (

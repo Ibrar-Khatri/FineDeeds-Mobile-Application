@@ -10,7 +10,11 @@ import {
   View,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Entypo';
-import {getProject, getVolunteerById} from '../../../../graphql/queries';
+import {
+  getParticipants,
+  getProject,
+  getVolunteerById,
+} from '../../../../graphql/queries';
 import {
   InfoCard,
   RenderS3Image,
@@ -22,7 +26,9 @@ import {
 import {
   heightPercentageToDP as vh,
   widthPercentageToDP as vw,
+  normalize,
 } from '../../../responsive/responsive';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {
   newRenderDate,
   renderEndTime,
@@ -30,6 +36,11 @@ import {
 } from '../../../shared/services/helper';
 import {isLoggedIn} from '../../../shared/services/authServices';
 import Tag from '../../../components/common/tag/tag';
+import {
+  DescriptionCard,
+  ParticipateCard,
+  TagView,
+} from '../../../components/constant/projectDetailScreenComponent/index';
 
 let screenWidth = Dimensions.get('window').width;
 
@@ -60,8 +71,20 @@ export default function ProjectDetailScreen(props) {
       getProjectById({
         variables: {projectId: data?.projectId},
       });
+      getParticipantData({
+        variables: {
+          objId: data?.projectId,
+          objType: 'PROJECT',
+          objStatus: 'ACCEPTED',
+        },
+      });
     }
   }, [data]);
+
+  const [
+    getParticipantData,
+    {loading: partcipantLoading, data: participantData},
+  ] = useLazyQuery(getParticipants);
 
   function viewProfile() {
     navigation.push('drawer', {
@@ -80,27 +103,19 @@ export default function ProjectDetailScreen(props) {
         Description
       </ResponsiveText>
       <View style={style.projectBodyView}>
-        <ResponsiveText size={12} style={style.detail}>
-          {data?.projectShortDescription}
-        </ResponsiveText>
-        <ResponsiveText size={15} style={style.detailTitle}>
-          What is Nedded
-        </ResponsiveText>
-        <ResponsiveText size={12} style={style.detail}>
-          {data?.whatIsNeeded}
-        </ResponsiveText>
-        <ResponsiveText size={15} style={style.detailTitle}>
-          Impact of your help
-        </ResponsiveText>
-        <ResponsiveText size={12} style={style.detail}>
-          {data?.impactOfYourHelp}
-        </ResponsiveText>
-        <ResponsiveText size={15} style={style.detailTitle}>
-          What we have in place
-        </ResponsiveText>
-        <ResponsiveText size={12} style={style.detail}>
-          {data?.whatWeHaveInPlace}
-        </ResponsiveText>
+        <DescriptionCard description={data?.projectShortDescription} />
+        <DescriptionCard
+          title="What is Nedded"
+          description={data?.whatIsNeeded}
+        />
+        <DescriptionCard
+          title="Impact of your help"
+          description={data?.impactOfYourHelp}
+        />
+        <DescriptionCard
+          title="What we have in place"
+          description={data?.whatWeHaveInPlace}
+        />
         <ResponsiveText size={16} style={style.expStyle}>
           Experince
         </ResponsiveText>
@@ -108,7 +123,7 @@ export default function ProjectDetailScreen(props) {
           {data?.experience ? data?.experience : 'No'}
         </ResponsiveText>
 
-        <View style={style.logoAndName}>
+        <TouchableOpacity style={style.logoAndName}>
           <RenderS3Image
             s3Key={
               data && `ORGANIZATION/LOGO/${data?.organization?.orgId}.webp`
@@ -123,7 +138,7 @@ export default function ProjectDetailScreen(props) {
               {projectData?.data?.getProject?.organization?.address}
             </ResponsiveText>
           </View>
-        </View>
+        </TouchableOpacity>
 
         <InfoCard
           title="TIME FRAME"
@@ -131,26 +146,20 @@ export default function ProjectDetailScreen(props) {
           styles={style.inforCardView}
         />
 
-        <View>
-          <ResponsiveText style={style.typeTitle} size={14}>
-            Causes
-          </ResponsiveText>
-          <View style={style.skillsAndCausesView}>
-            {data?.organization?.areaOfWorking?.map((cause, i) => {
-              return <Tag key={i} bgColor="#ffe8ca" text={cause} />;
-            })}
-          </View>
+        <TagView title="Causes" tags={data?.organization?.areaOfWorking} />
+        <TagView title="Skills" tags={data?.skills} />
+        <View style={style.calenderView}>
+          <FontAwesome name="calendar" color="#f06d06" size={normalize(18)} />
+          <ResponsiveText
+            style={style.postedDateStyle}
+            size={12}>{` Posted ${newRenderDate(
+            data?.createdAt,
+          )}`}</ResponsiveText>
         </View>
-        <View>
-          <ResponsiveText style={style.typeTitle} size={14}>
-            Skills
-          </ResponsiveText>
-          <View style={style.skillsAndCausesView}>
-            {data?.skills?.map((cause, i) => {
-              return <Tag key={i} bgColor="#ffe8ca" text={cause} />;
-            })}
-          </View>
-        </View>
+        <ParticipateCard
+          noOfParticipants={projectData?.data?.getProject?.noOfParticipants}
+          participants={participantData?.getParticipants}
+        />
       </View>
     </ScrollView>
   );
@@ -182,21 +191,15 @@ let style = StyleSheet.create({
     borderTopWidth: 2,
     width: '100%',
   },
-  detailTitle: {
-    fontFamily: 'Montserrat-Regular',
-    color: 'rgba(0,0,0,.7)',
-    fontWeight: 'bold',
+  expStyle: {
+    color: '#f06d06',
+    fontFamily: 'Montserrat-SemiBold',
     marginBottom: vw(2),
   },
   detail: {
     fontFamily: 'Montserrat-Regular',
     color: 'rgba(0,0,0,.7)',
     marginBottom: vw(3),
-  },
-  expStyle: {
-    color: '#f06d06',
-    fontFamily: 'Montserrat-SemiBold',
-    marginBottom: vw(2),
   },
   logoAndName: {
     display: 'flex',
@@ -220,15 +223,13 @@ let style = StyleSheet.create({
     color: '#212529',
     fontFamily: 'Montserrat-Regular',
   },
-  typeTitle: {
-    fontFamily: 'Montserrat-Bold',
-    color: '#212529',
-    marginTop: vw(4),
-  },
-  skillsAndCausesView: {
-    margin: vw(2),
+  calenderView: {
     display: 'flex',
     flexDirection: 'row',
-    flexWrap: 'wrap',
+    alignItems: 'center',
+    marginBottom: vw(5),
+  },
+  postedDateStyle: {
+    color: '#212529',
   },
 });
