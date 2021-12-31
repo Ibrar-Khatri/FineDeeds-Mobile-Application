@@ -31,7 +31,6 @@ export default function Participant(props) {
         params: {volunteer: volunteerData?.data?.getVolunteerById},
       });
   }
-  console.log(data);
   return (
     <TouchableOpacity
       style={style.CommentCardMainView}
@@ -46,7 +45,7 @@ export default function Participant(props) {
       <View style={style.commentSection}>
         <View style={style.volunteerNameView}>
           <ResponsiveText size={13} style={style.volunName}>
-            {likeData
+            {(likeData || data) && likeData
               ? likeData['likedBy']['volunteerName']
               : data?.volunteerName}
           </ResponsiveText>

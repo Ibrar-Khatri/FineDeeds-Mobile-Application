@@ -1,7 +1,8 @@
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import ActivityList from './activityList/activityList';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {normalize} from '../../responsive/responsive';
 import StoryList from './storyList/storyList';
 import OrganizationList from './organizationList/organizationList';
@@ -10,7 +11,7 @@ import ProjectList from './projectsList/projectsList';
 
 const Stack = createNativeStackNavigator();
 
-export default function ListAllScreen({route}) {
+export default function ListAllScreen({route, navigation}) {
   const {initialRouteName, volunteerId, title} = route.params;
 
   return (
@@ -20,6 +21,17 @@ export default function ListAllScreen({route}) {
         headerTitle: title,
         headerTitleStyle: style.headerTitleStyle,
         headerStyle: style.headerStyle,
+        headerBackTitleStyle: style.headerBackTitleStyle,
+        headerLeft: props => (
+          <View {...props} style={style.headerLeft}>
+            <Ionicons
+              name="chevron-back"
+              color="#fd7e14"
+              size={normalize(20)}
+              onPress={() => navigation.goBack()}
+            />
+          </View>
+        ),
       })}>
       <Stack.Screen name="activity_list">
         {() => <ActivityList volunteerId={volunteerId} />}
@@ -55,4 +67,10 @@ let style = StyleSheet.create({
     elevation: 18,
     backgroundColor: '#fffaf4',
   },
+  headerBackTitleStyle: {
+    backgroundColor: 'red',
+    height: 100,
+    width: 100,
+  },
+  headerLeft: {borderRadius: 100, overflow: 'hidden'},
 });

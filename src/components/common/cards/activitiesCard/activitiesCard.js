@@ -125,9 +125,9 @@ let style = StyleSheet.create({
     fontFamily: 'Montserrat-Bold',
     textAlignVertical: 'center',
   },
-  cardBody: {
-    width: vh(39),
-  },
+  // cardBody: {
+  //   width: vh(39)
+  // },
   activityTitle: {
     fontFamily: 'Montserrat-Bold',
     color: '#212529',

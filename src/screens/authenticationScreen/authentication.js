@@ -1,6 +1,8 @@
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {Image, StyleSheet} from 'react-native';
+import {Image, StyleSheet, View} from 'react-native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import {normalize} from '../../responsive/responsive';
 import LoginScreen from './loginScreen/loginScreen';
 import SignupScreen from './signupScreen/signupScreen';
 import ForgotPasswordScreen from './forgotPasswordScreen/forgotPasswordScreen';
@@ -10,7 +12,7 @@ import TermsAndCondition from './termsAndCondition/termsAndCondition';
 
 const Stack = createNativeStackNavigator();
 
-export default function AuthenticationScreen({route}) {
+export default function AuthenticationScreen({route, navigation}) {
   const {initialRouteName} = route.params;
 
   return (
@@ -35,6 +37,16 @@ export default function AuthenticationScreen({route}) {
               style={style.headerRightIcon}
             />
           ),
+          headerLeft: props => (
+            <View {...props} style={style.headerLeft}>
+              <Ionicons
+                name="chevron-back"
+                color="#fd7e14"
+                size={normalize(20)}
+                onPress={() => navigation.navigate('signup')}
+              />
+            </View>
+          ),
         })}
       />
     </Stack.Navigator>
@@ -50,4 +62,5 @@ let style = StyleSheet.create({
     height: 30,
     width: 35,
   },
+  headerLeft: {borderRadius: 100, overflow: 'hidden'},
 });

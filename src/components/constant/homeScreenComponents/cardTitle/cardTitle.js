@@ -10,7 +10,7 @@ export default function CardTitle(props) {
   let navigation = useNavigation();
 
   function navigateTo() {
-    navigation.navigate(screenName, {
+    navigation.push(screenName, {
       initialRouteName: initialRouteName,
       title: headerTitle,
     });

@@ -86,7 +86,7 @@ export default function ContributorCard(props) {
                 {data?.skills.slice(0, 3).map((item, i) => (
                   <ResponsiveText
                     key={i}
-                    size={14}
+                    size={13}
                     style={style.skillsItemStyle}>
                     {`${item} | `}
                   </ResponsiveText>

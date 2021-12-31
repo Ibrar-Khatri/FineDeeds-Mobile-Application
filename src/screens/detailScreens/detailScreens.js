@@ -1,14 +1,16 @@
 import React from 'react';
 import {StyleSheet, Platform} from 'react-native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import ActivityDetailScreen from './activityDetailScreen/activityDetailScreen';
 import StoryDetailScreen from './storyDetailScreen/storyDetailScreen';
 import {normalize} from '../../responsive/responsive';
 import ProjectDetailScreen from './projectDetailScreen/projectDetailScreen';
+import {View} from 'react-native';
 
 const Stack = createNativeStackNavigator();
 
-export default function DetailScreen({route}) {
+export default function DetailScreen({route, navigation}) {
   const {initialRouteName, data, title} = route.params;
 
   return (
@@ -18,6 +20,16 @@ export default function DetailScreen({route}) {
         headerTitle: title,
         headerTitleStyle: style.headerTitleStyle,
         headerStyle: style.headerStyle,
+        headerLeft: props => (
+          <View {...props} style={style.headerLeft}>
+            <Ionicons
+              name="chevron-back"
+              color="#fd7e14"
+              size={normalize(20)}
+              onPress={() => navigation.goBack()}
+            />
+          </View>
+        ),
       })}>
       <Stack.Screen name="activity_detail">
         {() => <ActivityDetailScreen data={data} />}
@@ -49,4 +61,5 @@ let style = StyleSheet.create({
     elevation: 18,
     backgroundColor: '#fffaf4',
   },
+  headerLeft: {borderRadius: 100, overflow: 'hidden'},
 });

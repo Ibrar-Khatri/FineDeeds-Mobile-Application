@@ -90,7 +90,7 @@ let style = StyleSheet.create({
     shadowOpacity: Platform.OS === 'ios' ? 0.2 : 0.48,
     shadowRadius: 11.95,
     elevation: 18,
-    height: screenWidth < 480 ? 56 : 70,
+    // height: screenWidth < 480 ? 56 : 70,
   },
   finededLogo: {
     marginRight: 20,
