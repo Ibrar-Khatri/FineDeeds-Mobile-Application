@@ -271,7 +271,6 @@ export default function StoryDetailScreen(props) {
           </View>
           <View style={style.CommentSectionView}>
             <CommentSection
-              placeholder="Write a comment"
               objId={storyDet?.storyId}
               objType={'STORY'}
             />

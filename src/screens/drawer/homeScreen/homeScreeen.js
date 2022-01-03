@@ -12,6 +12,7 @@ import {
   FeaturedContributors,
   ProjectsNearYou,
   EventsNearYou,
+  FundRaisingEventsNearYou,
 } from '../../../components/constant/homeScreenComponents/index';
 import {
   sideDetail1,
@@ -55,6 +56,7 @@ export default function HomeScreen(props) {
           <OrganizationNearYou />
           <FeaturedContributors />
           <EventsNearYou />
+          <FundRaisingEventsNearYou />
           <ProjectsNearYou />
           <ActivitiesNearYou />
           <View>

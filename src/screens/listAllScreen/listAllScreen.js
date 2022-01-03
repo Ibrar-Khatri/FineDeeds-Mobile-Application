@@ -8,6 +8,9 @@ import StoryList from './storyList/storyList';
 import OrganizationList from './organizationList/organizationList';
 import ContributorList from './contributorList/contributorList';
 import ProjectList from './projectsList/projectsList';
+import EventList from './eventList/eventList';
+import {ResponsiveText} from '../../components/common/common';
+import FundraisingEventList from './fundraisingEventList/fundraisingEventList';
 
 const Stack = createNativeStackNavigator();
 
@@ -33,19 +36,27 @@ export default function ListAllScreen({route, navigation}) {
           </View>
         ),
       })}>
-      <Stack.Screen name="activity_list">
+      <Stack.Screen name="activity_list" options={{title: title}}>
         {() => <ActivityList volunteerId={volunteerId} />}
       </Stack.Screen>
-      <Stack.Screen name="story_list">
+      <Stack.Screen name="story_list" options={{title: title}}>
         {() => <StoryList volunteerId={volunteerId} />}
       </Stack.Screen>
-      <Stack.Screen name="organization_list">
+      <Stack.Screen name="organization_list" options={{title: title}}>
         {() => <OrganizationList volunteerId={volunteerId} />}
       </Stack.Screen>
-      <Stack.Screen name="contributor_list">
+      <Stack.Screen name="contributor_list" options={{title: title}}>
         {() => <ContributorList />}
       </Stack.Screen>
-      <Stack.Screen name="project_list">{() => <ProjectList />}</Stack.Screen>
+      <Stack.Screen name="project_list" options={{title: title}}>
+        {() => <ProjectList />}
+      </Stack.Screen>
+      <Stack.Screen name="event_list" options={{title: title}}>
+        {() => <EventList />}
+      </Stack.Screen>
+      <Stack.Screen name="fundraising_event_list" options={{title: title}}>
+        {() => <FundraisingEventList />}
+      </Stack.Screen>
     </Stack.Navigator>
   );
 }
@@ -53,8 +64,8 @@ export default function ListAllScreen({route, navigation}) {
 let style = StyleSheet.create({
   headerTitleStyle: {
     fontFamily: 'Merriweather-Bold',
-    fontSize: normalize(15),
     color: '#212529',
+    fontSize: normalize(15),
   },
   headerStyle: {
     shadowColor: '#000',
@@ -72,4 +83,11 @@ let style = StyleSheet.create({
     height: 100,
     width: 100,
   },
-  headerLeft: {borderRadius: 100, overflow: 'hidden', marginRight: 10},});
+  headerLeft: {
+    borderRadius: 100,
+    overflow: 'hidden',
+    marginRight: 10,
+    display: 'flex',
+    flexDirection: 'row',
+  },
+});

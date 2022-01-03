@@ -16,7 +16,6 @@ import {
   CustomSpinner,
   RenderS3Image,
   ImagePickerActionSheet,
-  FlatListComponent,
   ResponsiveText,
 } from '../../../components/common/common';
 import {
@@ -27,10 +26,6 @@ import {
   VolunteerActivities,
   JourneymapAndVolunExpTabs,
 } from '../../../components/constant/profileScreenComponents/index';
-import {
-  getActivities,
-  getVolunteerPublishedStories,
-} from '../../../../graphql/queries';
 import {
   _putFileToS3,
   _removeFileFromS3,
@@ -55,9 +50,6 @@ export default function ProfileScreen(props) {
   let [isLoading, setIsLoading] = useState(true);
   let [volunteer, setVolunteer] = useState();
   let [image, setImage] = useState(null);
-  // let [isJourneyMap, setIsJourneyMap] = useState(true);
-  // let [isVolunterringExp, setIsVolunterringExp] = useState(false);
-  // let [getstories, storiesData] = useLazyQuery(getVolunteerPublishedStories);
   let [authorized, setAuthorized] = useState(false);
 
   useEffect(() => {

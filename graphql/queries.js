@@ -267,10 +267,10 @@ const getGeneralEvents = gql`
         near_by_address
         isPrivate
         orgId
-        # organization {
-        #   orgId
-        #   orgName
-        # }
+        organization {
+          orgId
+          orgName
+        }
       }
     }
   }
@@ -298,10 +298,10 @@ const getFundRaisingEvents = gql`
         objType
         orgId
         raisedAmount
-        # organization {
-        #   orgId
-        #   orgName
-        # }
+        organization {
+          orgId
+          orgName
+        }
       }
     }
   }
@@ -1055,6 +1055,7 @@ const getContributors = gql`
         city
         country
         designation
+        aboutMe
         organization {
           orgName
         }

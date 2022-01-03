@@ -1,21 +1,16 @@
 import React, {useEffect, useState} from 'react';
 import {useLazyQuery} from '@apollo/client';
-import {useNavigation} from '@react-navigation/native';
 import {
   Dimensions,
   ScrollView,
   StyleSheet,
-  Text,
   TouchableOpacity,
   View,
 } from 'react-native';
-import Icon from 'react-native-vector-icons/Entypo';
+import {getParticipants, getProject} from '../../../../graphql/queries';
 import {
-  getParticipants,
-  getProject,
-  getVolunteerById,
-} from '../../../../graphql/queries';
-import {
+  CommentSection,
+  CustomButton,
   InfoCard,
   RenderS3Image,
   ResponsiveText,
@@ -26,40 +21,30 @@ import {
   normalize,
 } from '../../../responsive/responsive';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import {
-  newRenderDate,
-} from '../../../shared/services/helper';
-import {isLoggedIn} from '../../../shared/services/authServices';
-import Tag from '../../../components/common/tag/tag';
+import {newRenderDate} from '../../../shared/services/helper';
 import {
   DescriptionCard,
   ParticipateCard,
   TagView,
 } from '../../../components/constant/projectDetailScreenComponent/index';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 let screenWidth = Dimensions.get('window').width;
 
 export default function ProjectDetailScreen(props) {
   const {data} = props;
-  let [getVolunteer, volunteerData] = useLazyQuery(getVolunteerById);
+  let [user, setUser] = useState();
   let [getProjectById, projectData] = useLazyQuery(getProject);
-  let [isUserAuthenticated, setIsUserAuthenticated] = useState(false);
-  let navigation = useNavigation();
+  const [
+    getParticipantData,
+    {loading: partcipantLoading, data: participantData},
+  ] = useLazyQuery(getParticipants);
 
-  //   useEffect(() => {
-  //     if (data?.createdBy) {
-  //       getVolunteer({
-  //         variables: {volunteerId: data?.createdBy},
-  //       });
-  //     }
-  //     isLoggedIn()
-  //       .then(res => {
-  //         setIsUserAuthenticated(true);
-  //       })
-  //       .catch(err => {
-  //         setIsUserAuthenticated(false);
-  //       });
-  //   }, []);
+  useEffect(() => {
+    AsyncStorage.getItem('volunteer').then(vol => {
+      setUser(JSON.parse(vol));
+    });
+  }, []);
 
   useEffect(() => {
     if (data?.projectId) {
@@ -76,18 +61,20 @@ export default function ProjectDetailScreen(props) {
     }
   }, [data]);
 
-  const [
-    getParticipantData,
-    {loading: partcipantLoading, data: participantData},
-  ] = useLazyQuery(getParticipants);
+  const checkDisabled = () => {
+    const alreadyPart = participantData?.getParticipants?.find(
+      participant => participant['volunteerId'] === user?.volunteerId,
+    );
+    if (alreadyPart) return true;
+    else return false;
+  };
+  const alreadyPart = checkDisabled();
 
-  function viewProfile() {
-    navigation.push('drawer', {
-      screen: 'profile-screen',
-      params: {volunteer: volunteerData?.data?.getVolunteerById},
+  const userExists = volunteerId => {
+    return participantData?.getParticipants?.some(el => {
+      return el?.volunteerId === volunteerId;
     });
-  }
-
+  };
   return (
     <ScrollView style={style.activityDetailScreenView}>
       <RenderS3Image
@@ -155,6 +142,49 @@ export default function ProjectDetailScreen(props) {
           noOfParticipants={projectData?.data?.getProject?.noOfParticipants}
           participants={participantData?.getParticipants}
         />
+        {user && user?.role !== 'STAFF' && (
+          <View style={style.buttonView}>
+            <CustomButton
+              // onClick={
+              //   alreadyPart
+              //     ? () => UnparticipateRequest()
+              //     : () => participateRequest()
+              // }
+              buttonText={
+                !user
+                  ? 'Login to Participate'
+                  : alreadyPart
+                  ? 'Unparticipate'
+                  : 'Participate'
+              }
+            />
+          </View>
+        )}
+
+        {user && user?.volunteerId === data?.createdBy && (
+          <>
+            <View style={style.buttonView}>
+              <CustomButton buttonText="Update Project" />
+            </View>
+            <View style={style.buttonView}>
+              <CustomButton
+                buttonText={
+                  data?.projectStatus === 'COMPLETED'
+                    ? 'Activate Project Again'
+                    : 'Mark as Completed'
+                }
+              />
+            </View>
+            <View style={style.buttonView}>
+              <CustomButton buttonText="Delete Project" />
+            </View>
+          </>
+        )}
+
+        {!data?.projectId || !user ? null : userExists(user?.volunteerId) ||
+          user?.volunteerId === data?.createdBy ? (
+          <CommentSection objId={data?.projectId} objType={'PROJECT'} />
+        ) : null}
       </View>
     </ScrollView>
   );
@@ -226,5 +256,8 @@ let style = StyleSheet.create({
   },
   postedDateStyle: {
     color: '#212529',
+  },
+  buttonView: {
+    marginTop: 10,
   },
 });

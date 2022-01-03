@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {useLazyQuery} from '@apollo/client';
 import {useEffect} from 'react';
-import {getGeneralEvents} from '../../../../../graphql/queries';
+import {getFundRaisingEvents} from '../../../../../graphql/queries';
 import {
   CustomSpinner,
   EventCard,
@@ -10,41 +10,39 @@ import {
 import {StyleSheet, View} from 'react-native';
 import {CardTitle} from '..';
 
-export default function EventsNearYou() {
-  let [events, setEvents] = useState(null);
+export default function FundRaisingEventsNearYou() {
+  let [fundraisingEvents, setFundraisingEvents] = useState(null);
   const [getEventsNearYou, {loading, error, data}] = useLazyQuery(
-    getGeneralEvents,
+    getFundRaisingEvents,
     {
       variables: {
-        limit: 3,
-        // filter: {
-        //     country: locationDetail?.country,
-        //     city: locationDetail?.city,
-        // },
-        objType: 'GENERAL',
+        objType: 'FUND_RAISING',
       },
       notifyOnNetworkStatusChange: true,
     },
   );
 
-  !events && data?.getEvents?.items && setEvents(data?.getEvents?.items);
+  !fundraisingEvents &&
+    data?.getEvents?.items &&
+    setFundraisingEvents(data?.getEvents?.items);
 
   useEffect(() => {
     getEventsNearYou();
   }, []);
+
   if (!data?.getEvents?.items.length) return null;
   return (
     <View style={style.mainView}>
       <CardTitle
-        title="EVENTS NEAR YOU"
+        title="FUNDRAISING EVENTS NEAR YOU"
         subTitle="HELP US NOW"
         showLink={true}
-        headerTitle="Events Near You"
+        headerTitle="Fundraising Events Near You"
         screenName="listAll-screen"
-        initialRouteName="event_list"
+        initialRouteName="fundraising_event_list"
       />
       <FlatListComponent
-        data={events}
+        data={fundraisingEvents}
         horizontal={true}
         showsHorizontalScrollIndicator={true}
         ListEmptyComponent={<CustomSpinner size="lg" color="#f06d06" />}

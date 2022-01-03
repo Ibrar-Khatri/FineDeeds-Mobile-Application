@@ -17,7 +17,7 @@ import {AsyncStorage} from '@aws-amplify/core';
 import CustomSpinner from '../../spinner/spinner';
 
 export default function CommentSection(props) {
-  const {placeholder, objType, objId} = props;
+  const {objType, objId} = props;
   let [volunteer, setVolunteer] = useState();
   let [showInvalidInput, setShowInvalidInput] = useState(false);
 
@@ -127,7 +127,7 @@ export default function CommentSection(props) {
       </ResponsiveText>
       {volunteer && (
         <InputField
-          placeholder={placeholder}
+          placeholder="Write a comment"
           value={formik.values.comment}
           setValue={formik.handleChange('comment')}
           invalidInput={showInvalidInput && formik.errors.comment}

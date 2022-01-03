@@ -208,6 +208,7 @@ let style = StyleSheet.create({
   removeCommentView: {
     alignSelf: 'flex-start',
     marginLeft: 7,
+    marginTop: 5,
   },
   removeComment: {
     fontFamily: 'Montserrat-Regular',

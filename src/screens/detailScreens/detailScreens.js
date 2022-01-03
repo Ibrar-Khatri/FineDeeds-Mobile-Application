@@ -7,6 +7,7 @@ import StoryDetailScreen from './storyDetailScreen/storyDetailScreen';
 import {normalize} from '../../responsive/responsive';
 import ProjectDetailScreen from './projectDetailScreen/projectDetailScreen';
 import {View} from 'react-native';
+import OrganizationDetailScreen from './organizationDeatilScreen/organizationDeatilScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -31,14 +32,17 @@ export default function DetailScreen({route, navigation}) {
           </View>
         ),
       })}>
-      <Stack.Screen name="activity_detail">
+      <Stack.Screen name="activity_detail" options={{title: title}}>
         {() => <ActivityDetailScreen data={data} />}
       </Stack.Screen>
-      <Stack.Screen name="story_detail">
+      <Stack.Screen name="story_detail" options={{title: title}}>
         {() => <StoryDetailScreen data={data} />}
       </Stack.Screen>
-      <Stack.Screen name="project_detail">
+      <Stack.Screen name="project_detail" options={{title: title}}>
         {() => <ProjectDetailScreen data={data} />}
+      </Stack.Screen>
+      <Stack.Screen name="organization_detail" options={{title: title}}>
+        {() => <OrganizationDetailScreen data={data} />}
       </Stack.Screen>
     </Stack.Navigator>
   );

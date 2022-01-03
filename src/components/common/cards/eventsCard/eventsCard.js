@@ -1,13 +1,14 @@
 import React from 'react';
 import {Dimensions, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import {View, ImageBackground} from 'react-native';
-import moment from 'moment';
-import Icon from 'react-native-vector-icons/Entypo';
+import Entypo from 'react-native-vector-icons/Entypo';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {useNavigation} from '@react-navigation/native';
 import {RenderS3Image, ResponsiveText, CardWrapper} from '../../common';
 import {
   widthPercentageToDP as vw,
   heightPercentageToDP as vh,
+  normalize,
 } from '../../../../responsive/responsive';
 import {
   renderCurrencySign,
@@ -23,13 +24,12 @@ export default function EventCard(props) {
   const {data} = props;
 
   function navigateTo() {
-    navigation.navigate('detail-screen', {
-      initialRouteName: 'activity_detail',
-      data: data,
-      title: data?.activityName,
-    });
+    // navigation.navigate('detail-screen', {
+    //   initialRouteName: 'activity_detail',
+    //   data: data,
+    //   title: data?.activityName,
+    // });
   }
-  console.log(data);
   const checkType = objectT => objectT === 'GENERAL' || objectT === 'ONLINE';
   let organization = data?.organization;
   let targetFunds = data?.targetFunds;
@@ -55,6 +55,12 @@ export default function EventCard(props) {
             </ResponsiveText>
           </ImageBackground>
         </RenderS3Image>
+        {data?.isPaid && (
+          <ResponsiveText size={15} style={style.paidStyle}>
+            Paid
+          </ResponsiveText>
+        )}
+
         <View style={style.cardBody}>
           <ResponsiveText style={style.activityTitle} size={14}>
             {data?.title}
@@ -64,7 +70,11 @@ export default function EventCard(props) {
           </ResponsiveText>
           {checkType(data?.objType) ? (
             <View style={style.locationView}>
-              <Icon name="location-pin" color="#f06d06" size={vh(2.2)} />
+              <Entypo
+                name="location-pin"
+                color="#f06d06"
+                size={normalize(18)}
+              />
               {data?.online ? (
                 <>
                   {/* <a
@@ -76,15 +86,13 @@ export default function EventCard(props) {
                 </>
               ) : (
                 <ResponsiveText style={style.locationText} size={12}>
-                  {' '}
-                  {data?.city && `${data.city} ,`}
-                  {data?.country && `${data.country} `}
+                  {` ${data?.address}`}
                 </ResponsiveText>
               )}
             </View>
           ) : (
-            <View>
-              <ResponsiveText size={16} style={style.goalTextStyle}>
+            <View style={style.progressView}>
+              <ResponsiveText size={15} style={style.goalTextStyle}>
                 Goal
               </ResponsiveText>
               <Progress
@@ -100,6 +108,31 @@ export default function EventCard(props) {
               </ResponsiveText>
             </View>
           )}
+
+          <View style={style.orgMainView}>
+            <View style={style.orgNameAndImgView}>
+              <RenderS3Image
+                style={style.orgImageStyle}
+                s3Key={
+                  data &&
+                  `ORGANIZATION/LOGO/${
+                    organization && organization['orgId']
+                  }.webp`
+                }
+              />
+              <ResponsiveText size={14} style={style.orgNameStyle}>
+                {organization && organization['orgName']
+                  ? organization['orgName']
+                  : 'Nonprofit'}
+              </ResponsiveText>
+            </View>
+            {data && checkType(data?.objType) && (
+              <ResponsiveText style={style.volunteersNeeded} size={14}>
+                <FontAwesome name="user" color="#fd7e14" size={normalize(15)} />
+                {`  ${data?.volunteersNeeded}`}
+              </ResponsiveText>
+            )}
+          </View>
         </View>
       </View>
     </CardWrapper>
@@ -133,6 +166,19 @@ let style = StyleSheet.create({
     color: '#f06d06',
     fontFamily: 'Montserrat-Bold',
   },
+  paidStyle: {
+    backgroundColor: '#f06d06',
+    position: 'absolute',
+    alignSelf: 'flex-end',
+    marginTop: vw(7),
+    fontFamily: 'Montserrat-SemiBold',
+    color: '#fff',
+    borderTopLeftRadius: 5,
+    borderBottomLeftRadius: 5,
+    padding: vw(3),
+    paddingTop: vw(1.5),
+    paddingBottom: vw(1.5),
+  },
   lineBetMonthAndDate: {
     width: '70%',
     borderBottomColor: '#d3d1d0',
@@ -151,6 +197,7 @@ let style = StyleSheet.create({
   activityDec: {
     color: '#737373',
     fontFamily: 'Montserrat-Regular',
+    marginBottom: 8,
   },
   locationView: {
     display: 'flex',
@@ -166,8 +213,11 @@ let style = StyleSheet.create({
   },
   progressStyle: {
     backgroundColor: '#e9ecef',
-    marginBottom: vw(2),
-    marginTop: vw(2),
+    marginBottom: 8,
+    marginTop: 8,
+  },
+  progressView: {
+    marginBottom: 10,
   },
   goalTextStyle: {
     fontFamily: 'Montserrat-SemiBold',
@@ -182,4 +232,28 @@ let style = StyleSheet.create({
   raisedAmountDark: {
     fontFamily: 'Montserrat-Bold',
   },
+  orgMainView: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  orgNameAndImgView: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  orgImageStyle: {
+    height: normalize(30),
+    width: normalize(30),
+    borderRadius: 10,
+  },
+  orgNameStyle: {
+    fontFamily: 'Montserrat-Bold',
+    color: '#212529',
+    marginLeft: 8,
+  },
+  volunteersNeeded:{
+    color:'#212529'
+  }
 });

@@ -1,3 +1,4 @@
+import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {
   Dimensions,
@@ -15,8 +16,17 @@ let screenWidth = Dimensions.get('window').width;
 
 export default function OrganizationCard(props) {
   const {data} = props;
+  let navigation = useNavigation();
+  
+  function navigateTo() {
+    navigation.navigate('detail-screen', {
+      initialRouteName: 'organization_detail',
+      data: data,
+      title: data?.orgName,
+    });
+  }
   return (
-    <CardWrapper>
+    <CardWrapper onPress={navigateTo}>
       <RenderS3Image
         resizeMode="cover"
         s3Key={data && `ORGANIZATION/IMAGE/${data?.orgId}.webp`}>

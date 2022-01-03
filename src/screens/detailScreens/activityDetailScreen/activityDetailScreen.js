@@ -159,7 +159,6 @@ export default function ActivityDetailScreen(props) {
         </View>
         <CommentSection
           objType="ACTIVITY"
-          placeholder="Write a comment"
           objId={data?.activityId}
         />
       </View>
