@@ -47,7 +47,7 @@ export default function DetailScreen({route, navigation}) {
 let style = StyleSheet.create({
   headerTitleStyle: {
     fontFamily: 'Merriweather-Bold',
-    fontSize: normalize(16),
+    fontSize: normalize(15),
     color: '#212529',
   },
   headerStyle: {
@@ -61,5 +61,5 @@ let style = StyleSheet.create({
     elevation: 18,
     backgroundColor: '#fffaf4',
   },
-  headerLeft: {borderRadius: 100, overflow: 'hidden'},
+  headerLeft: {borderRadius: 100, overflow: 'hidden', marginRight: 10},
 });

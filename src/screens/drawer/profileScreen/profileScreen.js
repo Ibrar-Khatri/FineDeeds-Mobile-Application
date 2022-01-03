@@ -13,7 +13,6 @@ import {useLazyQuery} from '@apollo/client';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   CustomButton,
-  ProductCard,
   CustomSpinner,
   RenderS3Image,
   ImagePickerActionSheet,
@@ -23,14 +22,13 @@ import {
 import {
   ProfileScreenCardWrapper,
   ItemsSelectorCard,
-  VolunteeringExperience,
-  JourneyMap,
   ProfileScreenCardsHeader,
-  ActivityCard,
+  VolunteerProducts,
+  VolunteerActivities,
+  JourneymapAndVolunExpTabs,
 } from '../../../components/constant/profileScreenComponents/index';
 import {
   getActivities,
-  getMyProducts,
   getVolunteerPublishedStories,
 } from '../../../../graphql/queries';
 import {
@@ -43,9 +41,11 @@ import {
 } from '../../../appPermissions/appPermissions';
 import {
   heightPercentageToDP as vh,
+  normalize,
   widthPercentageToDP as vw,
 } from '../../../responsive/responsive';
 import {isLoggedIn} from '../../../shared/services/authServices';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -55,16 +55,25 @@ export default function ProfileScreen(props) {
   let [isLoading, setIsLoading] = useState(true);
   let [volunteer, setVolunteer] = useState();
   let [image, setImage] = useState(null);
-  let [isJourneyMap, setIsJourneyMap] = useState(true);
-  let [isVolunterringExp, setIsVolunterringExp] = useState(false);
-  let [myProducts, setMyProducts] = useState(null);
-  let [getActivitiesById, activitiesData] = useLazyQuery(getActivities);
-  let [getProductsById, productsData] = useLazyQuery(getMyProducts);
-  let [getstories, storiesData] = useLazyQuery(getVolunteerPublishedStories);
-  let [activities, setActivities] = useState(null);
+  // let [isJourneyMap, setIsJourneyMap] = useState(true);
+  // let [isVolunterringExp, setIsVolunterringExp] = useState(false);
+  // let [getstories, storiesData] = useLazyQuery(getVolunteerPublishedStories);
   let [authorized, setAuthorized] = useState(false);
 
   useEffect(() => {
+    route?.params?.volunteer &&
+      navigation.setOptions({
+        headerLeft: props => (
+          <View {...props} style={style.headerLeft}>
+            <Ionicons
+              name="chevron-back"
+              color="#fd7e14"
+              size={normalize(20)}
+              onPress={() => navigation.goBack()}
+            />
+          </View>
+        ),
+      });
     (async function () {
       try {
         let user = route?.params?.volunteer
@@ -83,26 +92,9 @@ export default function ProfileScreen(props) {
             });
           setIsLoading(false);
           setVolunteer(user);
-          getActivitiesById({
-            variables: {
-              limit: 3,
-              volunteerId: user.volunteerId,
-            },
-          });
-          getProductsById({
-            variables: {
-              input: {
-                limit: 4,
-                filter: {
-                  status: 'AVAILABLE',
-                  seller: user.volunteerId,
-                },
-              },
-            },
-          });
-          getstories({
-            variables: {volunteerId: user.volunteerId, isPublished: true},
-          });
+          // getstories({
+          //   variables: {volunteerId: user.volunteerId, isPublished: true},
+          // });
         }
       } catch (e) {
         console.log('error', e);
@@ -123,18 +115,6 @@ export default function ProfileScreen(props) {
     ]);
     setIsActionSheetOpen(true);
   }
-
-  useEffect(() => {
-    if (activitiesData?.data?.getActivities?.items?.length >= 0) {
-      setActivities(activitiesData?.data?.getActivities?.items);
-    }
-    if (productsData?.data?.getMyProducts?.items?.length >= 0) {
-      setMyProducts(productsData?.data?.getMyProducts?.items);
-    }
-  }, [
-    activitiesData?.data?.getActivities?.items,
-    productsData?.data?.getMyProducts?.items,
-  ]);
 
   let userFollowersDet = [
     {
@@ -234,89 +214,12 @@ export default function ProfileScreen(props) {
             setVolunteer={setVolunteer}
             authorized={authorized}
           />
-
-          <ProfileScreenCardWrapper>
-            <View style={style.timeLineHeader}>
-              <TouchableOpacity
-                onPress={() => {
-                  setIsJourneyMap(true);
-                  setIsVolunterringExp(false);
-                }}>
-                <ResponsiveText
-                  size={12}
-                  style={[
-                    style.timeLineHeaderTitle,
-                    isJourneyMap && style.focusedHeaderTimeTitle,
-                  ]}>
-                  Journey map
-                </ResponsiveText>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => {
-                  setIsJourneyMap(false);
-                  setIsVolunterringExp(true);
-                }}>
-                <ResponsiveText
-                  size={12}
-                  style={[
-                    style.timeLineHeaderTitle,
-                    isVolunterringExp && style.focusedHeaderTimeTitle,
-                  ]}>
-                  Volunteering experience
-                </ResponsiveText>
-              </TouchableOpacity>
-            </View>
-            {isJourneyMap && (
-              <JourneyMap volunteer={volunteer} storiesData={storiesData} />
-            )}
-            {isVolunterringExp && (
-              <VolunteeringExperience
-                volunteer={volunteer}
-                authorized={authorized}
-              />
-            )}
-          </ProfileScreenCardWrapper>
-
-          {activities?.length > 0 && (
-            <ProfileScreenCardWrapper>
-              <ProfileScreenCardsHeader
-                title="Activity"
-                headerTitle="Activities"
-                screenName="listAll-screen"
-                initialRouteName="activity_list"
-                volunteerId={volunteer.volunteerId}
-              />
-              <FlatListComponent
-                data={activities}
-                horizontal={true}
-                showsHorizontalScrollIndicator={false}
-                renderItem={({item, index}) => (
-                  <ActivityCard key={index} data={item} volunteer={volunteer} />
-                )}
-              />
-            </ProfileScreenCardWrapper>
-          )}
-          <ProfileScreenCardWrapper>
-            <ProfileScreenCardsHeader
-              title="Products in charity store"
-              // headerTitle="Products"
-              screenName="listAll-screen"
-              // initialRouteName="activity_list"
-            />
-            {myProducts?.length >= 0 ? (
-              <FlatListComponent
-                data={myProducts}
-                horizontal={true}
-                showsHorizontalScrollIndicator={false}
-                emptyDataTitle="Products"
-                renderItem={({item, index}) => (
-                  <ProductCard key={index} productDetail={item} />
-                )}
-              />
-            ) : (
-              <CustomSpinner size="lg" color="#f06d06" />
-            )}
-          </ProfileScreenCardWrapper>
+          <JourneymapAndVolunExpTabs
+            volunteer={volunteer}
+            authorized={authorized}
+          />
+          <VolunteerActivities volunteer={volunteer} />
+          <VolunteerProducts volunteer={volunteer} />
           <ImagePickerActionSheet
             isActionSheetOpen={isActionSheetOpen}
             setIsActionSheetOpen={setIsActionSheetOpen}
@@ -339,6 +242,7 @@ export default function ProfileScreen(props) {
 }
 
 let style = StyleSheet.create({
+  headerLeft: {borderRadius: 100, overflow: 'hidden', marginLeft: 10},
   profileView: {
     backgroundColor: '#fff',
     padding: 20,
@@ -403,20 +307,5 @@ let style = StyleSheet.create({
     fontFamily: 'Montserrat-Regular',
     color: '#212529',
     marginBottom: 15,
-  },
-  timeLineHeader: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    marginBottom: 22,
-  },
-  timeLineHeaderTitle: {
-    color: '#2b2b2b',
-    fontFamily: 'Poppins-SemiBold',
-  },
-  focusedHeaderTimeTitle: {
-    color: '#f06d06',
-    borderBottomColor: '#f06d06',
-    borderBottomWidth: 1,
   },
 });

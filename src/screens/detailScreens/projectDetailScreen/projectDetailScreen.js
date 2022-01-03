@@ -19,9 +19,6 @@ import {
   InfoCard,
   RenderS3Image,
   ResponsiveText,
-  CustomButton,
-  CommentSection,
-  CustomSpinner,
 } from '../../../components/common/common';
 import {
   heightPercentageToDP as vh,
@@ -31,8 +28,6 @@ import {
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {
   newRenderDate,
-  renderEndTime,
-  renderTime,
 } from '../../../shared/services/helper';
 import {isLoggedIn} from '../../../shared/services/authServices';
 import Tag from '../../../components/common/tag/tag';

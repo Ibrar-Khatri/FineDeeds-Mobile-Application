@@ -4,7 +4,7 @@ import {widthPercentageToDP as vw} from '../../../../responsive/responsive';
 import {Participant, ResponsiveText} from '../../../common/common';
 
 export default function ParticipateCard(props) {
-  const {noOfParticipants, participants} = props;
+  const {participants} = props;
   return (
     <View style={style.participantCardView}>
       <View style={style.participantCardHeader}>

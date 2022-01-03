@@ -18,6 +18,7 @@ const Drawer = createDrawerNavigator();
 export default function DrawerNavigation({navigation}) {
   let [isUserAuthenticated, setIsUserAuthenticated] = useState(false);
   let [volunteer, setVolunteer] = useState();
+
   useEffect(() => {
     isLoggedIn()
       .then(res => {
@@ -79,7 +80,7 @@ export default function DrawerNavigation({navigation}) {
 let style = StyleSheet.create({
   headerTitleStyle: {
     fontFamily: 'Merriweather-Bold',
-    fontSize: normalize(16),
+    fontSize: normalize(15),
   },
   headerStyle: {
     shadowColor: '#000',

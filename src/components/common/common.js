@@ -31,6 +31,7 @@ import OrganizationCard from './cards/organizationCard/organizationCard';
 import ContributorCard from './cards/contributorCard/contributorCard';
 import ProjectCard from './cards/projectCard/projectCard';
 import CardWrapper from './cards/cardWrapper/cardWrapper';
+import EventCard from './cards/eventsCard/eventsCard';
 
 export {
   AppContainer,
@@ -64,4 +65,5 @@ export {
   ContributorCard,
   ProjectCard,
   CardWrapper,
+  EventCard,
 };

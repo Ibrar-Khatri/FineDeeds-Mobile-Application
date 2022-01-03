@@ -1,5 +1,6 @@
 import ActivitiesNearYou from './activitiesNearYou/activitiesNearYou';
 import CardTitle from './cardTitle/cardTitle';
+import EventsNearYou from './eventsNearYou/eventsNearYou';
 import FeaturedContributors from './featuredContributors/featuredContributors';
 import JoinAsNonProfit from './joinAsNonProfit/joinAsNonProfit';
 import OrganizationNearYou from './orgNearYou/orgNearYou';
@@ -17,4 +18,5 @@ export {
   OrganizationNearYou,
   FeaturedContributors,
   ProjectsNearYou,
+  EventsNearYou,
 };
