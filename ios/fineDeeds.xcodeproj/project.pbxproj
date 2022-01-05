@@ -22,6 +22,7 @@
 		D01C9A93749E4FB3868AB143 /* Poppins-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3A71C040CBC74E0DB6719C53 /* Poppins-SemiBold.ttf */; };
 		E5CF464BB8BE84E0AE048838 /* libPods-fineDeeds.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 85ADE49DB1C0D75E93D5B3D5 /* libPods-fineDeeds.a */; };
 		E991F0FE8E19420EB42A217B /* Merriweather-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1CAA3569906E427AB994A757 /* Merriweather-Black.ttf */; };
+		85466BF41F7E4432BE9EA638 /* Poppins-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FFF4895862454161A571DEF1 /* Poppins-Regular.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -105,6 +106,7 @@
 		F2061CA01FB04C3FB19207F8 /* Merriweather-BoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Merriweather-BoldItalic.ttf"; path = "../src/assets/fonts/Merriweather-BoldItalic.ttf"; sourceTree = "<group>"; };
 		F21F3ABCAB3E4232A6CBAD76 /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Solid.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
 		FD26DA9959E34145BCE3C316 /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
+		FFF4895862454161A571DEF1 /* Poppins-Regular.ttf */ = {isa = PBXFileReference; name = "Poppins-Regular.ttf"; path = "../src/assets/fonts/Poppins-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -198,6 +200,7 @@
 				0E93C4F5246A4B70A35171FB /* Montserrat-Thin.ttf */,
 				CB1F65A2484E4D8ABA5B3C52 /* Montserrat-ThinItalic.ttf */,
 				3A71C040CBC74E0DB6719C53 /* Poppins-SemiBold.ttf */,
+				FFF4895862454161A571DEF1 /* Poppins-Regular.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -372,6 +375,7 @@
 				879B191857FA4B8883A6E25C /* Montserrat-ExtraBold.ttf in Resources */,
 				656587BFC32C4B4CB4DFB3EF /* Montserrat-SemiBold.ttf in Resources */,
 				D01C9A93749E4FB3868AB143 /* Poppins-SemiBold.ttf in Resources */,
+				85466BF41F7E4432BE9EA638 /* Poppins-Regular.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

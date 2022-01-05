@@ -13,16 +13,14 @@ export default function EmptyDataComponent(props) {
         alt="empty"
         size={60}
       />
-      <ResponsiveText
-        style={style.textStyle}
-        size={12}>{`No ${title}`}</ResponsiveText>
+      <ResponsiveText style={style.textStyle} size={12}>
+        {title}
+      </ResponsiveText>
     </View>
   );
 }
 
-
-
-let style= StyleSheet.create({
+let style = StyleSheet.create({
   imageAndTextView: {
     display: 'flex',
     alignItems: 'center',

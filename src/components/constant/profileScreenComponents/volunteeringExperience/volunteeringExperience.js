@@ -179,7 +179,7 @@ export default function VolunteeringExperience(props) {
               />
             ))
           ) : (
-            <EmptyDataComponent title="Experience" />
+            <EmptyDataComponent title="No Experience" />
           )}
           {authorized && (
             <View style={style.buttonView}>

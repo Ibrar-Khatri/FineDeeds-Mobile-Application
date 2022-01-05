@@ -186,7 +186,7 @@ export default function ItemsSelectorCard(props) {
             <Tag key={i} text={item} borderColor="#f06f07" />
           ))
         ) : (
-          <EmptyDataComponent title={title} />
+          <EmptyDataComponent title={`No ${title}`} />
         )}
       </View>
 

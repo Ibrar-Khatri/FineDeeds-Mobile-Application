@@ -1,15 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import {
-  ScrollView,
-  TouchableOpacity,
-  View,
-  Image,
-  Dimensions,
-  StyleSheet,
-} from 'react-native';
+import {ScrollView, View, Image, Dimensions, StyleSheet} from 'react-native';
 import Iocn1 from 'react-native-vector-icons/Entypo';
 import Icon2 from 'react-native-vector-icons/AntDesign';
-import {useLazyQuery} from '@apollo/client';
+import Icon3 from 'react-native-vector-icons/Ionicons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   CustomButton,
@@ -27,10 +20,6 @@ import {
   JourneymapAndVolunExpTabs,
 } from '../../../components/constant/profileScreenComponents/index';
 import {
-  _putFileToS3,
-  _removeFileFromS3,
-} from '../../../shared/services/s3Services';
-import {
   Permission,
   PERMISSION_TYPE,
 } from '../../../appPermissions/appPermissions';
@@ -40,7 +29,6 @@ import {
   widthPercentageToDP as vw,
 } from '../../../responsive/responsive';
 import {isLoggedIn} from '../../../shared/services/authServices';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -57,7 +45,7 @@ export default function ProfileScreen(props) {
       navigation.setOptions({
         headerLeft: props => (
           <View {...props} style={style.headerLeft}>
-            <Ionicons
+            <Icon3
               name="chevron-back"
               color="#fd7e14"
               size={normalize(20)}

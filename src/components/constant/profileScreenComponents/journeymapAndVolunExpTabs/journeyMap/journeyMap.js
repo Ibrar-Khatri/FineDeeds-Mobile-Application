@@ -97,7 +97,7 @@ export default function JourneyMap(props) {
       ))}
     </ScrollView>
   ) : (
-    <EmptyDataComponent title="Journey Map" />
+    <EmptyDataComponent title="No Journey Map" />
   );
 }
 

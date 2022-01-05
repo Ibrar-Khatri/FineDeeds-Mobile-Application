@@ -1,7 +1,7 @@
-import { useLazyQuery } from '@apollo/client';
-import React, { useEffect, useState } from 'react';
+import {useLazyQuery} from '@apollo/client';
+import React, {useEffect, useState} from 'react';
 import {ProfileScreenCardsHeader, ProfileScreenCardWrapper} from '..';
-import { getMyProducts } from '../../../../../graphql/queries';
+import {getMyProducts} from '../../../../../graphql/queries';
 import {
   CustomSpinner,
   FlatListComponent,
@@ -48,7 +48,7 @@ export default function VolunteerProducts(props) {
           data={myProducts}
           horizontal={true}
           showsHorizontalScrollIndicator={false}
-          emptyDataTitle="Products"
+          emptyDataTitle="No Products"
           renderItem={({item, index}) => (
             <ProductCard key={index} productDetail={item} />
           )}
