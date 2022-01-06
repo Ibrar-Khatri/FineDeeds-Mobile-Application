@@ -3,14 +3,13 @@ import {StyleSheet, View} from 'react-native';
 import {
   EmptyDataComponent,
   ProjectCard,
-  ResponsiveText,
 } from '../../../../common/common';
 
 export default function Projects(props) {
   const {data} = props;
   return (
     <View style={style.upcomingEventView}>
-      {data.length > 0 ? (
+      {data?.length > 0 ? (
         data?.map((event, i) => <ProjectCard key={i} data={event} />)
       ) : (
         <EmptyDataComponent title="No Projects" />

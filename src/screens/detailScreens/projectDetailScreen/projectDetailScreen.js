@@ -28,6 +28,7 @@ import {
   TagView,
 } from '../../../components/constant/projectDetailScreenComponent/index';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useNavigation} from '@react-navigation/native';
 
 let screenWidth = Dimensions.get('window').width;
 
@@ -39,6 +40,7 @@ export default function ProjectDetailScreen(props) {
     getParticipantData,
     {loading: partcipantLoading, data: participantData},
   ] = useLazyQuery(getParticipants);
+  let navigation = useNavigation();
 
   useEffect(() => {
     AsyncStorage.getItem('volunteer').then(vol => {
@@ -75,6 +77,15 @@ export default function ProjectDetailScreen(props) {
       return el?.volunteerId === volunteerId;
     });
   };
+
+  function navigateTo() {
+    navigation.push('detail-screen', {
+      initialRouteName: 'organization_detail',
+      data: data?.organization,
+      title: data?.organization?.orgName,
+    });
+  }
+
   return (
     <ScrollView style={style.activityDetailScreenView}>
       <RenderS3Image
@@ -105,7 +116,7 @@ export default function ProjectDetailScreen(props) {
           {data?.experience ? data?.experience : 'No'}
         </ResponsiveText>
 
-        <TouchableOpacity style={style.logoAndName}>
+        <TouchableOpacity style={style.logoAndName} onPress={navigateTo}>
           <RenderS3Image
             s3Key={
               data && `ORGANIZATION/LOGO/${data?.organization?.orgId}.webp`
@@ -252,12 +263,11 @@ let style = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: vw(5),
   },
   postedDateStyle: {
     color: '#212529',
   },
   buttonView: {
-    marginTop: 10,
+    marginBottom: 10,
   },
 });

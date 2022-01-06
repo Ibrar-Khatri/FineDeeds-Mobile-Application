@@ -38,8 +38,8 @@ export default function OrganizationDetailScreen(props) {
         <CustomSpinner size="lg" color="#f06d06" />
       ) : (
         <>
-          <TopPanel org={data} user={user} />
-          <BottomPanel org={data} />
+          <TopPanel org={orgData?.data?.getOrgById} user={user} />
+          <BottomPanel org={orgData?.data?.getOrgById} />
           {user?.role === 'STAFF' ||
           !orgData?.data?.getOrgById?.accountId ? null : (
             <View style={style.buttonView}>

@@ -10,7 +10,7 @@ export default function PastEvents(props) {
   const {data} = props;
   return (
     <View style={style.upcomingEventView}>
-      {data.length > 0 ? (
+      {data?.length > 0 ? (
         data?.map((event, i) => <EventCard key={i} data={event} />)
       ) : (
         <EmptyDataComponent title="Past Event not available yet!" />

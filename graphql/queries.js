@@ -459,10 +459,10 @@ const getEvent = gql`
       }
       isPrivate
       isPaid
-      # organization {
-      #   orgName
-      #   orgId
-      # }
+      organization {
+        orgName
+        orgId
+      }
       host {
         volunteerName
         volunteerId

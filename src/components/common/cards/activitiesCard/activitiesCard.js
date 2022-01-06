@@ -17,7 +17,7 @@ export default function ActivitiesCard(props) {
   const {data} = props;
 
   function navigateTo() {
-    navigation.navigate('detail-screen', {
+    navigation.push('detail-screen', {
       initialRouteName: 'activity_detail',
       data: data,
       title: data?.activityName,

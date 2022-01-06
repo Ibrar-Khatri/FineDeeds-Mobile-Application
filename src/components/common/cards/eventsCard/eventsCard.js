@@ -24,11 +24,11 @@ export default function EventCard(props) {
   const {data} = props;
 
   function navigateTo() {
-    // navigation.navigate('detail-screen', {
-    //   initialRouteName: 'activity_detail',
-    //   data: data,
-    //   title: data?.activityName,
-    // });
+    navigation.push('detail-screen', {
+      initialRouteName: 'event_detail',
+      data: data,
+      title: data?.title,
+    });
   }
   const checkType = objectT => objectT === 'GENERAL' || objectT === 'ONLINE';
   let organization = data?.organization;
@@ -37,7 +37,7 @@ export default function EventCard(props) {
 
   return (
     <CardWrapper activeOpacity={0.7} onPress={navigateTo}>
-      <View style={style.activitiesMainView}>
+      <View style={style.eventCardMainView}>
         <RenderS3Image
           style={style.bgImageView}
           resizeMode="cover"
@@ -62,10 +62,10 @@ export default function EventCard(props) {
         )}
 
         <View style={style.cardBody}>
-          <ResponsiveText style={style.activityTitle} size={14}>
+          <ResponsiveText style={style.eventTitle} size={14}>
             {data?.title}
           </ResponsiveText>
-          <ResponsiveText style={style.activityDec} numberOfLines={3} size={12}>
+          <ResponsiveText style={style.eventDec} numberOfLines={3} size={12}>
             {data?.description}
           </ResponsiveText>
           {checkType(data?.objType) ? (
@@ -140,7 +140,7 @@ export default function EventCard(props) {
 }
 
 let style = StyleSheet.create({
-  activitiesMainView: {
+  eventCardMainView: {
     padding: vw(2),
   },
   bgImageView: {
@@ -188,13 +188,13 @@ let style = StyleSheet.create({
   cardBody: {
     padding: vw(3),
   },
-  activityTitle: {
+  eventTitle: {
     fontFamily: 'Montserrat-Bold',
     color: '#212529',
     paddingTop: 15,
     paddingBottom: 15,
   },
-  activityDec: {
+  eventDec: {
     color: '#737373',
     fontFamily: 'Montserrat-Regular',
     marginBottom: 8,

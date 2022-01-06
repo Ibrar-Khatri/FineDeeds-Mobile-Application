@@ -8,6 +8,7 @@ import {normalize} from '../../responsive/responsive';
 import ProjectDetailScreen from './projectDetailScreen/projectDetailScreen';
 import {View} from 'react-native';
 import OrganizationDetailScreen from './organizationDeatilScreen/organizationDeatilScreen';
+import EventDetailScreen from './eventDetailScreen/eventDetailScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -43,6 +44,9 @@ export default function DetailScreen({route, navigation}) {
       </Stack.Screen>
       <Stack.Screen name="organization_detail" options={{title: title}}>
         {() => <OrganizationDetailScreen data={data} />}
+      </Stack.Screen>
+      <Stack.Screen name="event_detail" options={{title: title}}>
+        {() => <EventDetailScreen data={data} />}
       </Stack.Screen>
     </Stack.Navigator>
   );

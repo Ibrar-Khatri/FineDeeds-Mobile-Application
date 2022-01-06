@@ -22,7 +22,7 @@ export default function StoriesCard(props) {
   const {data} = props;
 
   function navigateTo() {
-    navigation.navigate('detail-screen', {
+    navigation.push('detail-screen', {
       initialRouteName: 'story_detail',
       data: data,
       title: data?.title,

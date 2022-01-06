@@ -4,7 +4,6 @@ import {
   Dimensions,
   ImageBackground,
   StyleSheet,
-  TouchableOpacity,
 } from 'react-native';
 import {
   heightPercentageToDP as vh,
@@ -19,7 +18,7 @@ export default function OrganizationCard(props) {
   let navigation = useNavigation();
   
   function navigateTo() {
-    navigation.navigate('detail-screen', {
+    navigation.push('detail-screen', {
       initialRouteName: 'organization_detail',
       data: data,
       title: data?.orgName,

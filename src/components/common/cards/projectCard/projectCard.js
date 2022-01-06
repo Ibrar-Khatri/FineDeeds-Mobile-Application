@@ -14,7 +14,7 @@ export default function ProjectCard(props) {
   const causes = data?.organization?.areaOfWorking.join(', ');
 
   function navigateTo() {
-    navigation.navigate('detail-screen', {
+    navigation.push('detail-screen', {
       initialRouteName: 'project_detail',
       data: data,
       title: data?.projectName,

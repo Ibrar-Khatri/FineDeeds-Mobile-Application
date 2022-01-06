@@ -200,7 +200,8 @@ export default function DrawerContent(props) {
 let style = StyleSheet.create({
   drawerLabelStyle: {
     fontFamily: 'Montserrat-SemiBold',
-    fontSize: normalize(screenWidth > 480 && 11),
+    fontSize: normalize(11),
+    textAlign: 'left',
   },
   activeTintColor: '#f06d06',
   inactiveTintColor: '#212529',

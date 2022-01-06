@@ -35,6 +35,8 @@ let style = StyleSheet.create({
     borderColor: '#eaeaea',
     borderRadius: 10,
     borderWidth: 1,
+    marginBottom: vw(4),
+    marginTop: vw(4),
   },
   participantCardHeader: {
     display: 'flex',

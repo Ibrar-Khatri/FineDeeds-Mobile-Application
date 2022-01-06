@@ -24,21 +24,19 @@ export default function LoginScreen({navigation}) {
   let toast = useToast();
 
   useEffect(() => {
-    if (volunteerData?.called && !volunteerData?.loading) {
-      if (volunteerData?.data?.getVolunteerById) {
-        AsyncStorage.setItem(
-          'volunteer',
-          JSON.stringify(volunteerData?.data?.getVolunteerById),
-        ).then(() => {
-          setIsLoading(false);
-          navigation.reset({
-            index: 0,
-            routes: [{name: 'drawer'}],
-          });
+    if (volunteerData?.data?.getVolunteerById) {
+      AsyncStorage.setItem(
+        'volunteer',
+        JSON.stringify(volunteerData?.data?.getVolunteerById),
+      ).then(() => {
+        setIsLoading(false);
+        navigation.reset({
+          index: 0,
+          routes: [{name: 'drawer'}],
         });
-      }
+      });
     }
-  }, [volunteerData?.data?.getVolunteerById]);
+  }, [volunteerData]);
 
   const formik = useFormik({
     initialValues: {
