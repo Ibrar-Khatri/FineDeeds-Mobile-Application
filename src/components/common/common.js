@@ -22,6 +22,7 @@ import ResponsiveText from './responsiveText/responsiveText';
 import CustomSpinner from './spinner/spinner';
 import Tag from './tag/tag';
 import Tabs from './tabs/tabs';
+import ParticipateContainer from './participantContainer/participantContainer';
 //cards
 import ActivitiesCard from './cards/activitiesCard/activitiesCard';
 import InfoCard from './cards/infoCard/infoCard';
@@ -69,4 +70,5 @@ export {
   EventCard,
   Tabs,
   HostCard,
+  ParticipateContainer,
 };

@@ -23,6 +23,7 @@ import {
   CommentSection,
   CustomSpinner,
   HostCard,
+  ParticipateContainer,
 } from '../../../components/common/common';
 import {
   heightPercentageToDP as vh,
@@ -37,7 +38,6 @@ import {
 import {isLoggedIn} from '../../../shared/services/authServices';
 import Tag from '../../../components/common/tag/tag';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {ParticipateCard} from '../../../components/constant/projectDetailScreenComponent';
 import moment from 'moment';
 
 let screenWidth = Dimensions.get('window').width;
@@ -75,7 +75,7 @@ export default function EventDetailScreen(props) {
   !event && eventData?.data?.getEvent && setEvent(eventData?.data?.getEvent);
 
   const checkPastDate = event && moment(event?.startDate).isAfter();
-  let currentDate = moment(new Date()).format('YYYY-MM-DD HH:mm');
+  let currentDate = moment().format('YYYY-MM-DD HH:mm');
   let eventDatewithTime = moment(event?.startDate + ' ' + event?.eventTime);
   let hoursDiff = moment(eventDatewithTime).diff(moment(currentDate), 'hours');
 
@@ -141,7 +141,7 @@ export default function EventDetailScreen(props) {
         )}
       </View>
       <View style={style.bodyView}>
-        <ResponsiveText size={14} style={style.description}>
+        <ResponsiveText size={13} style={style.description}>
           {event?.description}
         </ResponsiveText>
         <TouchableOpacity style={style.logoAndName} onPress={navigateTo}>
@@ -219,7 +219,7 @@ export default function EventDetailScreen(props) {
             }
           />
         )}
-        <ParticipateCard participants={participantData?.getParticipants} />
+        <ParticipateContainer participants={participantData?.getParticipants} />
         {event?.isPaid && hoursDiff > 24 ? _renderButtons() : _renderButtons()}
         <CommentSection objId={event?.eventId} objType={'EVENT'} />
       </View>

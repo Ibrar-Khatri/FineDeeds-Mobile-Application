@@ -21,11 +21,14 @@ let screenWidth = Dimensions.get('window').width;
 
 export default function EventCard(props) {
   let navigation = useNavigation();
-  const {data} = props;
+  const {data, type} = props;
 
   function navigateTo() {
+    const initialRouteName =
+      type === 'event' ? 'event_detail' : 'fundraising_event_detail';
+
     navigation.push('detail-screen', {
-      initialRouteName: 'event_detail',
+      initialRouteName: initialRouteName,
       data: data,
       title: data?.title,
     });
@@ -253,7 +256,7 @@ let style = StyleSheet.create({
     color: '#212529',
     marginLeft: 8,
   },
-  volunteersNeeded:{
-    color:'#212529'
-  }
+  volunteersNeeded: {
+    color: '#212529',
+  },
 });

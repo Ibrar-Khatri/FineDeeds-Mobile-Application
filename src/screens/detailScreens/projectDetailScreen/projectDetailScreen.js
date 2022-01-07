@@ -12,6 +12,7 @@ import {
   CommentSection,
   CustomButton,
   InfoCard,
+  ParticipateContainer,
   RenderS3Image,
   ResponsiveText,
 } from '../../../components/common/common';
@@ -24,7 +25,6 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {newRenderDate} from '../../../shared/services/helper';
 import {
   DescriptionCard,
-  ParticipateCard,
   TagView,
 } from '../../../components/constant/projectDetailScreenComponent/index';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -149,7 +149,7 @@ export default function ProjectDetailScreen(props) {
             data?.createdAt,
           )}`}</ResponsiveText>
         </View>
-        <ParticipateCard
+        <ParticipateContainer
           noOfParticipants={projectData?.data?.getProject?.noOfParticipants}
           participants={participantData?.getParticipants}
         />

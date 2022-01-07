@@ -1,18 +1,22 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {widthPercentageToDP as vw} from '../../../../responsive/responsive';
-import {Participant, ResponsiveText} from '../../../common/common';
+import {widthPercentageToDP as vw} from '../../../responsive/responsive';
+import {Participant, ResponsiveText} from '../common';
 
-export default function ParticipateCard(props) {
-  const {participants} = props;
+export default function ParticipateContainer(props) {
+  const {participants, title} = props;
   return (
     <View style={style.participantCardView}>
       <View style={style.participantCardHeader}>
         <ResponsiveText size={13} style={style.participantsTitle}>
-          PARTICIPANTS
+          {title ? title : 'PARTICIPANTS'}
         </ResponsiveText>
         <ResponsiveText size={12} style={style.noOfparticipants}>
-          1 Required
+          {title
+            ? participants?.length
+              ? participants?.length
+              : '0'
+            : '1 Required'}
         </ResponsiveText>
       </View>
       <View style={style.participantView}>
@@ -22,7 +26,7 @@ export default function ParticipateCard(props) {
           ))
         ) : (
           <ResponsiveText size={12} style={style.noParticipants}>
-            No Participant
+            {title ? 'No Donors' : 'No Participant'}
           </ResponsiveText>
         )}
       </View>

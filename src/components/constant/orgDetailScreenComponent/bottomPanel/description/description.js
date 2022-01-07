@@ -7,7 +7,7 @@ export default function Description(props) {
   return (
     <View>
       {org?.description ? (
-        <ResponsiveText size={14} style={style.description}>
+        <ResponsiveText size={13} style={style.description}>
           {org?.description}
         </ResponsiveText>
       ) : (

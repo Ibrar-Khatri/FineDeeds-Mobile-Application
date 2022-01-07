@@ -48,7 +48,7 @@ export default function EventsNearYou() {
         horizontal={true}
         showsHorizontalScrollIndicator={true}
         ListEmptyComponent={<CustomSpinner size="lg" color="#f06d06" />}
-        renderItem={({item, i}) => <EventCard key={i} data={item} />}
+        renderItem={({item, i}) => <EventCard  key={i} data={item} type='event' />}
       />
     </View>
   );

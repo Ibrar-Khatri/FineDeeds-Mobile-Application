@@ -9,6 +9,7 @@ import ProjectDetailScreen from './projectDetailScreen/projectDetailScreen';
 import {View} from 'react-native';
 import OrganizationDetailScreen from './organizationDeatilScreen/organizationDeatilScreen';
 import EventDetailScreen from './eventDetailScreen/eventDetailScreen';
+import FundraisingEventDetailScreen from './fundraisingEventDetailScreen/fundraisingEventDetailScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -47,6 +48,9 @@ export default function DetailScreen({route, navigation}) {
       </Stack.Screen>
       <Stack.Screen name="event_detail" options={{title: title}}>
         {() => <EventDetailScreen data={data} />}
+      </Stack.Screen>
+      <Stack.Screen name="fundraising_event_detail" options={{title: title}}>
+        {() => <FundraisingEventDetailScreen data={data} />}
       </Stack.Screen>
     </Stack.Navigator>
   );
