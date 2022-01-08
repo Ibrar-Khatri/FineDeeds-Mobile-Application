@@ -18,7 +18,7 @@ import {
   VolunteerProducts,
   VolunteerActivities,
   JourneymapAndVolunExpTabs,
-} from '../../../components/constant/profileScreenComponents/index';
+} from './components/index';
 import {
   Permission,
   PERMISSION_TYPE,

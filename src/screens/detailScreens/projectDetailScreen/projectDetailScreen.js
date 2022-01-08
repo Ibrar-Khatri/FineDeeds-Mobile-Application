@@ -17,16 +17,12 @@ import {
   ResponsiveText,
 } from '../../../components/common/common';
 import {
-  heightPercentageToDP as vh,
   widthPercentageToDP as vw,
   normalize,
 } from '../../../responsive/responsive';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {newRenderDate} from '../../../shared/services/helper';
-import {
-  DescriptionCard,
-  TagView,
-} from '../../../components/constant/projectDetailScreenComponent/index';
+import {DescriptionCard, TagView} from './components/index';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation} from '@react-navigation/native';
 

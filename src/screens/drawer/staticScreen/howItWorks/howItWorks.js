@@ -1,11 +1,11 @@
 import React, {useState} from 'react';
 import {ScrollView, StyleSheet, TouchableOpacity} from 'react-native';
-import HowItWorksCard from '../../../../components/constant/howItWorkScreenComponents/howItWorkCard/howItWorkCard';
-import {ResponsiveText} from '../../../../components/common/common';
 import {
   heightPercentageToDP as vh,
   widthPercentageToDP as vw,
 } from '../../../../responsive/responsive';
+import {ResponsiveText} from '../../../../components/common/common';
+import {HowItWorksCard} from './components/index';
 
 export default function HowItWorks() {
   let [isOganization, setIsOganization] = useState(true);

@@ -1,8 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {TopPanel} from '../../../components/constant/orgDetailScreenComponent';
-import BottomPanel from '../../../components/constant/orgDetailScreenComponent/bottomPanel/bottomPanel';
+import {TopPanel, BottomPanel} from './components/index';
 import {CustomButton, CustomSpinner} from '../../../components/common/common';
 import {useLazyQuery} from '@apollo/client';
 import {getOrgById} from '../../../../graphql/queries';

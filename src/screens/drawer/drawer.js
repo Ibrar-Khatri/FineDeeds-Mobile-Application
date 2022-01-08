@@ -1,17 +1,16 @@
 import React, {useEffect, useState} from 'react';
-import {Dimensions, Image, Platform, StyleSheet} from 'react-native';
+import {Image, Platform, StyleSheet} from 'react-native';
 import {createDrawerNavigator} from '@react-navigation/drawer';
+import DrawerContent from './drawerContent/drawerContent';
 import HomeScreen from './homeScreen/homeScreeen';
-import DrawerContent from '../../components/constant/drawerContent/drawerContent';
 import ProfileScreen from './profileScreen/profileScreen';
-import {isLoggedIn} from '../../shared/services/authServices';
 import StaticScreens from './staticScreen/staticScreen';
+import {isLoggedIn} from '../../shared/services/authServices';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   heightPercentageToDP as vh,
   normalize,
 } from '../../responsive/responsive';
-const screenWidth = Dimensions.get('window').width;
 
 const Drawer = createDrawerNavigator();
 

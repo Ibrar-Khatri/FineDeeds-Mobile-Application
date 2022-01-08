@@ -13,7 +13,7 @@ import {
   ProjectsNearYou,
   EventsNearYou,
   FundRaisingEventsNearYou,
-} from '../../../components/constant/homeScreenComponents/index';
+} from './components/index';
 import {
   sideDetail1,
   whatDoWeOffer,
