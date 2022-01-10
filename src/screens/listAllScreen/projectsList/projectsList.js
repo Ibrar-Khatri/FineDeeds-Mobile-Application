@@ -6,7 +6,7 @@ import {
   ListAllItem,
   CustomSpinner,
   ProjectCard,
-} from '../../../components/common/common';
+} from '../../../components/index';
 
 export default function ProjectList(props) {
   const [getProjectsQuery, {loading, data}] = useLazyQuery(getProjects, {

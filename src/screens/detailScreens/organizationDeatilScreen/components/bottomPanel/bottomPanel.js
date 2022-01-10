@@ -5,7 +5,7 @@ import Events from './events/events';
 import Description from './description/description';
 import OurTeam from './ourTeam/ourTeam';
 import Projects from './projects/projects';
-import {Tabs} from '../../../../../components/common/common';
+import {Tabs} from '../../../../../components/index';
 import {widthPercentageToDP as vw} from '../../../../../responsive/responsive';
 import {
   getOrgStaff,

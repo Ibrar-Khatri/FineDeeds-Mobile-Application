@@ -4,7 +4,7 @@ import {
   heightPercentageToDP as vh,
   widthPercentageToDP as vw,
 } from '../../../../responsive/responsive';
-import {ResponsiveText} from '../../../../components/common/common';
+import {ResponsiveText} from '../../../../components/index';
 import {HowItWorksCard} from './components/index';
 
 export default function HowItWorks() {

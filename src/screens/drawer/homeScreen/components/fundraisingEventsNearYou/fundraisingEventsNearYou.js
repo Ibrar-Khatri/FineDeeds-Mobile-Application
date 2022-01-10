@@ -6,7 +6,7 @@ import {
   CustomSpinner,
   EventCard,
   FlatListComponent,
-} from '../../../../../components/common/common';
+} from '../../../../../components/index';
 import {StyleSheet, View} from 'react-native';
 import {CardTitle} from '../index';
 

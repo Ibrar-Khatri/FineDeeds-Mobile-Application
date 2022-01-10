@@ -5,7 +5,7 @@ import {
   getVolunteerProExperience,
   getVolunteerPublishedStories,
 } from '../../../../../../graphql/queries';
-import {ResponsiveText} from '../../../../../components/common/common';
+import {ResponsiveText} from '../../../../../components/index';
 import {ProfileScreenCardWrapper} from '../index';
 import JourneyMap from './journeyMap/journeyMap';
 import VolunteeringExperience from './volunteeringExperience/volunteeringExperience';

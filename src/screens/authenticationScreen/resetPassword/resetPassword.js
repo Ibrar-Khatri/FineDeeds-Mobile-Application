@@ -9,7 +9,7 @@ import {
   InputFieldsHeader,
   CustomToast,
   AuthWrapper,
-} from '../../../components/common/common';
+} from '../../../components/index';
 import {confirmNewPassword} from '../../../shared/services/authServices';
 import {widthPercentageToDP as vw} from '../../../responsive/responsive';
 

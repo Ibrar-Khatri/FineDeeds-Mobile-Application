@@ -4,7 +4,7 @@ import {widthPercentageToDP as vw} from '../../../../../responsive/responsive';
 import {
   CustomButton,
   ResponsiveText,
-} from '../../../../../components/common/common';
+} from '../../../../../components/index';
 
 export default function JoinAsNonProfit() {
   return (

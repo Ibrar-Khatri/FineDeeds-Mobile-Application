@@ -6,7 +6,8 @@ import {getOrgCenters} from '../../../../../../../graphql/queries';
 import {
   normalize,
 } from '../../../../../../responsive/responsive';
-import {ResponsiveText} from '../../../../../../components/common/common';
+
+import {ResponsiveText} from '../../../../../../components/index';
 import CustomAccordion from './accordion/accordion';
 
 export default function Location(props) {

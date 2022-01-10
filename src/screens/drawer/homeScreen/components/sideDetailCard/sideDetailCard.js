@@ -4,7 +4,7 @@ import {
   widthPercentageToDP as vw,
   heightPercentageToDP as vh,
 } from '../../../../../responsive/responsive';
-import {ResponsiveText} from '../../../../../components/common/common';
+import {ResponsiveText} from '../../../../../components/index';
 
 export default function SideDetailCard(props) {
   const {imageSource, title, detail} = props;

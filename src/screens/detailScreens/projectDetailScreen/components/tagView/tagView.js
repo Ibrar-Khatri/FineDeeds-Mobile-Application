@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {ResponsiveText, Tag} from '../../../../../components/common/common';
+import {ResponsiveText, Tag} from '../../../../../components/index';
 import {widthPercentageToDP as vw} from '../../../../../responsive/responsive';
 
 export default function TagView(props) {

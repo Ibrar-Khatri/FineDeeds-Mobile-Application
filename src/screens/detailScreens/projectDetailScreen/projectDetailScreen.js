@@ -15,7 +15,7 @@ import {
   ParticipateContainer,
   RenderS3Image,
   ResponsiveText,
-} from '../../../components/common/common';
+} from '../../../components/index';
 import {
   widthPercentageToDP as vw,
   normalize,

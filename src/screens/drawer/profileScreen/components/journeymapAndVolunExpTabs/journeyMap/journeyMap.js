@@ -14,7 +14,7 @@ import {
   CustomSpinner,
   RenderS3Image,
   ResponsiveText,
-} from '../../../../../../components/common/common';
+} from '../../../../../../components/index';
 import {widthPercentageToDP as vw} from '../../../../../../responsive/responsive';
 
 const screenWidth = Dimensions.get('window').width;

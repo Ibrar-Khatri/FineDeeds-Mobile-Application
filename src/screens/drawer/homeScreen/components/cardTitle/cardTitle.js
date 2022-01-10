@@ -1,7 +1,7 @@
 import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {TouchableOpacity, View, StyleSheet} from 'react-native';
-import {ResponsiveText} from '../../../../../components/common/common';
+import {ResponsiveText} from '../../../../../components/index';
 import {heightPercentageToDP as vh} from '../../../../../responsive/responsive';
 
 export default function CardTitle(props) {

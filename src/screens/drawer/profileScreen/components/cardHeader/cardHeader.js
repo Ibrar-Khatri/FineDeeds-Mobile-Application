@@ -3,7 +3,7 @@ import React from 'react';
 import {View, TouchableOpacity, StyleSheet} from 'react-native';
 import Icon from 'react-native-vector-icons/Octicons';
 import {normalize} from '../../../../../responsive/responsive';
-import {ResponsiveText} from '../../../../../components/common/common';
+import {ResponsiveText} from '../../../../../components/index';
 
 export default function ProfileScreenCardsHeader(props) {
   const {

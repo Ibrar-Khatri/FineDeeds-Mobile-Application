@@ -9,7 +9,7 @@ import {
   CustomButton,
   CustomToast,
   AuthWrapper,
-} from '../../../components/common/common';
+} from '../../../components/index';
 import {confirm, resendSignUp} from '../../../shared/services/authServices';
 import {widthPercentageToDP as vw} from '../../../responsive/responsive';
 

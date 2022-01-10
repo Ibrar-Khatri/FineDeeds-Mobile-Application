@@ -5,7 +5,7 @@ import {
   FlatListComponent,
   CustomSpinner,
   ProjectCard,
-} from '../../../../../components/common/common';
+} from '../../../../../components/index';
 import {getProjects} from '../../../../../../graphql/queries';
 import {CardTitle} from '../index';
 

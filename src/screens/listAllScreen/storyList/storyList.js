@@ -9,7 +9,7 @@ import {
   StoriesCard,
   ListAllItem,
   CustomSpinner,
-} from '../../../components/common/common';
+} from '../../../components/index';
 
 export default function StoryList(props) {
   const {volunteerId} = props;

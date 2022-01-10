@@ -5,16 +5,11 @@ import {
   Dimensions,
   ScrollView,
   StyleSheet,
-  Text,
   TouchableOpacity,
   View,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Entypo';
-import {
-  getEvent,
-  getParticipants,
-  getVolunteerById,
-} from '../../../../graphql/queries';
+import {getEvent, getParticipants} from '../../../../graphql/queries';
 import {
   InfoCard,
   RenderS3Image,
@@ -24,7 +19,7 @@ import {
   CustomSpinner,
   HostCard,
   ParticipateContainer,
-} from '../../../components/common/common';
+} from '../../../components/index';
 import {
   heightPercentageToDP as vh,
   widthPercentageToDP as vw,
@@ -32,11 +27,8 @@ import {
 import {
   newRenderDate,
   renderCurrencySign,
-  renderEndTime,
   renderTime,
 } from '../../../shared/services/helper';
-import {isLoggedIn} from '../../../shared/services/authServices';
-import Tag from '../../../components/common/tag/tag';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import moment from 'moment';
 

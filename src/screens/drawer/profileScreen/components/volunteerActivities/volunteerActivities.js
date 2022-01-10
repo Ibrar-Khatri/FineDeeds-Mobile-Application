@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {useLazyQuery} from '@apollo/client';
 import {ProfileScreenCardsHeader, ProfileScreenCardWrapper} from '../index';
 import {getActivities} from '../../../../../../graphql/queries';
-import {FlatListComponent} from '../../../../../components/common/common';
+import {FlatListComponent} from '../../../../../components/index';
 import ActivityCard from './activityCard/activityCard';
 
 export default function VolunteerActivities(props) {

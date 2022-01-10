@@ -16,7 +16,7 @@ import {
   RenderS3Image,
   CustomToast,
   Participant,
-} from '../../../components/common/common';
+} from '../../../components/index';
 import {
   getStory,
   getVolunteerById,

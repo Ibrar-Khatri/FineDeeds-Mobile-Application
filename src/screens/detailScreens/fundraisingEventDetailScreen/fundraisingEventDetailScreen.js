@@ -17,7 +17,7 @@ import {
   CustomSpinner,
   CustomButton,
   ParticipateContainer,
-} from '../../../components/common/common';
+} from '../../../components/index';
 import {widthPercentageToDP as vw} from '../../../responsive/responsive';
 import {
   newRenderDate,

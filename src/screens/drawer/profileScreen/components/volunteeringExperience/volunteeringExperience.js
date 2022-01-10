@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {useFormik} from 'formik';
 import {
   CustomButton,
@@ -12,7 +12,7 @@ import {
   DeleteConfirmationModal,
   CustomToast,
   ResponsiveText,
-} from '../../../common/common';
+} from '../../../../../components/index';
 import {volunteerAddExperienceValidation} from '../../../../shared/validation/profileValidation';
 import {useLazyQuery, useMutation} from '@apollo/client';
 import {

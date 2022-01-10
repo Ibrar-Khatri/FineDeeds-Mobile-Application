@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {widthPercentageToDP as vw} from '../../../../../../responsive/responsive';
-import {Tabs} from '../../../../../../components/common/common';
+import {Tabs} from '../../../../../../components/index';
 import PastEvents from './pastEvents/pastEvents';
 import UpcomingEvents from './upcomingEvents/upcomingEvents';
 

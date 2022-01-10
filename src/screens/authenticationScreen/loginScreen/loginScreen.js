@@ -10,7 +10,7 @@ import {
   NavigationLink,
   CustomToast,
   AuthWrapper,
-} from '../../../components/common/common';
+} from '../../../components/index';
 import {login} from '../../../shared/services/authServices';
 import {getVolunteerById} from '../../../../graphql/queries';
 import {useLazyQuery} from '@apollo/client';

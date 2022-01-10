@@ -6,7 +6,7 @@ import {
   ListAllItem,
   CustomSpinner,
   OrganizationCard,
-} from '../../../components/common/common';
+} from '../../../components/index';
 
 export default function OrganizationList(props) {
   const [getActivitiesQuery, {loading, data}] = useLazyQuery(getOrganizations, {

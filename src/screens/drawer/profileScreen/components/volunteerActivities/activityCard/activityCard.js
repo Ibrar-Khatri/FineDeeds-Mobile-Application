@@ -5,7 +5,7 @@ import {widthPercentageToDP as vw} from '../../../../../../responsive/responsive
 import {
   RenderS3Image,
   ResponsiveText,
-} from '../../../../../../components/common/common';
+} from '../../../../../../components/index';
 
 const screenWidth = Dimensions.get('window').width;
 

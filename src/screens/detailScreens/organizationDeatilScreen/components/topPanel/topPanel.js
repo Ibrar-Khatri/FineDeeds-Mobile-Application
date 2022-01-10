@@ -9,7 +9,7 @@ import {
 import {
   CustomButton,
   RenderS3Image,
-} from '../../../../../components/common/common';
+} from '../../../../../components/index';
 import Location from './location/location';
 
 export default function TopPanel(props) {

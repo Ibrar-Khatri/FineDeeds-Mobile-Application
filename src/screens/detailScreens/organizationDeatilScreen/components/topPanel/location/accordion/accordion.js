@@ -2,7 +2,7 @@ import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import Icon from 'react-native-vector-icons/Entypo';
 import {Accordion} from 'native-base';
-import {ResponsiveText} from '../../../../../../../components/common/common';
+import {ResponsiveText} from '../../../../../../../components/index';
 import {normalize} from '../../../../../../../responsive/responsive';
 
 export default function CustomAccordion(props) {

@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, Image, StyleSheet} from 'react-native';
-import {ResponsiveText} from '../../../../../../components/common/common';
+import {ResponsiveText} from '../../../../../../components/index';
 import {
   heightPercentageToDP as vh,
   widthPercentageToDP as vw,

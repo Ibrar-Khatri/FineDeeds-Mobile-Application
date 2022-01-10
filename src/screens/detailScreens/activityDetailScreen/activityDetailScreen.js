@@ -17,7 +17,8 @@ import {
   CustomButton,
   CommentSection,
   CustomSpinner,
-} from '../../../components/common/common';
+  Tag,
+} from '../../../components/index';
 import {
   heightPercentageToDP as vh,
   widthPercentageToDP as vw,
@@ -28,7 +29,6 @@ import {
   renderTime,
 } from '../../../shared/services/helper';
 import {isLoggedIn} from '../../../shared/services/authServices';
-import Tag from '../../../components/common/tag/tag';
 
 export default function ActivityDetailScreen(props) {
   const {data} = props;
@@ -157,10 +157,7 @@ export default function ActivityDetailScreen(props) {
             ))}
           </View>
         </View>
-        <CommentSection
-          objType="ACTIVITY"
-          objId={data?.activityId}
-        />
+        <CommentSection objType="ACTIVITY" objId={data?.activityId} />
       </View>
     </ScrollView>
   );

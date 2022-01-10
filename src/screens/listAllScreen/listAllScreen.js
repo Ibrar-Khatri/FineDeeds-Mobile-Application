@@ -9,7 +9,6 @@ import OrganizationList from './organizationList/organizationList';
 import ContributorList from './contributorList/contributorList';
 import ProjectList from './projectsList/projectsList';
 import EventList from './eventList/eventList';
-import {ResponsiveText} from '../../components/common/common';
 import FundraisingEventList from './fundraisingEventList/fundraisingEventList';
 
 const Stack = createNativeStackNavigator();

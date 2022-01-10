@@ -6,9 +6,8 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {
   normalize,
-  widthPercentageToDP as vw,
 } from '../../../../../responsive/responsive';
-import {ResponsiveText} from '../../../../common/common';
+import {ResponsiveText} from '../../../../../../components/index';
 
 const screenWidth = Dimensions.get('window').width;
 

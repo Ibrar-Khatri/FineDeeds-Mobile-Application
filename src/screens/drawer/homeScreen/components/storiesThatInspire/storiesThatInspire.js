@@ -5,7 +5,7 @@ import {
   FlatListComponent,
   CustomSpinner,
   StoriesCard,
-} from '../../../../../components/common/common';
+} from '../../../../../components/index';
 import {getVolunteerPublishedStories} from '../../../../../../graphql/queries';
 import {CardTitle} from '../index';
 

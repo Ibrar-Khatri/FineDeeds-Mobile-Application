@@ -3,7 +3,7 @@ import {StyleSheet, View} from 'react-native';
 import {
   EmptyDataComponent,
   ResponsiveText,
-} from '../../../../../../components/common/common';
+} from '../../../../../../components/index';
 
 export default function Description(props) {
   const {org} = props;

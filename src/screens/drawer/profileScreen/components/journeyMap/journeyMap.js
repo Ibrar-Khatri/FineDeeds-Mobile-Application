@@ -13,7 +13,7 @@ import {
   CustomSpinner,
   RenderS3Image,
   ResponsiveText,
-} from '../../../../../components/common/common';
+} from '../../../../../components/index';
 import {useNavigation} from '@react-navigation/native';
 import {widthPercentageToDP as vw} from '../../../../../responsive/responsive';
 

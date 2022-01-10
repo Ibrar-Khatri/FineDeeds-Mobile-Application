@@ -5,7 +5,7 @@ import {
   FlatListComponent,
   CustomSpinner,
   ActivitiesCard,
-} from '../../../../../components/common/common';
+} from '../../../../../components/index';
 import {useLazyQuery} from '@apollo/client';
 import {getActivities} from '../../../../../../graphql/queries';
 

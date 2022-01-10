@@ -3,7 +3,7 @@ import {StyleSheet, View} from 'react-native';
 import {
   EmptyDataComponent,
   EventCard,
-} from '../../../../../../../components/common/common';
+} from '../../../../../../../components/index';
 
 export default function UpcomingEvents(props) {
   const {data} = props;

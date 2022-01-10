@@ -6,7 +6,7 @@ import {
   ListAllItem,
   CustomSpinner,
   EventCard,
-} from '../../../components/common/common';
+} from '../../../components/index';
 
 export default function FundraisingEventList() {
   const [getFundraisingEvent, {loading, data}] = useLazyQuery(

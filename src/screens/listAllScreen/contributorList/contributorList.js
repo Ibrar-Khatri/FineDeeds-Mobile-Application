@@ -6,7 +6,7 @@ import {
   ListAllItem,
   CustomSpinner,
   ContributorCard,
-} from '../../../components/common/common';
+} from '../../../components/index';
 
 export default function ContributorList() {
   let [getCont, {loading, data}] = useLazyQuery(getContributors);

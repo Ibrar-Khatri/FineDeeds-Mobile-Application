@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {TopPanel, BottomPanel} from './components/index';
-import {CustomButton, CustomSpinner} from '../../../components/common/common';
+import {CustomButton, CustomSpinner} from '../../../components/index';
 import {useLazyQuery} from '@apollo/client';
 import {getOrgById} from '../../../../graphql/queries';
 import {widthPercentageToDP as vw} from '../../../responsive/responsive';

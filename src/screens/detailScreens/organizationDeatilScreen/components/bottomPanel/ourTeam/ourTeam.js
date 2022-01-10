@@ -5,7 +5,7 @@ import {
   ContributorCard,
   EmptyDataComponent,
   ResponsiveText,
-} from '../../../../../../components/common/common';
+} from '../../../../../../components/index';
 
 export default function OurTeam(props) {
   const {orgVolunteers, orgStaff} = props;

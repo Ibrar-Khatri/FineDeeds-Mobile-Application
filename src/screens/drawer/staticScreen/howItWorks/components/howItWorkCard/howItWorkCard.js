@@ -1,6 +1,6 @@
 import React from 'react';
 import {Image, StyleSheet, View} from 'react-native';
-import { ResponsiveText } from '../../../../../../components/common/common';
+import { ResponsiveText } from '../../../../../../components/index';
 import {widthPercentageToDP as vw} from '../../../../../../responsive/responsive';
 
 export default function HowItWorksCard(props) {

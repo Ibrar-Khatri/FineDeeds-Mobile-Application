@@ -6,7 +6,7 @@ import {
   FlatListComponent,
   CustomSpinner,
   ContributorCard,
-} from '../../../../../components/common/common';
+} from '../../../../../components/index';
 import {getContributors} from '../../../../../../graphql/queries';
 
 export default function FeaturedContributors() {

@@ -6,7 +6,7 @@ import {
   CustomSpinner,
   FlatListComponent,
   ProductCard,
-} from '../../../../../components/common/common';
+} from '../../../../../components/index';
 
 export default function VolunteerProducts(props) {
   const {volunteer} = props;

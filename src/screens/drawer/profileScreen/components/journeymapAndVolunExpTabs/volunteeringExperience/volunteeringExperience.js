@@ -14,7 +14,7 @@ import {
   DeleteConfirmationModal,
   CustomToast,
   ResponsiveText,
-} from '../../../../../../components/common/common';
+} from '../../../../../../components/index';
 import {volunteerAddExperienceValidation} from '../../../../../../shared/validation/profileValidation';
 import {
   deleteProExperience,

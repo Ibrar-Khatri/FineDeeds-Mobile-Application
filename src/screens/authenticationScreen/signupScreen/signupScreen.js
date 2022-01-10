@@ -12,7 +12,7 @@ import {
   InvalidInput,
   CustomCheckBox,
   AuthWrapper,
-} from '../../../components/common/common';
+} from '../../../components/index';
 import {signup} from '../../../shared/services/authServices';
 import {widthPercentageToDP as vw} from '../../../responsive/responsive';
 

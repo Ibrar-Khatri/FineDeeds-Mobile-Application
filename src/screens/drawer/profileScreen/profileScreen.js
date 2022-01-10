@@ -10,7 +10,7 @@ import {
   RenderS3Image,
   ImagePickerActionSheet,
   ResponsiveText,
-} from '../../../components/common/common';
+} from '../../../components/index';
 import {
   ProfileScreenCardWrapper,
   ItemsSelectorCard,
@@ -115,113 +115,112 @@ export default function ProfileScreen(props) {
     },
   ];
 
-  return (
+  return !isLoading ? (
     <ScrollView nestedScrollEnabled={true}>
-      {!isLoading ? (
-        <>
-          <View style={style.profileView}>
-            <Image
-              alt="backgroung image"
-              style={style.backgroungImage}
-              source={require('../../../assets/images/jumbotrun.png')}
-              resizeMode="cover"
+      <View style={style.profileView}>
+        <Image
+          alt="backgroung image"
+          style={style.backgroungImage}
+          source={require('../../../assets/images/jumbotrun.png')}
+          resizeMode="cover"
+        />
+        <View style={style.profileImageView}>
+          <RenderS3Image
+            resizeMode="cover"
+            style={style.profileImageStyle}
+            s3Key={
+              volunteer?.volunteerId &&
+              `VOLUNTEER/${volunteer?.volunteerId}.webp`
+            }
+            onClick={authorized && invokeActionSheet}
+            imageUrl={image}
+          />
+        </View>
+        <ResponsiveText style={style.userNameStyle} size={16}>
+          {volunteer?.volunteerName}
+        </ResponsiveText>
+        {(volunteer?.city || volunteer?.country) && (
+          <ResponsiveText style={style.userLocationStyle} size={13}>
+            <Iocn1 name="location-pin" color="#f06d06" size={vh(2.7)} />
+            {volunteer?.city && `${volunteer.city} ,`}
+            {volunteer?.country && `${volunteer.country} `}
+          </ResponsiveText>
+        )}
+        <View style={style.userFollowersView}>
+          {userFollowersDet.map((item, i) => (
+            <View key={i} style={style.userFollower}>
+              <ResponsiveText style={style.userFollowerText} size={10}>
+                {item.number}
+              </ResponsiveText>
+              <ResponsiveText style={style.userFollowerText} size={10}>
+                {item.type}
+              </ResponsiveText>
+            </View>
+          ))}
+        </View>
+        <View>
+          <View style={style.buttonView}>
+            <CustomButton buttonText="Follow" />
+            <CustomButton
+              icon={<Icon2 name="message1" color="#fff" size={vh(3)} />}
             />
-            <View style={style.profileImageView}>
-              <RenderS3Image
-                resizeMode="cover"
-                style={style.profileImageStyle}
-                s3Key={
-                  volunteer?.volunteerId &&
-                  `VOLUNTEER/${volunteer?.volunteerId}.webp`
-                }
-                onClick={authorized && invokeActionSheet}
-                imageUrl={image}
-              />
-            </View>
-            <ResponsiveText style={style.userNameStyle} size={16}>
-              {volunteer?.volunteerName}
-            </ResponsiveText>
-            {(volunteer?.city || volunteer?.country) && (
-              <ResponsiveText style={style.userLocationStyle} size={13}>
-                <Iocn1 name="location-pin" color="#f06d06" size={vh(2.7)} />
-                {volunteer?.city && `${volunteer.city} ,`}
-                {volunteer?.country && `${volunteer.country} `}
-              </ResponsiveText>
-            )}
-            <View style={style.userFollowersView}>
-              {userFollowersDet.map((item, i) => (
-                <View key={i} style={style.userFollower}>
-                  <ResponsiveText style={style.userFollowerText} size={10}>
-                    {item.number}
-                  </ResponsiveText>
-                  <ResponsiveText style={style.userFollowerText} size={10}>
-                    {item.type}
-                  </ResponsiveText>
-                </View>
-              ))}
-            </View>
-            <View>
-              <View style={style.buttonView}>
-                <CustomButton buttonText="Follow" />
-                <CustomButton
-                  icon={<Icon2 name="message1" color="#fff" size={vh(3)} />}
-                />
-                <CustomButton
-                  icon={<Iocn1 name="thumbs-up" color="#fff" size={vh(3)} />}
-                />
-              </View>
-            </View>
+            <CustomButton
+              icon={<Iocn1 name="thumbs-up" color="#fff" size={vh(3)} />}
+            />
           </View>
-          {volunteer?.aboutMe && (
-            <ProfileScreenCardWrapper>
-              <ProfileScreenCardsHeader title="About" />
-              <ResponsiveText style={style.aboutText} size={12}>
-                {volunteer?.aboutMe}
-              </ResponsiveText>
-            </ProfileScreenCardWrapper>
-          )}
-          <ItemsSelectorCard
-            selectedItems={volunteer?.skills}
-            title="Skills"
-            volunteer={volunteer}
-            setVolunteer={setVolunteer}
-            authorized={authorized}
-          />
-          <ItemsSelectorCard
-            selectedItems={volunteer?.causes}
-            title="Causes"
-            volunteer={volunteer}
-            setVolunteer={setVolunteer}
-            authorized={authorized}
-          />
-          <JourneymapAndVolunExpTabs
-            volunteer={volunteer}
-            authorized={authorized}
-          />
-          <VolunteerActivities volunteer={volunteer} />
-          <VolunteerProducts volunteer={volunteer} />
-          <ImagePickerActionSheet
-            isActionSheetOpen={isActionSheetOpen}
-            setIsActionSheetOpen={setIsActionSheetOpen}
-            option={{
-              width: 400,
-              height: 400,
-              cropping: true,
-              mediaType: 'photo',
-            }}
-            image={image}
-            setImage={setImage}
-            s3Key={`VOLUNTEER/${volunteer?.volunteerId}.webp`}
-          />
-        </>
-      ) : (
-        <CustomSpinner size="lg" color="#f06d06" />
+        </View>
+      </View>
+      {volunteer?.aboutMe && (
+        <ProfileScreenCardWrapper>
+          <ProfileScreenCardsHeader title="About" />
+          <ResponsiveText style={style.aboutText} size={12}>
+            {volunteer?.aboutMe}
+          </ResponsiveText>
+        </ProfileScreenCardWrapper>
       )}
+      <ItemsSelectorCard
+        selectedItems={volunteer?.skills}
+        title="Skills"
+        volunteer={volunteer}
+        setVolunteer={setVolunteer}
+        authorized={authorized}
+      />
+      <ItemsSelectorCard
+        selectedItems={volunteer?.causes}
+        title="Causes"
+        volunteer={volunteer}
+        setVolunteer={setVolunteer}
+        authorized={authorized}
+      />
+      <JourneymapAndVolunExpTabs
+        volunteer={volunteer}
+        authorized={authorized}
+      />
+      <VolunteerActivities volunteer={volunteer} />
+      <VolunteerProducts volunteer={volunteer} />
+      <ImagePickerActionSheet
+        isActionSheetOpen={isActionSheetOpen}
+        setIsActionSheetOpen={setIsActionSheetOpen}
+        option={{
+          width: 400,
+          height: 400,
+          cropping: true,
+          mediaType: 'photo',
+        }}
+        image={image}
+        setImage={setImage}
+        s3Key={`VOLUNTEER/${volunteer?.volunteerId}.webp`}
+      />
     </ScrollView>
+  ) : (
+    <View style={style.spinnerView}>
+      <CustomSpinner size="lg" color="#f06d06" />
+    </View>
   );
 }
 
 let style = StyleSheet.create({
+  spinnerView: {flex: 1, backgroundColor: '#fff', justifyContent: 'center'},
   headerLeft: {borderRadius: 100, overflow: 'hidden', marginLeft: 10},
   profileView: {
     backgroundColor: '#fff',

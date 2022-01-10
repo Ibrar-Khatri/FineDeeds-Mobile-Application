@@ -6,7 +6,7 @@ import {
   ActivitiesCard,
   ListAllItem,
   CustomSpinner,
-} from '../../../components/common/common';
+} from '../../../components/index';
 
 export default function ActivityList(props) {
   const {volunteerId} = props;

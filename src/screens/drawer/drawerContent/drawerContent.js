@@ -4,7 +4,7 @@ import {DrawerContentScrollView, DrawerItem} from '@react-navigation/drawer';
 import {useDrawerStatus} from '@react-navigation/drawer';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {DrawerActions} from '@react-navigation/native';
-import {RenderS3Image, ResponsiveText} from '../../../components/common/common';
+import {RenderS3Image, ResponsiveText} from '../../../components/index';
 import {logout} from '../../../shared/services/authServices';
 import {
   heightPercentageToDP as vh,

@@ -5,7 +5,7 @@ import {
   FlatListComponent,
   CustomSpinner,
   OrganizationCard,
-} from '../../../../../components/common/common';
+} from '../../../../../components/index';
 import {getOrganizations} from '../../../../../../graphql/queries';
 import {CardTitle} from '../index';
 

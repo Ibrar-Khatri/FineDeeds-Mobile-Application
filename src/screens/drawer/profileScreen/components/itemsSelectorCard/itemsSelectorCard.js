@@ -14,7 +14,7 @@ import {
   EmptyDataComponent,
   ResponsiveText,
   Tag,
-} from '../../../../../components/common/common';
+} from '../../../../../components/index';
 import ProfileScreenCardWrapper from '../profileScreenCardWrapper/profileScreenCardWrapper';
 import ProfileScreenCardsHeader from '../cardHeader/cardHeader';
 

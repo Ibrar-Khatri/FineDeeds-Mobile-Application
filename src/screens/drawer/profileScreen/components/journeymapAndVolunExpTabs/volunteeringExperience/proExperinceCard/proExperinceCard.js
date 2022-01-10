@@ -8,7 +8,7 @@ import {
   normalize,
   widthPercentageToDP as vw,
 } from '../../../../../../../responsive/responsive';
-import {ResponsiveText} from '../../../../../../../components/common/common';
+import {ResponsiveText} from '../../../../../../../components/index';
 
 const screenWidth = Dimensions.get('window').width;
 

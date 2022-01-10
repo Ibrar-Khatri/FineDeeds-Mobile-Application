@@ -1,7 +1,7 @@
 import {View} from 'native-base';
 import React from 'react';
-import {Image, ScrollView, StyleSheet, Text} from 'react-native';
-import {ResponsiveText} from '../../../../components/common/common';
+import {Image, ScrollView, StyleSheet} from 'react-native';
+import {ResponsiveText} from '../../../../components/index';
 import {
   heightPercentageToDP as vh,
   widthPercentageToDP as vw,

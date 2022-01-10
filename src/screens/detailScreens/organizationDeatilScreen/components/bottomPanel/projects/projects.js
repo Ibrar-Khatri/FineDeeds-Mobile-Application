@@ -3,7 +3,7 @@ import {StyleSheet, View} from 'react-native';
 import {
   EmptyDataComponent,
   ProjectCard,
-} from '../../../../../../components/common/common';
+} from '../../../../../../components/index';
 
 export default function Projects(props) {
   const {data} = props;
