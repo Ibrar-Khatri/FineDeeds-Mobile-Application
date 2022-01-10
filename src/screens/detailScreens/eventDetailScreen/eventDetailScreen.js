@@ -185,7 +185,7 @@ export default function EventDetailScreen(props) {
             <HostCard data={event} key={i} />
           ))}
         </View>
-        {user ? null : user?.role === 'STAFF' ? null : (
+        {!user ? null : user?.role === 'STAFF' ? null : (
           <CustomButton
             // loading={alreadyPart ? deleteLoading : loading}
             // disabled={

@@ -36,7 +36,7 @@ export default function LoginScreen({navigation}) {
         });
       });
     }
-  }, [volunteerData]);
+  }, [volunteerData?.data?.getVolunteerById]);
 
   const formik = useFormik({
     initialValues: {
