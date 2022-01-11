@@ -4,7 +4,8 @@ import {Button} from 'native-base';
 import {ResponsiveText} from '../index';
 
 export default function CustomButton(props) {
-  const {buttonText, onClick, setShowInvalidInput, isLoading, icon} = props;
+  const {buttonText, onClick, setShowInvalidInput, isLoading, icon, style} =
+    props;
 
   function butttonPressed() {
     setShowInvalidInput && setShowInvalidInput(true);
@@ -13,11 +14,11 @@ export default function CustomButton(props) {
 
   return (
     <Button
-      style={style.buttonStyle}
+      style={[styles.buttonStyle, style]}
       onPress={butttonPressed}
       isLoading={isLoading}>
       {buttonText ? (
-        <ResponsiveText style={style.buttonText} size={13}>
+        <ResponsiveText style={styles.buttonText} size={13}>
           {buttonText}
         </ResponsiveText>
       ) : (
@@ -27,7 +28,7 @@ export default function CustomButton(props) {
   );
 }
 
-let style = StyleSheet.create({
+let styles = StyleSheet.create({
   buttonStyle: {
     backgroundColor: '#f06d06',
     borderRadius: 7,

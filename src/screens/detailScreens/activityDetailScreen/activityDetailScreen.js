@@ -1,15 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import {useLazyQuery} from '@apollo/client';
+import {useLazyQuery, useMutation} from '@apollo/client';
 import {useNavigation} from '@react-navigation/native';
-import {
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native';
 import Icon from 'react-native-vector-icons/Entypo';
-import {getVolunteerById} from '../../../../graphql/queries';
+import {getParticipants, getVolunteerById} from '../../../../graphql/queries';
 import {
   InfoCard,
   RenderS3Image,
@@ -18,6 +12,8 @@ import {
   CommentSection,
   CustomSpinner,
   Tag,
+  ParticipateContainer,
+  CustomToast,
 } from '../../../components/index';
 import {
   heightPercentageToDP as vh,
@@ -28,29 +24,154 @@ import {
   renderEndTime,
   renderTime,
 } from '../../../shared/services/helper';
-import {isLoggedIn} from '../../../shared/services/authServices';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {
+  deleteParticipant,
+  sendParticipateRequest,
+} from '../../../../graphql/mutations';
+import {useToast} from 'native-base';
 
 export default function ActivityDetailScreen(props) {
   const {data} = props;
-  let [getVolunteer, volunteerData] = useLazyQuery(getVolunteerById);
-  let [isUserAuthenticated, setIsUserAuthenticated] = useState(false);
+
+  let [user, setUser] = useState();
+  let [participant, setParticipant] = useState(null);
   let navigation = useNavigation();
+  let [getVolunteer, volunteerData] = useLazyQuery(getVolunteerById);
+  const [getPartQuery, participantData] = useLazyQuery(getParticipants, {
+    fetchPolicy: 'network-only',
+  });
+  const [sendParticipateReq, {loading: participantLaoding}] = useMutation(
+    sendParticipateRequest,
+  );
+  const [deleteParticipantReq, {loading: deleteParticipantLoading}] =
+    useMutation(deleteParticipant);
+  let toast = useToast();
 
   useEffect(() => {
     if (data?.createdBy) {
       getVolunteer({
         variables: {volunteerId: data?.createdBy},
       });
-    }
-    isLoggedIn()
-      .then(res => {
-        setIsUserAuthenticated(true);
-      })
-      .catch(err => {
-        setIsUserAuthenticated(false);
+      getPartQuery({
+        variables: {
+          objId: data?.activityId,
+          objType: 'ACTIVITY',
+          objStatus: 'ACCEPTED',
+        },
       });
+    }
+    AsyncStorage.getItem('volunteer').then(u => {
+      setUser(JSON.parse(u));
+    });
   }, []);
+  useEffect(() => {
+    if (participantData?.data?.getParticipants) {
+      setParticipant(participantData?.data?.getParticipants);
+    }
+  }, [participantData?.data]);
 
+  const checkDisabled = () => {
+    const alreadyPart = participant?.find(
+      participant => participant['volunteerId'] === user?.volunteerId,
+    );
+    if (alreadyPart) return true;
+    else return false;
+  };
+  const alreadyPart = checkDisabled();
+
+  const updateParticipants = type => {
+    if (user) {
+      if (type === 'participate') {
+        sendParticipateReq({
+          variables: {
+            input: {
+              objId: data?.activityId,
+              volunteerId: user?.volunteerId,
+              objType: 'ACTIVITY',
+              objStatus: 'ACCEPTED',
+              createdBy: user?.volunteerId,
+            },
+          },
+          update: (proxy, data) => {
+            try {
+              let updated = [
+                ...participant,
+                data?.data?.sendParticipateRequest,
+              ];
+              proxy.writeQuery({
+                query: getParticipants,
+                variables: {
+                  objId: data?.activityId,
+                  objType: 'ACTIVITY',
+                  objStatus: 'ACCEPTED',
+                },
+                data: {
+                  getParticipants: updated,
+                },
+              });
+              setParticipant(updated);
+            } catch (error) {
+              console.log(error, '=== error ==');
+            }
+          },
+        })
+          .then(() => {
+            renderToast('success', 'You have participated Successfully!');
+          })
+          .catch(err => renderToast('error', err.message));
+      } else {
+        deleteParticipantReq({
+          variables: {
+            input: {
+              objId: data?.activityId,
+              objType: 'ACTIVITY',
+              volunteerId: user?.volunteerId,
+            },
+          },
+          update: proxy => {
+            try {
+              const filtered = participant?.filter(
+                p => p?.volunteerId !== user?.volunteerId,
+              );
+              proxy.writeQuery({
+                query: getParticipants,
+                variables: {
+                  objId: data?.activityId,
+                  objType: 'ACTIVITY',
+                  objStatus: 'ACCEPTED',
+                },
+                data: {
+                  getParticipants: filtered,
+                },
+              });
+              setParticipant(filtered);
+            } catch (error) {
+              renderToast('error', error.message);
+            }
+          },
+        })
+          .then(() => {
+            renderToast('success', 'You have Unparticipted Successfully!');
+          })
+          .catch(err => {
+            renderToast('error', 'You have Unparticipted Successfully!');
+          });
+      }
+    } else {
+      navigation.push('authentication-screen', {
+        screen: 'login',
+      });
+    }
+  };
+
+  function renderToast(type, description) {
+    toast.show({
+      placement: 'top',
+      duration: 3000,
+      render: () => <CustomToast type={type} description={description} />,
+    });
+  }
   function viewProfile() {
     navigation.push('drawer', {
       screen: 'profile-screen',
@@ -58,7 +179,7 @@ export default function ActivityDetailScreen(props) {
     });
   }
 
-  return (
+  return volunteerData?.data?.getVolunteerById && participant ? (
     <ScrollView style={style.activityDetailScreenView}>
       <RenderS3Image
         resizeMode="contain"
@@ -107,45 +228,57 @@ export default function ActivityDetailScreen(props) {
           styles={style.inforCardView}
         />
 
-        {volunteerData?.data?.getVolunteerById ? (
-          <>
-            <TouchableOpacity
-              style={style.profileView}
-              activeOpacity={0.5}
-              onPress={viewProfile}>
-              <View style={style.profileImageView}>
-                <RenderS3Image
-                  s3Key={`VOLUNTEER/${data?.createdBy}.webp`}
-                  style={style.profileImage}
-                />
-              </View>
-              <View style={style.volunteerNameView}>
-                <ResponsiveText size={13} style={style.volunteerName}>
-                  {volunteerData?.data?.getVolunteerById?.volunteerName}
-                </ResponsiveText>
-                <ResponsiveText size={12} style={style.volunteerHost}>
-                  Activity
-                </ResponsiveText>
-              </View>
-            </TouchableOpacity>
-            <CustomButton
-              buttonText={
-                isUserAuthenticated ? 'PARTICIPATE' : 'LOGIN TO PARTICIPATE'
-              }
+        <TouchableOpacity
+          style={style.profileView}
+          activeOpacity={0.5}
+          onPress={viewProfile}>
+          <View style={style.profileImageView}>
+            <RenderS3Image
+              s3Key={`VOLUNTEER/${data?.createdBy}.webp`}
+              style={style.profileImage}
             />
-          </>
-        ) : (
-          <CustomSpinner size="lg" color="#f06d06" />
+          </View>
+          <View style={style.volunteerNameView}>
+            <ResponsiveText size={13} style={style.volunteerName}>
+              {volunteerData?.data?.getVolunteerById?.volunteerName}
+            </ResponsiveText>
+            <ResponsiveText size={12} style={style.volunteerHost}>
+              Activity
+            </ResponsiveText>
+          </View>
+        </TouchableOpacity>
+        {user?.volunteerId !== data?.createdBy && (
+          <CustomButton
+            isLoading={participantLaoding || deleteParticipantLoading}
+            onClick={() => updateParticipants(alreadyPart ? '' : 'participate')}
+            buttonText={
+              participantLaoding || deleteParticipantLoading
+                ? 'LOADING'
+                : !user
+                ? 'Login to Participate'
+                : alreadyPart
+                ? 'Unparticipate'
+                : 'Participate'
+            }
+          />
         )}
 
-        <View style={style.participantView}>
-          <ResponsiveText size={13} style={style.participantTitle}>
-            PARTICIPANTS
-          </ResponsiveText>
-          <ResponsiveText size={11} style={style.noParticipantText}>
-            No Participants
-          </ResponsiveText>
-        </View>
+        <ParticipateContainer participants={participant} />
+
+        {!data
+          ? null
+          : user?.volunteerId === data?.createdBy && (
+              <>
+                <CustomButton
+                  buttonText="Update Activity"
+                  style={style.buttonView}
+                />
+                <CustomButton
+                  buttonText="Delete Activity"
+                  style={style.buttonView}
+                />
+              </>
+            )}
 
         <View>
           <ResponsiveText style={style.causesTitle} size={13}>
@@ -160,6 +293,8 @@ export default function ActivityDetailScreen(props) {
         <CommentSection objType="ACTIVITY" objId={data?.activityId} />
       </View>
     </ScrollView>
+  ) : (
+    <CustomSpinner size="lg" color="#f06d06" center={true} />
   );
 }
 
@@ -249,19 +384,8 @@ let style = StyleSheet.create({
     fontFamily: 'Montserrat-Regular',
     color: '#888',
   },
-  participantView: {marginTop: 15, display: 'flex', alignItems: 'center'},
-  participantTitle: {
-    fontFamily: 'Montserrat-Bold',
-    color: '#212529',
-    borderColor: '#ebebeb',
-    borderBottomWidth: 2,
-    padding: vw(3),
-    width: '100%',
-  },
-  noParticipantText: {
-    marginTop: 15,
-    fontFamily: 'Montserrat-Regular',
-    color: '#212529',
+  buttonView: {
+    marginBottom: vw(2),
   },
   causesTitle: {
     fontFamily: 'Montserrat-Bold',

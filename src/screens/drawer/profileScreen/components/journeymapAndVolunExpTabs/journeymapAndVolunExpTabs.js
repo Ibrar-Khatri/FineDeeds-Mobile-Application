@@ -1,24 +1,23 @@
 import {useLazyQuery} from '@apollo/client';
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {
   getVolunteerProExperience,
   getVolunteerPublishedStories,
 } from '../../../../../../graphql/queries';
-import {ResponsiveText} from '../../../../../components/index';
+import {Tabs} from '../../../../../components/index';
 import {ProfileScreenCardWrapper} from '../index';
 import JourneyMap from './journeyMap/journeyMap';
 import VolunteeringExperience from './volunteeringExperience/volunteeringExperience';
 
 export default function JourneymapAndVolunExpTabs(props) {
   const {volunteer, authorized} = props;
-  let [isJourneyMap, setIsJourneyMap] = useState(true);
-  let [isVolunterringExp, setIsVolunterringExp] = useState(false);
+  let [index, setIndex] = useState(0);
   let [getstories, storiesData] = useLazyQuery(getVolunteerPublishedStories);
+  let [getVolunteerProExperienceById, volProExpData] = useLazyQuery(
+    getVolunteerProExperience,
+  );
   let [volunteerExpeience, setVolunteerExpeience] = useState(null);
   let [stories, setStories] = useState(null);
-  let [getVolunteerProExperienceById, getVolunteerProExperienceData] =
-    useLazyQuery(getVolunteerProExperience, {fetchPolicy: 'network-only'});
 
   const createTimelineAccordingToYear = async storiesData => {
     let timeline = [];
@@ -52,77 +51,40 @@ export default function JourneymapAndVolunExpTabs(props) {
     }
   }, [volunteer]);
   useEffect(() => {
-    if (getVolunteerProExperienceData?.data?.getVolunteerProExperience) {
-      // setLoading(false);
-      setVolunteerExpeience(
-        getVolunteerProExperienceData?.data?.getVolunteerProExperience,
-      );
+    if (volProExpData?.data?.getVolunteerProExperience) {
+      setVolunteerExpeience(volProExpData?.data?.getVolunteerProExperience);
     }
     if (storiesData?.data?.getStories?.items) {
       createTimelineAccordingToYear(storiesData.data);
-      // setIsLoading(false);
     }
-  }, [getVolunteerProExperienceData, storiesData]);
-
-  return (
-    <ProfileScreenCardWrapper>
-      <View style={style.timeLineHeader}>
-        <TouchableOpacity
-          onPress={() => {
-            setIsJourneyMap(true);
-            setIsVolunterringExp(false);
-          }}>
-          <ResponsiveText
-            size={12}
-            style={[
-              style.timeLineHeaderTitle,
-              isJourneyMap && style.focusedHeaderTimeTitle,
-            ]}>
-            Journey map
-          </ResponsiveText>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => {
-            setIsJourneyMap(false);
-            setIsVolunterringExp(true);
-          }}>
-          <ResponsiveText
-            size={12}
-            style={[
-              style.timeLineHeaderTitle,
-              isVolunterringExp && style.focusedHeaderTimeTitle,
-            ]}>
-            Volunteering experience
-          </ResponsiveText>
-        </TouchableOpacity>
-      </View>
-      {isJourneyMap && <JourneyMap volunteer={volunteer} stories={stories} />}
-      {isVolunterringExp && (
+  }, [
+    volProExpData?.data?.getVolunteerProExperience,
+    storiesData?.data?.getStories,
+  ]);
+  let tabs = [
+    {
+      title: 'Journey map',
+      isFocused: false,
+      component: <JourneyMap volunteer={volunteer} stories={stories} />,
+    },
+    {
+      title: 'Volunteering experience',
+      isFocused: false,
+      component: (
         <VolunteeringExperience
           volunteer={volunteer}
           authorized={authorized}
           volunteerExpeience={volunteerExpeience}
           setVolunteerExpeience={setVolunteerExpeience}
         />
-      )}
+      ),
+    },
+  ];
+  tabs[index].isFocused = tabs[index].isFocused ? false : true;
+  return (
+    <ProfileScreenCardWrapper>
+      <Tabs index={index} setIndex={setIndex} tabs={tabs} />
+      {tabs[index].component}
     </ProfileScreenCardWrapper>
   );
 }
-
-let style = StyleSheet.create({
-  timeLineHeader: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    marginBottom: 22,
-  },
-  timeLineHeaderTitle: {
-    color: '#2b2b2b',
-    fontFamily: 'Poppins-SemiBold',
-  },
-  focusedHeaderTimeTitle: {
-    color: '#f06d06',
-    borderBottomColor: '#f06d06',
-    borderBottomWidth: 1,
-  },
-});

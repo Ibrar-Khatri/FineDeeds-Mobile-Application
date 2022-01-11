@@ -211,7 +211,10 @@ export default function EventDetailScreen(props) {
             }
           />
         )}
-        <ParticipateContainer participants={participantData?.getParticipants} />
+        <ParticipateContainer
+          participants={participantData?.getParticipants}
+          length={participantData?.getParticipants?.length}
+        />
         {event?.isPaid && hoursDiff > 24 ? _renderButtons() : _renderButtons()}
         <CommentSection objId={event?.eventId} objType={'EVENT'} />
       </View>

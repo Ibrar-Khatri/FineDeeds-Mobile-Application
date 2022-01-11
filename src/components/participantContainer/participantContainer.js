@@ -4,7 +4,8 @@ import {widthPercentageToDP as vw} from '../../responsive/responsive';
 import {Participant, ResponsiveText} from '../index';
 
 export default function ParticipateContainer(props) {
-  const {participants, title} = props;
+  const {participants, title, length} = props;
+
   return (
     <View style={style.participantCardView}>
       <View style={style.participantCardHeader}>
@@ -12,14 +13,15 @@ export default function ParticipateContainer(props) {
           {title ? title : 'PARTICIPANTS'}
         </ResponsiveText>
         <ResponsiveText size={12} style={style.noOfparticipants}>
-          {title
-            ? participants?.length
+          {length >= 0 &&
+            (title
               ? participants?.length
-              : '0'
-            : '1 Required'}
+                ? participants?.length
+                : '0'
+              : '1 Required')}
         </ResponsiveText>
       </View>
-      <View style={style.participantView}>
+      <View>
         {participants?.length > 0 ? (
           participants?.map((parti, i) => (
             <Participant data={parti?.volunteer} key={i} />
@@ -59,12 +61,11 @@ let style = StyleSheet.create({
     fontFamily: 'Montserrat-Regular',
     color: '#212529',
   },
-  participantView: {
-    padding: vw(4),
-  },
+
   noParticipants: {
     alignSelf: 'center',
     color: '#212529',
     fontFamily: 'Montserrat-Regular',
+    padding: vw(4),
   },
 });

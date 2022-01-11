@@ -11,6 +11,8 @@ import {getParticipants, getProject} from '../../../../graphql/queries';
 import {
   CommentSection,
   CustomButton,
+  CustomSpinner,
+  CustomToast,
   InfoCard,
   ParticipateContainer,
   RenderS3Image,
@@ -25,6 +27,7 @@ import {newRenderDate} from '../../../shared/services/helper';
 import {DescriptionCard, TagView} from './components/index';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation} from '@react-navigation/native';
+import {useToast} from 'native-base';
 
 let screenWidth = Dimensions.get('window').width;
 
@@ -37,6 +40,7 @@ export default function ProjectDetailScreen(props) {
     {loading: partcipantLoading, data: participantData},
   ] = useLazyQuery(getParticipants);
   let navigation = useNavigation();
+  let toast = useToast();
 
   useEffect(() => {
     AsyncStorage.getItem('volunteer').then(vol => {
@@ -74,6 +78,97 @@ export default function ProjectDetailScreen(props) {
     });
   };
 
+  const updateParticipants = type => {
+    if (user) {
+      // if (type === 'participate') {
+      //   sendParticipateReq({
+      //     variables: {
+      //       input: {
+      //         objId: data?.activityId,
+      //         volunteerId: user?.volunteerId,
+      //         objType: 'ACTIVITY',
+      //         objStatus: 'ACCEPTED',
+      //         createdBy: user?.volunteerId,
+      //       },
+      //     },
+      //     update: (proxy, data) => {
+      //       try {
+      //         let updated = [
+      //           ...participant,
+      //           data?.data?.sendParticipateRequest,
+      //         ];
+      //         proxy.writeQuery({
+      //           query: getParticipants,
+      //           variables: {
+      //             objId: data?.activityId,
+      //             objType: 'ACTIVITY',
+      //             objStatus: 'ACCEPTED',
+      //           },
+      //           data: {
+      //             getParticipants: updated,
+      //           },
+      //         });
+      //         setParticipant(updated);
+      //       } catch (error) {
+      //         console.log(error, '=== error ==');
+      //       }
+      //     },
+      //   })
+      //     .then(() => {
+      //       renderToast('success', 'You have participated Successfully!');
+      //     })
+      //     .catch(err => renderToast('error', err.message));
+      // } else {
+      //   deleteParticipantReq({
+      //     variables: {
+      //       input: {
+      //         objId: data?.activityId,
+      //         objType: 'ACTIVITY',
+      //         volunteerId: user?.volunteerId,
+      //       },
+      //     },
+      //     update: proxy => {
+      //       try {
+      //         const filtered = participant?.filter(
+      //           p => p?.volunteerId !== user?.volunteerId,
+      //         );
+      //         proxy.writeQuery({
+      //           query: getParticipants,
+      //           variables: {
+      //             objId: data?.activityId,
+      //             objType: 'ACTIVITY',
+      //             objStatus: 'ACCEPTED',
+      //           },
+      //           data: {
+      //             getParticipants: filtered,
+      //           },
+      //         });
+      //         setParticipant(filtered);
+      //       } catch (error) {
+      //         renderToast('error', error.message);
+      //       }
+      //     },
+      //   })
+      //     .then(() => {
+      //       renderToast('success', 'You have Unparticipted Successfully!');
+      //     })
+      //     .catch(err => {
+      //       renderToast('error', 'You have Unparticipted Successfully!');
+      //     });
+      // }
+    } else {
+      navigation.push('authentication-screen', {
+        screen: 'login',
+      });
+    }
+  };
+  function renderToast(type, description) {
+    toast.show({
+      placement: 'top',
+      duration: 3000,
+      render: () => <CustomToast type={type} description={description} />,
+    });
+  }
   function navigateTo() {
     navigation.push('detail-screen', {
       initialRouteName: 'organization_detail',
@@ -82,7 +177,7 @@ export default function ProjectDetailScreen(props) {
     });
   }
 
-  return (
+  return projectData?.data?.getProject ? (
     <ScrollView style={style.activityDetailScreenView}>
       <RenderS3Image
         s3Key={`ORGANIZATION/IMAGE/${data?.organization?.orgId}.webp`}
@@ -146,17 +241,16 @@ export default function ProjectDetailScreen(props) {
           )}`}</ResponsiveText>
         </View>
         <ParticipateContainer
-          noOfParticipants={projectData?.data?.getProject?.noOfParticipants}
           participants={participantData?.getParticipants}
+          length={participantData?.getParticipants?.length}
         />
-        {user && user?.role !== 'STAFF' && (
+
+        {user?.role !== 'STAFF' && (
           <View style={style.buttonView}>
             <CustomButton
-              // onClick={
-              //   alreadyPart
-              //     ? () => UnparticipateRequest()
-              //     : () => participateRequest()
-              // }
+              onClick={() =>
+                updateParticipants(alreadyPart ? '' : 'participate')
+              }
               buttonText={
                 !user
                   ? 'Login to Participate'
@@ -194,10 +288,18 @@ export default function ProjectDetailScreen(props) {
         ) : null}
       </View>
     </ScrollView>
+  ) : (
+    <View style={style.spinnerView}>
+      <CustomSpinner size="lg" color="#f06d06" />
+    </View>
   );
 }
 
 let style = StyleSheet.create({
+  spinnerView: {
+    flex: 1,
+    justifyContent: 'center',
+  },
   activityDetailScreenView: {
     backgroundColor: '#fff',
   },

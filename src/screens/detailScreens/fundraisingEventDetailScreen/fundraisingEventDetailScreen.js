@@ -149,8 +149,9 @@ export default function FundraisingEventDetailScreen(props) {
         )}
 
         <ParticipateContainer
-          participants={eventDonorsData?.getDonations}
+          participants={eventDonorsData?.data?.getDonations}
           title="DONORS"
+          length={eventDonorsData?.data?.getDonations?.length}
         />
         {!fundraisingEvent || !user
           ? null
