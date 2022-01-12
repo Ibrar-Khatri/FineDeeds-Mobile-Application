@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-  ScrollView,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native';
 import Modal from 'react-native-modal';
 import Icon from 'react-native-vector-icons/AntDesign';
 import {
@@ -12,7 +7,7 @@ import {
   heightPercentageToDP as vh,
   widthPercentageToDP as vw,
 } from '../../responsive/responsive';
-import {CustomButton,ResponsiveText} from '../index';
+import {CustomButton, ResponsiveText} from '../index';
 
 export default function ModalWrapper(props) {
   const {
@@ -39,7 +34,7 @@ export default function ModalWrapper(props) {
       onBackdropPress={onBackdropPress}>
       <View style={style.modalMainView}>
         <View style={style.modalHeaderView}>
-          <ResponsiveText style={style.titleStyle} size={17}>
+          <ResponsiveText style={style.titleStyle} size={15}>
             {title}
           </ResponsiveText>
           <TouchableOpacity onPress={closeModalIcon} style={{padding: 5}}>
@@ -47,13 +42,15 @@ export default function ModalWrapper(props) {
           </TouchableOpacity>
         </View>
         <ScrollView>{children}</ScrollView>
-        <View style={style.modalFooter}>
-          <CustomButton
-            buttonText={buttonText}
-            onClick={onClickFun}
-            isLoading={isLoading}
-          />
-        </View>
+        {buttonText && (
+          <View style={style.modalFooter}>
+            <CustomButton
+              buttonText={buttonText}
+              onClick={onClickFun}
+              isLoading={isLoading}
+            />
+          </View>
+        )}
       </View>
     </Modal>
   );

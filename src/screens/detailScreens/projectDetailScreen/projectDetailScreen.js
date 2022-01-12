@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {useLazyQuery} from '@apollo/client';
+import {useLazyQuery, useMutation} from '@apollo/client';
 import {
   Dimensions,
   ScrollView,
@@ -16,6 +16,7 @@ import {
   InfoCard,
   ParticipateContainer,
   RenderS3Image,
+  Request,
   ResponsiveText,
 } from '../../../components/index';
 import {
@@ -28,6 +29,10 @@ import {DescriptionCard, TagView} from './components/index';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation} from '@react-navigation/native';
 import {useToast} from 'native-base';
+import {
+  deleteParticipant,
+  sendParticipateRequest,
+} from '../../../../graphql/mutations';
 
 let screenWidth = Dimensions.get('window').width;
 
@@ -38,7 +43,15 @@ export default function ProjectDetailScreen(props) {
   const [
     getParticipantData,
     {loading: partcipantLoading, data: participantData},
-  ] = useLazyQuery(getParticipants);
+  ] = useLazyQuery(getParticipants, {
+    fetchPolicy: 'network-only',
+  });
+
+  const [sendParticipateReq, {loading: participantLoading}] = useMutation(
+    sendParticipateRequest,
+  );
+  const [deleteParticipantReq, {loading: deleteParticipantLoading}] =
+    useMutation(deleteParticipant);
   let navigation = useNavigation();
   let toast = useToast();
 
@@ -79,87 +92,69 @@ export default function ProjectDetailScreen(props) {
   };
 
   const updateParticipants = type => {
-    if (user) {
-      // if (type === 'participate') {
-      //   sendParticipateReq({
-      //     variables: {
-      //       input: {
-      //         objId: data?.activityId,
-      //         volunteerId: user?.volunteerId,
-      //         objType: 'ACTIVITY',
-      //         objStatus: 'ACCEPTED',
-      //         createdBy: user?.volunteerId,
-      //       },
-      //     },
-      //     update: (proxy, data) => {
-      //       try {
-      //         let updated = [
-      //           ...participant,
-      //           data?.data?.sendParticipateRequest,
-      //         ];
-      //         proxy.writeQuery({
-      //           query: getParticipants,
-      //           variables: {
-      //             objId: data?.activityId,
-      //             objType: 'ACTIVITY',
-      //             objStatus: 'ACCEPTED',
-      //           },
-      //           data: {
-      //             getParticipants: updated,
-      //           },
-      //         });
-      //         setParticipant(updated);
-      //       } catch (error) {
-      //         console.log(error, '=== error ==');
-      //       }
-      //     },
-      //   })
-      //     .then(() => {
-      //       renderToast('success', 'You have participated Successfully!');
-      //     })
-      //     .catch(err => renderToast('error', err.message));
-      // } else {
-      //   deleteParticipantReq({
-      //     variables: {
-      //       input: {
-      //         objId: data?.activityId,
-      //         objType: 'ACTIVITY',
-      //         volunteerId: user?.volunteerId,
-      //       },
-      //     },
-      //     update: proxy => {
-      //       try {
-      //         const filtered = participant?.filter(
-      //           p => p?.volunteerId !== user?.volunteerId,
-      //         );
-      //         proxy.writeQuery({
-      //           query: getParticipants,
-      //           variables: {
-      //             objId: data?.activityId,
-      //             objType: 'ACTIVITY',
-      //             objStatus: 'ACCEPTED',
-      //           },
-      //           data: {
-      //             getParticipants: filtered,
-      //           },
-      //         });
-      //         setParticipant(filtered);
-      //       } catch (error) {
-      //         renderToast('error', error.message);
-      //       }
-      //     },
-      //   })
-      //     .then(() => {
-      //       renderToast('success', 'You have Unparticipted Successfully!');
-      //     })
-      //     .catch(err => {
-      //       renderToast('error', 'You have Unparticipted Successfully!');
-      //     });
-      // }
+    if (type === 'participate') {
+      sendParticipateReq({
+        variables: {
+          input: {
+            objId: data?.projectId,
+            volunteerId: user?.volunteerId,
+            objType: 'PROJECT',
+            objStatus: 'PENDING',
+            createdBy: user?.volunteerId,
+            orgId: data?.organization?.orgId,
+          },
+        },
+      })
+        .then(() => {
+          renderToast('success', 'Request send Success!');
+        })
+        .catch(err =>
+          renderToast('error', err.message.replace('GraphQL error: ', '')),
+        );
     } else {
-      navigation.push('authentication-screen', {
-        screen: 'login',
-      });
+      deleteParticipantReq({
+        variables: {
+          input: {
+            objId: data?.projectId,
+            objType: 'PROJECT',
+            volunteerId: user?.volunteerId,
+          },
+        },
+        update: proxy => {
+          try {
+            const data2 = proxy.readQuery({
+              query: getParticipants,
+              variables: {
+                objId: data?.projectId,
+                objType: 'PROJECT',
+                objStatus: 'ACCEPTED',
+              },
+            });
+            const updated = data2?.getParticipants?.filter(
+              v => v?.volunteerId !== user?.volunteerId,
+            );
+            proxy.writeQuery({
+              query: getParticipants,
+              variables: {
+                objId: data?.projectId,
+                objType: 'PROJECT',
+                objStatus: 'ACCEPTED',
+              },
+              data: {
+                getParticipants: updated,
+              },
+            });
+          } catch (error) {
+            renderToast('error', error.message);
+          }
+        },
+      })
+        .then(() => {
+          renderToast('success', 'You have Unparticipted Successfully.');
+        })
+        .catch(err => {
+          renderToast('error', err.message);
+        });
     }
   };
   function renderToast(type, description) {
@@ -177,7 +172,7 @@ export default function ProjectDetailScreen(props) {
     });
   }
 
-  return projectData?.data?.getProject ? (
+  return projectData?.data?.getProject && participantData?.getParticipants ? (
     <ScrollView style={style.activityDetailScreenView}>
       <RenderS3Image
         s3Key={`ORGANIZATION/IMAGE/${data?.organization?.orgId}.webp`}
@@ -224,11 +219,7 @@ export default function ProjectDetailScreen(props) {
           </View>
         </TouchableOpacity>
 
-        <InfoCard
-          title="TIME FRAME"
-          subTitle={`${data?.timeFrame} Weeks`}
-          styles={style.inforCardView}
-        />
+        <InfoCard title="TIME FRAME" subTitle={`${data?.timeFrame} Weeks`} />
 
         <TagView title="Causes" tags={data?.organization?.areaOfWorking} />
         <TagView title="Skills" tags={data?.skills} />
@@ -240,45 +231,52 @@ export default function ProjectDetailScreen(props) {
             data?.createdAt,
           )}`}</ResponsiveText>
         </View>
+
+        {user && user?.role !== 'STAFF' && (
+          <CustomButton
+            style={style.buttonView}
+            onClick={() => updateParticipants(alreadyPart ? '' : 'participate')}
+            isLoading={participantLoading || deleteParticipantLoading}
+            buttonText={
+              participantLoading || deleteParticipantLoading
+                ? 'LOADING'
+                : alreadyPart
+                ? 'Unparticipate'
+                : 'Participate'
+            }
+          />
+        )}
+
         <ParticipateContainer
           participants={participantData?.getParticipants}
           length={participantData?.getParticipants?.length}
         />
-
-        {user?.role !== 'STAFF' && (
-          <View style={style.buttonView}>
-            <CustomButton
-              onClick={() =>
-                updateParticipants(alreadyPart ? '' : 'participate')
-              }
-              buttonText={
-                !user
-                  ? 'Login to Participate'
-                  : alreadyPart
-                  ? 'Unparticipate'
-                  : 'Participate'
-              }
-            />
-          </View>
-        )}
-
         {user && user?.volunteerId === data?.createdBy && (
           <>
-            <View style={style.buttonView}>
-              <CustomButton buttonText="Update Project" />
-            </View>
-            <View style={style.buttonView}>
-              <CustomButton
-                buttonText={
-                  data?.projectStatus === 'COMPLETED'
-                    ? 'Activate Project Again'
-                    : 'Mark as Completed'
-                }
-              />
-            </View>
-            <View style={style.buttonView}>
-              <CustomButton buttonText="Delete Project" />
-            </View>
+            <CustomButton
+              buttonText="Update Project"
+              style={style.buttonView}
+            />
+            <CustomButton
+              style={style.buttonView}
+              buttonText={
+                data?.projectStatus === 'COMPLETED'
+                  ? 'Activate Project Again'
+                  : 'Mark as Completed'
+              }
+            />
+            <CustomButton
+              style={style.buttonView}
+              buttonText="Delete Project"
+            />
+          </>
+        )}
+
+<Request objId={data?.projectId} objType="PROJECT" user={user} />
+        {user?.volunteerId === data?.createdBy && (
+          <>
+            {/* <DeclineRequests objId={projectId} objType="PROJECT" />
+            <Volunteers objId={projectId} objType="PROJECT" /> */}
           </>
         )}
 
@@ -361,11 +359,12 @@ let style = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
+    marginBottom: vw(3),
   },
   postedDateStyle: {
     color: '#212529',
   },
   buttonView: {
-    marginBottom: 10,
+    marginBottom: vw(3),
   },
 });
