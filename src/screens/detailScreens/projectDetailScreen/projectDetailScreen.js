@@ -272,7 +272,7 @@ export default function ProjectDetailScreen(props) {
           </>
         )}
 
-<Request objId={data?.projectId} objType="PROJECT" user={user} />
+        <Request objId={data?.projectId} objType="PROJECT" user={user} />
         {user?.volunteerId === data?.createdBy && (
           <>
             {/* <DeclineRequests objId={projectId} objType="PROJECT" />

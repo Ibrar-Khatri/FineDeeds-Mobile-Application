@@ -1,5 +1,5 @@
 import React, { useState} from 'react';
-import { StyleSheet, TouchableOpacity, View} from 'react-native';
+import { ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {useFormik} from 'formik';
 import {useMutation} from '@apollo/client';
 import {useToast} from 'native-base';
@@ -188,6 +188,7 @@ export default function VolunteeringExperience(props) {
             formik.handleSubmit();
           }}
           isLoading={isLoading}>
+          <ScrollView>
           <View style={style.modalMainView}>
             <View>
               <ResponsiveText style={style.titleStyle} size={12}>
@@ -267,6 +268,7 @@ export default function VolunteeringExperience(props) {
                 }>{`${formik.values.description.length}/300`}</ResponsiveText>
             </View>
           </View>
+          </ScrollView>
         </ModalWrapper>
       )}
       {confirmationModal && (

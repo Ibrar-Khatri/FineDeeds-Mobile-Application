@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import {ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {useFormik} from 'formik';
 import {
   CustomButton,
@@ -305,85 +305,87 @@ export default function VolunteeringExperience(props) {
             formik.handleSubmit();
           }}
           isLoading={isLoading}>
-          <View style={style.modalMainView}>
-            <View>
-              <ResponsiveText style={style.titleStyle} size={12}>
-                Job Title
-              </ResponsiveText>
-              <InputField
-                type="text"
-                value={formik.values.jobTitle}
-                setValue={formik.handleChange('jobTitle')}
-                invalidInput={showInvalidInput && formik.errors.jobTitle}
-              />
+          <ScrollView>
+            <View style={style.modalMainView}>
+              <View>
+                <ResponsiveText style={style.titleStyle} size={12}>
+                  Job Title
+                </ResponsiveText>
+                <InputField
+                  type="text"
+                  value={formik.values.jobTitle}
+                  setValue={formik.handleChange('jobTitle')}
+                  invalidInput={showInvalidInput && formik.errors.jobTitle}
+                />
+              </View>
+              <View>
+                <ResponsiveText style={style.titleStyle} size={12}>
+                  Organisation Name
+                </ResponsiveText>
+                <InputField
+                  type="text"
+                  value={formik.values.orgName}
+                  setValue={formik.handleChange('orgName')}
+                  invalidInput={showInvalidInput && formik.errors.orgName}
+                />
+              </View>
+              <View>
+                <ResponsiveText style={style.titleStyle} size={12}>
+                  From
+                </ResponsiveText>
+                <DateAndTimePicker
+                  value={formik.values.fromDate}
+                  setValue={formik.handleChange('fromDate')}
+                  invalidInput={showInvalidInput && formik.errors.fromDate}
+                  disabled={false}
+                  maximumDate={new Date()}
+                />
+              </View>
+              <View>
+                <ResponsiveText style={style.titleStyle} size={12}>
+                  To
+                </ResponsiveText>
+                <DateAndTimePicker
+                  value={formik.values.endDate}
+                  setValue={formik.handleChange('endDate')}
+                  invalidInput={showInvalidInput && formik.errors.endDate}
+                  isCurrent={formik.values.isCurrent}
+                  maximumDate={new Date()}
+                />
+              </View>
+              <TouchableOpacity
+                style={style.checkBoxAndTextView}
+                onPress={onPressIsCurrent}
+                activeOpacity={1}>
+                <CustomCheckBox
+                  isChecked={formik.values.isCurrent}
+                  callOnPress={onPressIsCurrent}
+                />
+                <ResponsiveText style={style.checkBoxText} size={12}>
+                  {' '}
+                  I currently work here
+                </ResponsiveText>
+              </TouchableOpacity>
+              <View>
+                <ResponsiveText style={style.titleStyle} size={12}>
+                  Description
+                </ResponsiveText>
+                <InputField
+                  type="text"
+                  value={formik.values.description}
+                  setValue={formik.handleChange('description')}
+                  invalidInput={showInvalidInput && formik.errors.description}
+                  multiline={true}
+                  maxLength={300}
+                />
+                <ResponsiveText
+                  size={11}
+                  style={
+                    style.descriptionLengthStyle
+                  }>{`${formik.values.description.length}/300`}</ResponsiveText>
+              </View>
             </View>
-            <View>
-              <ResponsiveText style={style.titleStyle} size={12}>
-                Organisation Name
-              </ResponsiveText>
-              <InputField
-                type="text"
-                value={formik.values.orgName}
-                setValue={formik.handleChange('orgName')}
-                invalidInput={showInvalidInput && formik.errors.orgName}
-              />
-            </View>
-            <View>
-              <ResponsiveText style={style.titleStyle} size={12}>
-                From
-              </ResponsiveText>
-              <DateAndTimePicker
-                value={formik.values.fromDate}
-                setValue={formik.handleChange('fromDate')}
-                invalidInput={showInvalidInput && formik.errors.fromDate}
-                disabled={false}
-                maximumDate={new Date()}
-              />
-            </View>
-            <View>
-              <ResponsiveText style={style.titleStyle} size={12}>
-                To
-              </ResponsiveText>
-              <DateAndTimePicker
-                value={formik.values.endDate}
-                setValue={formik.handleChange('endDate')}
-                invalidInput={showInvalidInput && formik.errors.endDate}
-                isCurrent={formik.values.isCurrent}
-                maximumDate={new Date()}
-              />
-            </View>
-            <TouchableOpacity
-              style={style.checkBoxAndTextView}
-              onPress={onPressIsCurrent}
-              activeOpacity={1}>
-              <CustomCheckBox
-                isChecked={formik.values.isCurrent}
-                callOnPress={onPressIsCurrent}
-              />
-              <ResponsiveText style={style.checkBoxText} size={12}>
-                {' '}
-                I currently work here
-              </ResponsiveText>
-            </TouchableOpacity>
-            <View>
-              <ResponsiveText style={style.titleStyle} size={12}>
-                Description
-              </ResponsiveText>
-              <InputField
-                type="text"
-                value={formik.values.description}
-                setValue={formik.handleChange('description')}
-                invalidInput={showInvalidInput && formik.errors.description}
-                multiline={true}
-                maxLength={300}
-              />
-              <ResponsiveText
-                size={11}
-                style={
-                  style.descriptionLengthStyle
-                }>{`${formik.values.description.length}/300`}</ResponsiveText>
-            </View>
-          </View>
+          </ScrollView>
         </ModalWrapper>
       )}
       {confirmationModal && (

@@ -41,7 +41,7 @@ export default function ModalWrapper(props) {
             <Icon name="close" color="#000" size={normalize(18)} />
           </TouchableOpacity>
         </View>
-        <ScrollView>{children}</ScrollView>
+        {children}
         {buttonText && (
           <View style={style.modalFooter}>
             <CustomButton

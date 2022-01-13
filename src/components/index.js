@@ -6,6 +6,8 @@ import CustomCheckBox from './customCheckBox/customCheckBox';
 import CustomToast from './customToast/customToast';
 import DateAndTimePicker from './datePicker/datePicker';
 import DeleteConfirmationModal from './deleteConfirmationModal/deleteConfirmationModal';
+import AcceptModal from './acceptModal/acceptModal';
+import DeclineModal from './declineModal/declineModal';
 import EmptyDataComponent from './emptyDataComponent/emptyDataComponent';
 import FlatListComponent from './flatListComponent/flatListComponent';
 import ImagePickerActionSheet from './imagePickerActionSheet/imagePickerActionSheet';
@@ -79,4 +81,6 @@ export {
   DeclineRequest,
   Request,
   Volunteers,
+  AcceptModal,
+  DeclineModal,
 };

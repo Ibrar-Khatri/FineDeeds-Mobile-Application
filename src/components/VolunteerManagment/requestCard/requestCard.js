@@ -1,14 +1,16 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {CardWrapper, RenderS3Image, ResponsiveText} from '../../..';
+import {Button} from 'native-base';
+import {CardWrapper, RenderS3Image, ResponsiveText} from '../..';
 import {
   heightPercentageToDP as vh,
   widthPercentageToDP as vw,
-} from '../../../../responsive/responsive';
-import {renderDate} from '../../../../shared/services/helper';
+} from '../../../responsive/responsive';
+import {renderDate} from '../../../shared/services/helper';
 
 export default function RequestCard(props) {
-  const {data} = props;
+  const {data, acceptRequest, removeRequest, setVolunteerId} = props;
+
   return (
     <CardWrapper>
       <View style={style.requestCardMainView}>
@@ -46,6 +48,27 @@ export default function RequestCard(props) {
             </View>
           )}
         </View>
+        <View style={style.buttonView}>
+          <Button
+            style={style.declineButton}
+            onPress={() => {
+              removeRequest();
+            }}>
+            <ResponsiveText size={13} style={style.declineButtonText}>
+              Decline
+            </ResponsiveText>
+          </Button>
+          <Button
+            style={style.accepteButton}
+            onPress={() => {
+              setVolunteerId(data?.volunteer?.volunteerId);
+              acceptRequest();
+            }}>
+            <ResponsiveText size={13} style={style.acceptButtonText}>
+              Accept
+            </ResponsiveText>
+          </Button>
+        </View>
       </View>
     </CardWrapper>
   );
@@ -80,7 +103,7 @@ const style = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     marginTop: vw(3),
-    borderBottomColor: '"#eaeaea',
+    borderBottomColor: '"#939393',
     borderBottomWidth: 1,
     paddingBottom: vw(3),
     marginBottom: vw(3),
@@ -93,7 +116,27 @@ const style = StyleSheet.create({
     fontFamily: 'Montserrat-Regular',
   },
   createdAndUpdateSubTitle: {
-    color: '#939393',
+    color: '#212529',
     fontFamily: 'Montserrat-SemiBold',
+  },
+  buttonView: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignSelf: 'flex-end',
+  },
+  accepteButton: {
+    backgroundColor: '#f06d06',
+    marginLeft: vw(2),
+  },
+  declineButton: {
+    backgroundColor: '#d3d3d3',
+  },
+  declineButtonText: {
+    color: '#212529',
+    fontFamily: 'Montserrat-Regular',
+  },
+  acceptButtonText: {
+    color: '#fff',
+    fontFamily: 'Montserrat-Regular',
   },
 });

@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {TouchableOpacity, View, StyleSheet} from 'react-native';
+import {TouchableOpacity, View, StyleSheet, ScrollView} from 'react-native';
 import {useToast} from 'native-base';
 import {useMutation} from '@apollo/client';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -200,21 +200,23 @@ export default function ItemsSelectorCard(props) {
           isLoading={isLoading}
           buttonText="Save Changes"
           onClickFun={handleOnSaveChanges}>
-          {allItems?.map((item, i) => (
-            <TouchableOpacity
-              key={i}
-              activeOpacity={1}
-              onPress={() => handleOnChange(item)}
-              style={style.checkBoxAndTextView}>
-              <CustomCheckBox
-                isChecked={update?.includes(item)}
-                callOnPress={() => handleOnChange(item)}
-              />
-              <ResponsiveText style={style.checkBoxText} size={12}>
-                {item}
-              </ResponsiveText>
-            </TouchableOpacity>
-          ))}
+          <ScrollView>
+            {allItems?.map((item, i) => (
+              <TouchableOpacity
+                key={i}
+                activeOpacity={1}
+                onPress={() => handleOnChange(item)}
+                style={style.checkBoxAndTextView}>
+                <CustomCheckBox
+                  isChecked={update?.includes(item)}
+                  callOnPress={() => handleOnChange(item)}
+                />
+                <ResponsiveText style={style.checkBoxText} size={12}>
+                  {item}
+                </ResponsiveText>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
         </ModalWrapper>
       )}
     </ProfileScreenCardWrapper>
