@@ -1,6 +1,6 @@
 import {Button} from 'native-base';
 import React, {useState} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {Keyboard, StyleSheet, View} from 'react-native';
 import Modal from 'react-native-modal';
 import {InputField, ResponsiveText} from '../index';
 import {
@@ -29,6 +29,7 @@ export default function DeclineModal(props) {
     validationSchema: requestDeclineFormValidation,
 
     onSubmit: value => {
+      Keyboard.dismiss();
       confrimDelete(value);
       setShowInvalidInput(false);
     },

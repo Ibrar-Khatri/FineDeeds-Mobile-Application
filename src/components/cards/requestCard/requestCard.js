@@ -52,6 +52,7 @@ export default function RequestCard(props) {
           <Button
             style={style.declineButton}
             onPress={() => {
+              setVolunteerId(data?.volunteer?.volunteerId);
               removeRequest();
             }}>
             <ResponsiveText size={13} style={style.declineButtonText}>
@@ -61,7 +62,6 @@ export default function RequestCard(props) {
           <Button
             style={style.accepteButton}
             onPress={() => {
-              setVolunteerId(data?.volunteer?.volunteerId);
               acceptRequest();
             }}>
             <ResponsiveText size={13} style={style.acceptButtonText}>
@@ -87,6 +87,8 @@ const style = StyleSheet.create({
     height: vw(12),
     width: vw(12),
     borderRadius: 100,
+    borderColor: '#fd7e14',
+    borderWidth: 1,
   },
   nameAndEmailView: {
     marginLeft: 8,

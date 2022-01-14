@@ -16,8 +16,8 @@ import {
   InfoCard,
   ParticipateContainer,
   RenderS3Image,
-  Request,
   ResponsiveText,
+  VolunteerManagementNavigatorCard,
 } from '../../../components/index';
 import {
   widthPercentageToDP as vw,
@@ -59,6 +59,18 @@ export default function ProjectDetailScreen(props) {
     AsyncStorage.getItem('volunteer').then(vol => {
       setUser(JSON.parse(vol));
     });
+    const unsubscribe = navigation.addListener('focus', () => {
+      // getParticipantData({
+      //   variables: {
+      //     objId: data?.projectId,
+      //     objType: 'PROJECT',
+      //     objStatus: 'ACCEPTED',
+      //   },
+      // });
+      console.log('component unmount');
+    });
+
+    return unsubscribe;
   }, []);
 
   useEffect(() => {
@@ -272,12 +284,15 @@ export default function ProjectDetailScreen(props) {
           </>
         )}
 
-        <Request objId={data?.projectId} objType="PROJECT" user={user} />
         {user?.volunteerId === data?.createdBy && (
-          <>
-            {/* <DeclineRequests objId={projectId} objType="PROJECT" />
-            <Volunteers objId={projectId} objType="PROJECT" /> */}
-          </>
+          <VolunteerManagementNavigatorCard
+            navigation={navigation}
+            objId={data?.projectId}
+            objType="PROJECT"
+            title="Joining Requests"
+            screenName="request_screen"
+            // volunteerId={}
+          />
         )}
 
         {!data?.projectId || !user ? null : userExists(user?.volunteerId) ||

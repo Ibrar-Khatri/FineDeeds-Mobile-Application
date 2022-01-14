@@ -6,6 +6,7 @@ import DrawerNavigation from '../../screens/drawer/drawer';
 import AuthenticationScreen from '../../screens/authenticationScreen/authentication';
 import DetailScreen from '../../screens/detailScreens/detailScreens';
 import ListAllScreen from '../../screens/listAllScreen/listAllScreen';
+import VolunteerManagementScreen from '../../screens/volunteerManagmentScreen/volunteerManagmentScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -21,6 +22,7 @@ export default function AppContainer() {
           />
           <Stack.Screen name="detail-screen" component={DetailScreen} />
           <Stack.Screen name="listAll-screen" component={ListAllScreen} />
+          <Stack.Screen name="volunteer-management-screen" component={VolunteerManagementScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </NativeBaseProvider>

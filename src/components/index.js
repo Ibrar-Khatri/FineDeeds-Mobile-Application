@@ -36,11 +36,8 @@ import ProjectCard from './cards/projectCard/projectCard';
 import CardWrapper from './cards/cardWrapper/cardWrapper';
 import EventCard from './cards/eventsCard/eventsCard';
 import HostCard from './cards/hostCard/hostCard';
-
-// VolunteerManagment
-import DeclineRequest from './VolunteerManagment/declineRequests/declineRequests';
-import Request from './VolunteerManagment/requests/requests';
-import Volunteers from './VolunteerManagment/volunteers/volunteers';
+import RequestCard from './cards/requestCard/requestCard';
+import VolunteerManagementNavigatorCard from './volunteerManagementNavigatorCard/volunteerManagementNavigatorCard';
 
 export {
   AppContainer,
@@ -78,9 +75,8 @@ export {
   Tabs,
   HostCard,
   ParticipateContainer,
-  DeclineRequest,
-  Request,
-  Volunteers,
   AcceptModal,
   DeclineModal,
+  RequestCard,
+  VolunteerManagementNavigatorCard,
 };
