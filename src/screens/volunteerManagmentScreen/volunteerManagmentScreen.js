@@ -4,13 +4,13 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {StyleSheet, View} from 'react-native';
 import {normalize} from '../../responsive/responsive';
 import RequestScreen from './requestScreen/requestScreen';
+import DeclineScreen from './declineScreen/declineScreen';
+import VolunteersScreen from './volunteersScreen/volunteersScreen';
 
 const Stack = createNativeStackNavigator();
 
 export default function VolunteerManagementScreen({route, navigation}) {
-  const {initialRouteName, title, objId, objType, user} = route.params;
-
-  console.log(title, 'title');
+  const {initialRouteName, title, objId, objType} = route.params;
 
   return (
     <Stack.Navigator
@@ -31,7 +31,13 @@ export default function VolunteerManagementScreen({route, navigation}) {
         ),
       })}>
       <Stack.Screen name="request_screen" options={{title: title}}>
-        {() => <RequestScreen objId={objId} objType={objType} user={user} />}
+        {() => <RequestScreen objId={objId} objType={objType} />}
+      </Stack.Screen>
+      <Stack.Screen name="decline_screen" options={{title: title}}>
+        {() => <DeclineScreen objId={objId} objType={objType} />}
+      </Stack.Screen>
+      <Stack.Screen name="volunteer_screen" options={{title: title}}>
+        {() => <VolunteersScreen objId={objId} objType={objType} />}
       </Stack.Screen>
     </Stack.Navigator>
   );

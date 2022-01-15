@@ -19,8 +19,6 @@ export default function OrganizationNearYou() {
     });
   }, []);
 
-  console.log(organizationData.error, 'organizationData');
-
   !organization &&
     organizationData?.data?.getOrganizations?.items &&
     setOrganization(

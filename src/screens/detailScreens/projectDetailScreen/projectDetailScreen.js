@@ -39,6 +39,7 @@ let screenWidth = Dimensions.get('window').width;
 export default function ProjectDetailScreen(props) {
   const {data} = props;
   let [user, setUser] = useState();
+  let [participants, setParticipants] = useState(null);
   let [getProjectById, projectData] = useLazyQuery(getProject);
   const [
     getParticipantData,
@@ -59,49 +60,38 @@ export default function ProjectDetailScreen(props) {
     AsyncStorage.getItem('volunteer').then(vol => {
       setUser(JSON.parse(vol));
     });
+
+    data &&
+      getProjectById({
+        variables: {projectId: data?.projectId},
+      });
     const unsubscribe = navigation.addListener('focus', () => {
-      // getParticipantData({
-      //   variables: {
-      //     objId: data?.projectId,
-      //     objType: 'PROJECT',
-      //     objStatus: 'ACCEPTED',
-      //   },
-      // });
-      console.log('component unmount');
+      data &&
+        getParticipantData({
+          variables: {
+            objId: data?.projectId,
+            objType: 'PROJECT',
+            objStatus: 'ACCEPTED',
+          },
+        });
     });
 
     return unsubscribe;
   }, []);
 
   useEffect(() => {
-    if (data?.projectId) {
-      getProjectById({
-        variables: {projectId: data?.projectId},
-      });
-      getParticipantData({
-        variables: {
-          objId: data?.projectId,
-          objType: 'PROJECT',
-          objStatus: 'ACCEPTED',
-        },
-      });
-    }
-  }, [data]);
+    participantData?.getParticipants?.length >= 0 &&
+      setParticipants(participantData?.getParticipants);
+  }, [participantData?.getParticipants]);
 
   const checkDisabled = () => {
-    const alreadyPart = participantData?.getParticipants?.find(
+    const alreadyPart = participants?.find(
       participant => participant['volunteerId'] === user?.volunteerId,
     );
     if (alreadyPart) return true;
     else return false;
   };
   const alreadyPart = checkDisabled();
-
-  const userExists = volunteerId => {
-    return participantData?.getParticipants?.some(el => {
-      return el?.volunteerId === volunteerId;
-    });
-  };
 
   const updateParticipants = type => {
     if (type === 'participate') {
@@ -169,6 +159,7 @@ export default function ProjectDetailScreen(props) {
         });
     }
   };
+
   function renderToast(type, description) {
     toast.show({
       placement: 'top',
@@ -176,6 +167,13 @@ export default function ProjectDetailScreen(props) {
       render: () => <CustomToast type={type} description={description} />,
     });
   }
+
+  const userExists = volunteerId => {
+    return participants?.some(el => {
+      return el?.volunteerId === volunteerId;
+    });
+  };
+
   function navigateTo() {
     navigation.push('detail-screen', {
       initialRouteName: 'organization_detail',
@@ -184,7 +182,7 @@ export default function ProjectDetailScreen(props) {
     });
   }
 
-  return projectData?.data?.getProject && participantData?.getParticipants ? (
+  return projectData?.data?.getProject && participants ? (
     <ScrollView style={style.activityDetailScreenView}>
       <RenderS3Image
         s3Key={`ORGANIZATION/IMAGE/${data?.organization?.orgId}.webp`}
@@ -260,8 +258,8 @@ export default function ProjectDetailScreen(props) {
         )}
 
         <ParticipateContainer
-          participants={participantData?.getParticipants}
-          length={participantData?.getParticipants?.length}
+          participants={participants}
+          length={participants?.length}
         />
         {user && user?.volunteerId === data?.createdBy && (
           <>
@@ -285,14 +283,29 @@ export default function ProjectDetailScreen(props) {
         )}
 
         {user?.volunteerId === data?.createdBy && (
-          <VolunteerManagementNavigatorCard
-            navigation={navigation}
-            objId={data?.projectId}
-            objType="PROJECT"
-            title="Joining Requests"
-            screenName="request_screen"
-            // volunteerId={}
-          />
+          <>
+            <VolunteerManagementNavigatorCard
+              navigation={navigation}
+              objId={data?.projectId}
+              objType="PROJECT"
+              title="Joining Requests"
+              screenName="request_screen"
+            />
+            <VolunteerManagementNavigatorCard
+              navigation={navigation}
+              objId={data?.projectId}
+              objType="PROJECT"
+              title="Declined Requests"
+              screenName="decline_screen"
+            />
+            <VolunteerManagementNavigatorCard
+              navigation={navigation}
+              objId={data?.projectId}
+              objType="PROJECT"
+              title="Accepted Requests"
+              screenName="volunteer_screen"
+            />
+          </>
         )}
 
         {!data?.projectId || !user ? null : userExists(user?.volunteerId) ||

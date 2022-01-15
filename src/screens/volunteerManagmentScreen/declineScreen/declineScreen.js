@@ -4,60 +4,51 @@ import {getParticipants} from '../../../../graphql/queries';
 import {useToast} from 'native-base';
 import {ScrollView, StyleSheet, View} from 'react-native';
 import {
-  AcceptModal,
   CustomSpinner,
   CustomToast,
-  DeclineModal,
+  DeleteConfirmationModal,
   EmptyDataComponent,
   RequestCard,
 } from '../../../components';
-import {changeParticipateStatus} from '../../../../graphql/mutations';
+import {deleteParticipant} from '../../../../graphql/mutations';
 import {widthPercentageToDP as vw} from '../../../responsive/responsive';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default function RequestScreen(props) {
+export default function DeclineScreen(props) {
   const {objId, objType} = props;
-  let [user, setUser] = useState();
-  let [acceptModal, setAcceptModal] = useState(false);
-  let [declineModal, setDeclineModal] = useState(false);
+
+  let [modal, setModal] = useState(false);
   let [isLoading, setIsLoading] = useState(false);
   let [volunteerId, setVolunteerId] = useState('');
   let [participants, setParticipants] = useState(null);
   let toast = useToast();
-  const [requestHandler] = useMutation(changeParticipateStatus);
+  const [deleteParticipantReq, {loading: deleteLoading}] =
+    useMutation(deleteParticipant);
   const [getParticipantsQuery, {data, error, loading}] = useLazyQuery(
     getParticipants,
     {
       fetchPolicy: 'network-only',
     },
   );
-
+  
+  !participants &&
+    data?.getParticipants &&
+    setParticipants(data?.getParticipants);
   useEffect(() => {
     if (objId && objType) {
-      AsyncStorage.getItem('volunteer').then(vol => {
-        setUser(JSON.parse(vol));
-      });
       getParticipantsQuery({
-        variables: {objId: objId, objType: objType, objStatus: 'PENDING'},
+        variables: {objId: objId, objType: objType, objStatus: 'DECLINED'},
       });
     }
   }, [objId, objType]);
 
-  !participants &&
-    data?.getParticipants &&
-    setParticipants(data?.getParticipants);
-
-  const declineRequestHandler = values => {
+  const deleteVolunteerHandler = () => {
     setIsLoading(true);
-    requestHandler({
+    deleteParticipantReq({
       variables: {
         input: {
           objId: objId,
           objType: objType,
-          objStatus: 'DECLINED',
           volunteerId,
-          updatedBy: user?.volunteerId,
-          reason: values.note,
         },
       },
       update: proxy => {
@@ -67,20 +58,20 @@ export default function RequestScreen(props) {
             variables: {
               objId: objId,
               objType: objType,
-              objStatus: 'PENDING',
+              objStatus: 'DECLINED',
             },
           });
-
           const updated = participants?.filter(
             v => v?.volunteerId !== volunteerId,
           );
           setParticipants(updated);
+
           proxy.writeQuery({
             query: getParticipants,
             variables: {
               objId: objId,
               objType: objType,
-              objStatus: 'PENDING',
+              objStatus: 'DECLINED',
             },
             data: {
               getParticipants: updated,
@@ -92,76 +83,14 @@ export default function RequestScreen(props) {
       },
     })
       .then(() => {
-        setDeclineModal(!declineModal);
         setIsLoading(!isLoading);
-        renderToast(
-          'success',
-          'Volunteer Request has been Declined Successfully',
-        );
+        renderToast('success', 'Volunteer Request Successfully Deleted');
+        setModal(!modal);
       })
       .catch(err => {
-        setDeclineModal(!declineModal);
-        setIsLoading(!isLoading);
         renderToast('error', err.message);
-      });
-  };
-
-  const acceptRequestHandler = () => {
-    setIsLoading(true);
-    requestHandler({
-      variables: {
-        input: {
-          objId: objId,
-          objType: objType,
-          objStatus: 'ACCEPTED',
-          volunteerId: volunteerId,
-          updatedBy: user?.volunteerId,
-        },
-      },
-      update: proxy => {
-        try {
-          const data2 = proxy.readQuery({
-            query: getParticipants,
-            variables: {
-              objId: objId,
-              objType: objType,
-              objStatus: 'PENDING',
-            },
-          });
-
-          const updated = participants?.filter(
-            v => v?.volunteerId !== volunteerId,
-          );
-          setParticipants(updated);
-
-          proxy.writeQuery({
-            query: getParticipants,
-            variables: {
-              objId: objId,
-              objType: objType,
-              objStatus: 'PENDING',
-            },
-            data: {
-              getParticipants: updated,
-            },
-          });
-        } catch (error) {
-          console.log(error, '=== error ==');
-        }
-      },
-    })
-      .then(() => {
-        setAcceptModal(!acceptModal);
         setIsLoading(!isLoading);
-        renderToast(
-          'success',
-          'Volunteer Request has been Accepted Successfully',
-        );
-      })
-      .catch(err => {
-        setAcceptModal(!acceptModal);
-        setIsLoading(!isLoading);
-        renderToast('error', err.message);
+        setModal(!modal);
       });
   };
 
@@ -184,10 +113,7 @@ export default function RequestScreen(props) {
               <RequestCard
                 key={i}
                 data={item}
-                acceptRequest={() => {
-                  setAcceptModal(true);
-                }}
-                removeRequest={() => setDeclineModal(true)}
+                removeRequest={() => setModal(true)}
                 setVolunteerId={setVolunteerId}
               />
             ))}
@@ -202,21 +128,13 @@ export default function RequestScreen(props) {
           <CustomSpinner size="lg" color="#f06d06" />
         </View>
       )}
-      <AcceptModal
-        title="Accept Volunteer Request"
-        isModalOpen={acceptModal}
-        setIsModalOpen={setAcceptModal}
-        confrimed={acceptRequestHandler}
+      <DeleteConfirmationModal
+        title="Delete Volunteer"
+        isModalOpen={modal}
+        setIsModalOpen={setModal}
+        confrimDelete={deleteVolunteerHandler}
         isLoading={isLoading}
-        subTitle="Are you sure you want to Accept Request?"
-      />
-      <DeclineModal
-        title="Decline Volunteer Request"
-        isModalOpen={declineModal}
-        setIsModalOpen={setDeclineModal}
-        confrimDelete={declineRequestHandler}
-        isLoading={isLoading}
-        subTitle="Are you sure you want to Decline Request?"
+        subTitle="Are you sure you want to delete volunteer.?"
       />
     </>
   );

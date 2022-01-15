@@ -9,8 +9,12 @@ import {
 import {renderDate} from '../../../shared/services/helper';
 
 export default function RequestCard(props) {
-  const {data, acceptRequest, removeRequest, setVolunteerId} = props;
+  const {data, acceptRequest, removeRequest, setVolunteerId, accepted} = props;
 
+  function requestHandler(type) {
+    setVolunteerId(data?.volunteer?.volunteerId);
+    type === 'accept' ? acceptRequest() : removeRequest();
+  }
   return (
     <CardWrapper>
       <View style={style.requestCardMainView}>
@@ -28,46 +32,88 @@ export default function RequestCard(props) {
             </ResponsiveText>
           </View>
         </View>
-        <View style={style.createdAndUpdateView}>
-          <View>
-            <ResponsiveText size={12} style={style.createdAndUpdateTitle}>
-              Requested At
-            </ResponsiveText>
-            <ResponsiveText size={13} style={style.createdAndUpdateSubTitle}>
-              {renderDate(data?.createdAt)}
-            </ResponsiveText>
+        <View style={style.bodyView}>
+          <View style={style.createdAndUpdateView}>
+            {accepted ? (
+              <>
+                <View>
+                  <ResponsiveText size={12} style={style.createdAndUpdateTitle}>
+                    Approved By
+                  </ResponsiveText>
+                  <ResponsiveText
+                    size={13}
+                    style={style.createdAndUpdateSubTitle}>
+                    {data?.approved?.volunteerName}
+                  </ResponsiveText>
+                </View>
+                <View style={style.declineAndAcceptedView}>
+                  <ResponsiveText size={12} style={style.createdAndUpdateTitle}>
+                    Accepted At
+                  </ResponsiveText>
+                  <ResponsiveText
+                    size={13}
+                    style={style.createdAndUpdateSubTitle}>
+                    {renderDate(data?.createdAt)}
+                  </ResponsiveText>
+                </View>
+              </>
+            ) : (
+              <>
+                <View>
+                  <ResponsiveText size={12} style={style.createdAndUpdateTitle}>
+                    Requested At
+                  </ResponsiveText>
+                  <ResponsiveText
+                    size={13}
+                    style={style.createdAndUpdateSubTitle}>
+                    {renderDate(data?.createdAt)}
+                  </ResponsiveText>
+                </View>
+                {data?.updatedAt && (
+                  <View style={style.updatedAt}>
+                    <ResponsiveText
+                      size={12}
+                      style={style.createdAndUpdateTitle}>
+                      Decline At
+                    </ResponsiveText>
+                    <ResponsiveText
+                      size={13}
+                      style={style.createdAndUpdateSubTitle}>
+                      {renderDate(data?.updatedAt)}
+                    </ResponsiveText>
+                  </View>
+                )}
+              </>
+            )}
           </View>
-          {data?.updatedAt && (
-            <View style={style.updatedAt}>
+
+          {data?.reason && (
+            <View style={style.declineView}>
               <ResponsiveText size={12} style={style.createdAndUpdateTitle}>
-                Decline At
+                Reason
               </ResponsiveText>
               <ResponsiveText size={13} style={style.createdAndUpdateSubTitle}>
-                {renderDate(data?.updatedAt)}
+                {data?.reason}
               </ResponsiveText>
             </View>
           )}
         </View>
+
         <View style={style.buttonView}>
-          <Button
-            style={style.declineButton}
-            onPress={() => {
-              setVolunteerId(data?.volunteer?.volunteerId);
-              removeRequest();
-            }}>
+          <Button style={style.declineButton} onPress={requestHandler}>
             <ResponsiveText size={13} style={style.declineButtonText}>
               Decline
             </ResponsiveText>
           </Button>
-          <Button
-            style={style.accepteButton}
-            onPress={() => {
-              acceptRequest();
-            }}>
-            <ResponsiveText size={13} style={style.acceptButtonText}>
-              Accept
-            </ResponsiveText>
-          </Button>
+          {acceptRequest && (
+            <Button
+              style={style.accepteButton}
+              onPress={() => requestHandler('accept')}>
+              <ResponsiveText size={13} style={style.acceptButtonText}>
+                Accept
+              </ResponsiveText>
+            </Button>
+          )}
         </View>
       </View>
     </CardWrapper>
@@ -82,6 +128,10 @@ const style = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  bodyView: {
+    borderBottomColor: '"#939393',
+    borderBottomWidth: 1,
   },
   profileImageView: {
     height: vw(12),
@@ -105,9 +155,9 @@ const style = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     marginTop: vw(3),
-    borderBottomColor: '"#939393',
-    borderBottomWidth: 1,
-    paddingBottom: vw(3),
+    marginBottom: vw(3),
+  },
+  declineView: {
     marginBottom: vw(3),
   },
   updatedAt: {
@@ -121,10 +171,14 @@ const style = StyleSheet.create({
     color: '#212529',
     fontFamily: 'Montserrat-SemiBold',
   },
+  declineAndAcceptedView: {
+    marginLeft: vw(3),
+  },
   buttonView: {
     display: 'flex',
     flexDirection: 'row',
     alignSelf: 'flex-end',
+    marginTop: vw(2),
   },
   accepteButton: {
     backgroundColor: '#f06d06',
