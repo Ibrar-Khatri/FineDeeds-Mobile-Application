@@ -93,7 +93,7 @@ export default function RequestScreen(props) {
     })
       .then(() => {
         setDeclineModal(!declineModal);
-        setIsLoading(!isLoading);
+        setIsLoading(false);
         renderToast(
           'success',
           'Volunteer Request has been Declined Successfully',
@@ -101,7 +101,7 @@ export default function RequestScreen(props) {
       })
       .catch(err => {
         setDeclineModal(!declineModal);
-        setIsLoading(!isLoading);
+        setIsLoading(false);
         renderToast('error', err.message);
       });
   };
@@ -152,7 +152,7 @@ export default function RequestScreen(props) {
     })
       .then(() => {
         setAcceptModal(!acceptModal);
-        setIsLoading(!isLoading);
+        setIsLoading(false);
         renderToast(
           'success',
           'Volunteer Request has been Accepted Successfully',
@@ -160,7 +160,7 @@ export default function RequestScreen(props) {
       })
       .catch(err => {
         setAcceptModal(!acceptModal);
-        setIsLoading(!isLoading);
+        setIsLoading(false);
         renderToast('error', err.message);
       });
   };

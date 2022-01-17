@@ -5,7 +5,11 @@ import {useNavigation} from '@react-navigation/native';
 import {RenderS3Image, ResponsiveText} from '../index';
 import {useLazyQuery} from '@apollo/client';
 import {getVolunteerById} from '../../../graphql/queries';
-import {heightPercentageToDP as vh, widthPercentageToDP as vw} from '../../responsive/responsive';
+import {
+  heightPercentageToDP as vh,
+  widthPercentageToDP as vw,
+} from '../../responsive/responsive';
+import {backgroundColor} from 'styled-system';
 
 export default function Participant(props) {
   const {likeData, data} = props;
@@ -75,7 +79,7 @@ let style = StyleSheet.create({
     width: '100%',
     justifyContent: 'flex-start',
     alignItems: 'center',
-    margin:vw(4)
+    padding: vw(3),
   },
   imageStyle: {
     height: vh(8),

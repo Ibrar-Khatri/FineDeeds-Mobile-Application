@@ -270,10 +270,7 @@ export default function StoryDetailScreen(props) {
             </View>
           </View>
           <View style={style.CommentSectionView}>
-            <CommentSection
-              objId={storyDet?.storyId}
-              objType={'STORY'}
-            />
+            <CommentSection objId={storyDet?.storyId} objType={'STORY'} />
           </View>
         </>
       ) : (

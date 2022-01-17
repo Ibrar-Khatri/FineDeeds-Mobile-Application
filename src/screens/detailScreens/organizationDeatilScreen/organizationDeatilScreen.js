@@ -3,9 +3,10 @@ import {ScrollView, StyleSheet, View} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {TopPanel, BottomPanel} from './components/index';
 import {CustomButton, CustomSpinner} from '../../../components/index';
-import {useLazyQuery} from '@apollo/client';
+import {useLazyQuery, useMutation} from '@apollo/client';
 import {getOrgById} from '../../../../graphql/queries';
 import {widthPercentageToDP as vw} from '../../../responsive/responsive';
+import {sendJoinOrgRequest} from '../../../../graphql/mutations';
 
 export default function OrganizationDetailScreen(props) {
   const {data} = props;
@@ -16,7 +17,6 @@ export default function OrganizationDetailScreen(props) {
   useEffect(() => {
     AsyncStorage.getItem('volunteer').then(vol => {
       setUser(JSON.parse(vol));
-      console.log('kjdsbfksjdbf');
     });
     if (data) {
       getOrganizationsById({

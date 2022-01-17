@@ -135,6 +135,7 @@ export default function ProjectDetailScreen(props) {
             const updated = data2?.getParticipants?.filter(
               v => v?.volunteerId !== user?.volunteerId,
             );
+            setParticipants(updated)
             proxy.writeQuery({
               query: getParticipants,
               variables: {

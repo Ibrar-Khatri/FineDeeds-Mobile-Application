@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {useLazyQuery} from '@apollo/client';
+import {useLazyQuery, useMutation} from '@apollo/client';
 import {useNavigation} from '@react-navigation/native';
 import {
   Dimensions,
@@ -19,6 +19,8 @@ import {
   CustomSpinner,
   HostCard,
   ParticipateContainer,
+  VolunteerManagementNavigatorCard,
+  CustomToast,
 } from '../../../components/index';
 import {
   heightPercentageToDP as vh,
@@ -31,30 +33,44 @@ import {
 } from '../../../shared/services/helper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import moment from 'moment';
+import {useToast} from 'native-base';
+import {
+  deleteParticipant,
+  sendParticipateRequest,
+} from '../../../../graphql/mutations';
 
 let screenWidth = Dimensions.get('window').width;
 
 export default function EventDetailScreen(props) {
   const {data} = props;
+  let [event, setEvent] = useState();
+  let [user, setUser] = useState();
+  let [participants, setParticipants] = useState(null);
   let [getEventByID, eventData] = useLazyQuery(getEvent);
   const [
     getParticipantData,
     {loading: partcipantLoading, data: participantData},
-  ] = useLazyQuery(getParticipants);
-  let [event, setEvent] = useState();
-  let [user, setUser] = useState();
+  ] = useLazyQuery(getParticipants, {fetchPolicy: 'network-only'});
+  const [sendParticipateReq, {loading: requestLoading}] = useMutation(
+    sendParticipateRequest,
+  );
+  const [deleteParticipantReq, {loading: deleteLoading}] =
+    useMutation(deleteParticipant);
+  let toast = useToast();
+
   const navigation = useNavigation();
 
   useEffect(() => {
-    if (data) {
-      AsyncStorage.getItem('volunteer').then(vol => {
-        setUser(JSON.parse(vol));
-      });
+    AsyncStorage.getItem('volunteer').then(vol => {
+      setUser(JSON.parse(vol));
+    });
+    data &&
       getEventByID({
         variables: {
           eventId: data?.eventId,
         },
       });
+    const unsubscribe = navigation.addListener('focus', () => {
       getParticipantData({
         variables: {
           objId: data?.eventId,
@@ -62,8 +78,15 @@ export default function EventDetailScreen(props) {
           objStatus: 'ACCEPTED',
         },
       });
-    }
+    });
+    return unsubscribe;
   }, [data]);
+
+  useEffect(() => {
+    participantData?.getParticipants?.length >= 0 &&
+      setParticipants(participantData?.getParticipants);
+  }, [participantData?.getParticipants]);
+
   !event && eventData?.data?.getEvent && setEvent(eventData?.data?.getEvent);
 
   const checkPastDate = event && moment(event?.startDate).isAfter();
@@ -91,8 +114,8 @@ export default function EventDetailScreen(props) {
   };
 
   const checkDisabled = () => {
-    const alreadyPart = participantData?.getParticipants?.find(
-      participant => participant['volunteerId'] === user?.volunteerId,
+    const alreadyPart = participants?.find(
+      parti => parti['volunteerId'] === user?.volunteerId,
     );
     if (alreadyPart)
       return {
@@ -107,6 +130,77 @@ export default function EventDetailScreen(props) {
   const endingTime = `${addDuration}:${eventTime?.[1]}`;
   const alreadyPart = checkDisabled();
 
+  const participateRequest = () => {
+    if (user) {
+      sendParticipateReq({
+        variables: {
+          input: {
+            objId: event?.eventId,
+            volunteerId: user?.volunteerId,
+            objType: 'EVENT',
+            objStatus: 'PENDING',
+            createdBy: user?.volunteerId,
+            orgId: event?.orgId,
+          },
+        },
+      })
+        .then(() => {
+          renderToast('success', "Request on it's way!");
+        })
+        .catch(err =>
+          renderToast('error', err.message.replace('GraphQL error: ', '')),
+        );
+    }
+  };
+  const unparticipateRequest = () => {
+    let variables = {
+      objId: event?.eventId,
+      objType: 'EVENT',
+      volunteerId: user?.volunteerId,
+    };
+
+    deleteParticipantReq({
+      variables: {
+        input: variables,
+      },
+      update: (proxy, data) => {
+        try {
+          const filtered = participants?.filter(
+            p => p?.volunteerId !== user?.volunteerId,
+          );
+          setParticipants(filtered);
+          proxy.writeQuery({
+            query: getParticipants,
+            variables: {
+              objId: event?.eventId,
+              objType: 'EVENT',
+              objStatus: 'ACCEPTED',
+            },
+            data: {
+              getParticipants: filtered,
+            },
+          });
+        } catch (error) {
+          console.log(error, '=== error ==');
+        }
+      },
+    })
+      .then(() => {
+        renderToast('success', 'You have Unparticipted Successfully.');
+      })
+      .catch(err => {
+        renderToast('error', err.message);
+      });
+  };
+
+  function renderToast(type, description) {
+    toast.show({
+      placement: 'top',
+      duration: 3000,
+      render: () => <CustomToast type={type} description={description} />,
+    });
+  }
+
   function navigateTo() {
     navigation.push('detail-screen', {
       initialRouteName: 'organization_detail',
@@ -115,7 +209,7 @@ export default function EventDetailScreen(props) {
     });
   }
 
-  return event ? (
+  return event && participants ? (
     <ScrollView style={style.eventDetailScreenView}>
       <View style={style.headerView}>
         <RenderS3Image
@@ -187,10 +281,7 @@ export default function EventDetailScreen(props) {
         </View>
         {!user ? null : user?.role === 'STAFF' ? null : (
           <CustomButton
-            // loading={alreadyPart ? deleteLoading : loading}
-            // disabled={
-            //   isLoading || alreadyPart?.participated ? deleteLoading : loading
-            // }
+            isLoading={requestLoading || deleteLoading}
             // onClick={() =>
             //   event?.isPaid && !alreadyPart?.participated
             //     ? setPayModal(!payModal)
@@ -200,8 +291,16 @@ export default function EventDetailScreen(props) {
             //     ? UnparticipateRequest(alreadyPart?.paymentId)
             //     : participateRequest()
             // }
+            onClick={() =>
+              !event.isPaid &&
+              (alreadyPart?.participated
+                ? unparticipateRequest()
+                : participateRequest())
+            }
             buttonText={
-              !user
+              requestLoading || deleteLoading
+                ? 'LOADING'
+                : !user
                 ? 'Login to Participate'
                 : alreadyPart?.participated
                 ? 'Unparticipate'
@@ -212,10 +311,38 @@ export default function EventDetailScreen(props) {
           />
         )}
         <ParticipateContainer
-          participants={participantData?.getParticipants}
-          length={participantData?.getParticipants?.length}
+          participants={participants}
+          length={participants?.length}
         />
+
         {event?.isPaid && hoursDiff > 24 ? _renderButtons() : _renderButtons()}
+
+        {user?.volunteerId === event?.createdBy && (
+          <>
+            <VolunteerManagementNavigatorCard
+              navigation={navigation}
+              objId={data?.eventId}
+              objType="EVENT"
+              title="Joining Requests"
+              screenName="request_screen"
+            />
+            <VolunteerManagementNavigatorCard
+              navigation={navigation}
+              objId={data?.eventId}
+              objType="EVENT"
+              title="Declined Requests"
+              screenName="decline_screen"
+            />
+            <VolunteerManagementNavigatorCard
+              navigation={navigation}
+              objId={data?.eventId}
+              objType="EVENT"
+              title="Accepted Requests"
+              screenName="volunteer_screen"
+            />
+          </>
+        )}
+
         <CommentSection objId={event?.eventId} objType={'EVENT'} />
       </View>
     </ScrollView>
