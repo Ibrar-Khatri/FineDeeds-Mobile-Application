@@ -278,34 +278,26 @@ export default function StoryDetailScreen(props) {
       )}
       <Actionsheet isOpen={invokeActionSheet} onClose={setInvokeActionSheet}>
         <Actionsheet.Content>
-          <Actionsheet.Item style={style.likeTitleView}>
-            <ResponsiveText style={style.likeTitle} size={17}>
-              Likes
-            </ResponsiveText>
-          </Actionsheet.Item>
+          <ResponsiveText style={style.likeTitle} size={17}>
+            Likes
+          </ResponsiveText>
 
           {likes.length > 0 ? (
-            likes.map((like, i) => (
-              <Actionsheet.Item key={i}>
-                <Participant likeData={like} />
-              </Actionsheet.Item>
-            ))
+            likes.map((like, i) => <Participant likeData={like} key={i} />)
           ) : (
-            <Actionsheet.Item style={style.noLikeItem}>
-              <View style={style.noLikeYetView}>
-                <FontAwesome
-                  name="thumbs-up"
-                  size={normalize(25)}
-                  color="#6c757d"
-                />
-                <ResponsiveText size={15} style={style.noLikeYetTextStyle}>
-                  No likes yet
-                </ResponsiveText>
-                <ResponsiveText size={13} style={style.noLikeYetTextStyle}>
-                  Be the first to like this
-                </ResponsiveText>
-              </View>
-            </Actionsheet.Item>
+            <View style={style.noLikeYetView}>
+              <FontAwesome
+                name="thumbs-up"
+                size={normalize(25)}
+                color="#6c757d"
+              />
+              <ResponsiveText size={15} style={style.noLikeYetTextStyle}>
+                No likes yet
+              </ResponsiveText>
+              <ResponsiveText size={13} style={style.noLikeYetTextStyle}>
+                Be the first to like this
+              </ResponsiveText>
+            </View>
           )}
         </Actionsheet.Content>
       </Actionsheet>
@@ -445,16 +437,16 @@ let style = StyleSheet.create({
   likeTitle: {
     fontFamily: 'Montserrat-Bold',
     color: '#343a40',
-  },
-  likeTitleView: {
-    borderBottomColor: '#ebebeb',
-    borderBottomWidth: 2,
-  },
-  noLikeItem: {
-    justifyContent: 'center',
+    alignSelf: 'flex-start',
+    padding: vw(3),
+    width: '100%',
+    borderBottomColor: '#eaeaea',
+    borderBottomWidth: 1,
+    paddingBottom: vh(2),
   },
   noLikeYetView: {
     alignItems: 'center',
+    padding: vw(5),
   },
   noLikeYetTextStyle: {
     color: '#212529',
