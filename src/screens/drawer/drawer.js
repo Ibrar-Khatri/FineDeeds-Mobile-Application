@@ -11,6 +11,7 @@ import {
   heightPercentageToDP as vh,
   normalize,
 } from '../../responsive/responsive';
+import Settings from './setting/setting';
 
 const Drawer = createDrawerNavigator();
 
@@ -72,6 +73,7 @@ export default function DrawerNavigation({navigation}) {
         options={{drawerLabel: 'Profile', unmountOnBlur: true}}
       />
       <Drawer.Screen name="static-screen" component={StaticScreens} />
+      <Drawer.Screen name="setting-screen" component={Settings} />
     </Drawer.Navigator>
   );
 }

@@ -2,11 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {useLazyQuery} from '@apollo/client';
 import {Platform, RefreshControl} from 'react-native';
 import {getGeneralEvents} from '../../../../graphql/queries';
-import {
-  ListAllItem,
-  CustomSpinner,
-  EventCard,
-} from '../../../components/index';
+import {ListAllItem, CustomSpinner, EventCard} from '../../../components/index';
 
 export default function EventList() {
   const [getEvents, {loading, data}] = useLazyQuery(getGeneralEvents, {
@@ -78,7 +74,7 @@ export default function EventList() {
   return (
     <ListAllItem
       data={events}
-      renderItem={({item, i}) => <EventCard data={item} />}
+      renderItem={({item, i}) => <EventCard data={item} type="event" />}
       refreshControl={
         <RefreshControl
           colors={Platform.OS === 'android' && ['#f06d06']}

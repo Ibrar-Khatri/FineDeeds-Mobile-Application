@@ -81,6 +81,12 @@ export default function DrawerContent(props) {
       isUserAuthenticated: true,
     },
     {
+      lable: 'Settings',
+      isFocused: false,
+      screenName: 'setting-screen',
+      isUserAuthenticated: true,
+    },
+    {
       lable: 'About',
       isFocused: false,
       screenName: 'static-screen',
