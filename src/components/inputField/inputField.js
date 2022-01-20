@@ -23,12 +23,17 @@ export default function InputField(props) {
     icon,
     onPress,
     loading,
+    disabled,
   } = props;
 
   return (
     <View style={style.inputView}>
       <DropShadow style={!loading && isfocus && style.focusInputStyle}>
-        <View style={[style.inputStyle, loading && style.disabledBGColor]}>
+        <View
+          style={[
+            style.inputStyle,
+            (loading || disabled) && style.disabledBGColor,
+          ]}>
           <TextInput
             value={value}
             onChangeText={text => setValue(text)}
@@ -47,6 +52,7 @@ export default function InputField(props) {
             secureTextEntry={secureTextEntry && !showPassword}
             multiline={multiline}
             maxLength={maxLength}
+            editable={!disabled}
           />
           {icon && (
             <TouchableOpacity onPress={onPress} style={style.iconStyle}>

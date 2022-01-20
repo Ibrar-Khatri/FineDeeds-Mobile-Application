@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react';
+import {createContext, useEffect, useState} from 'react';
 import moment from 'moment';
 import {Image} from 'react-native-compressor';
 import {_putFileToS3} from './s3Services';
@@ -190,7 +190,10 @@ const languagesArray = [
   // { id: "POR", value: "Portugues" },
   // { id: "SP", value: "Español" },
 ];
-
+const VolunteerContext = createContext({
+  volunteer: {},
+  setVolunteer: () => {},
+});
 export {
   minDate,
   languagesArray,
@@ -213,4 +216,5 @@ export {
   getImageDimensions,
   useDebounce,
   uploadImageInS3Bucket,
+  VolunteerContext,
 };
