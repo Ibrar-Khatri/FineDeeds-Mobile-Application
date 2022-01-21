@@ -8,25 +8,31 @@ import {
   PERMISSION_TYPE,
 } from '../../../../../appPermissions/appPermissions';
 import {
+  CustomCheckBox,
   DateAndTimePicker,
   ImagePickerActionSheet,
   InputField,
+  RadioButton,
   RenderS3Image,
   ResponsiveText,
 } from '../../../../../components';
+import SelectInputField from '../../../../../components/selectInputField/selectInputField';
 import {
   widthPercentageToDP as vw,
   heightPercentageToDP as vh,
 } from '../../../../../responsive/responsive';
+import {Countries} from '../../../../../shared/services/countryApi';
 import {VolunteerContext} from '../../../../../shared/services/helper';
 import volunteerBasicInformationValidation from './validation';
 
 let screenWidth = Dimensions.get('window').width;
+
 export default BasicInformation = () => {
   let {volunteer, setVolunteer} = useContext(VolunteerContext);
   let [isActionSheetOpen, setIsActionSheetOpen] = useState(false);
   let [image, setImage] = useState(null);
   let [showInvalidInput, setShowInvalidInput] = useState(false);
+  let [countries, setCountries] = useState([]);
 
   const [GetCenter, {data}] = useLazyQuery(getOrgCenter);
   useEffect(() => {
@@ -36,23 +42,39 @@ export default BasicInformation = () => {
           orgCenterId: volunteer?.centerId,
         },
       });
+      Countries.getCountries()
+        .then(res => {
+          return res.json();
+        })
+        .then( res => {
+          let coun = Object.keys(res.result).map((key, i) => ({
+            value: res.result[key],
+            id: key,
+          }));
+          setCountries(coun);
+          console.log(coun[0]);
+        })
+        .catch(err => {
+          console.log(err, 'catch');
+        });
     }
   }, [volunteer]);
-  console.log(volunteer, 'volunteer');
+
+  let initialValues = {
+    volunteerName: volunteer?.volunteerName,
+    email: volunteer?.email,
+    dob: volunteer?.dob,
+    gender: volunteer?.gender,
+    city: volunteer?.city,
+    country: volunteer?.country,
+    aboutMe: volunteer?.aboutMe,
+    center: data?.getOrgCenter?.title,
+    designation: volunteer?.designation,
+    activeContributor: volunteer?.activeContributor,
+  };
 
   const formik = useFormik({
-    initialValues: {
-      volunteerName: volunteer?.volunteerName,
-      email: volunteer?.email,
-      dob: volunteer?.dob,
-      gender: volunteer?.gender,
-      city: volunteer?.city,
-      country: volunteer?.country,
-      aboutMe: volunteer?.aboutMe,
-      center: data?.getOrgCenter?.title,
-      designation: volunteer?.designation,
-      activeContributor: volunteer?.activeContributor,
-    },
+    initialValues: initialValues,
     validationSchema: volunteerBasicInformationValidation,
     onSubmit: values => {
       const {
@@ -118,7 +140,7 @@ export default BasicInformation = () => {
   }
 
   return (
-    <ScrollView style={style.scrollView}>
+    <View style={style.scrollView}>
       <RenderS3Image
         resizeMode="cover"
         style={style.profileImageStyle}
@@ -153,7 +175,7 @@ export default BasicInformation = () => {
             disabled={true}
           />
         </View>
-        {/* <View>
+        <View>
           <ResponsiveText size={13} style={style.fieldTitle}>
             Date Of Birth
           </ResponsiveText>
@@ -164,7 +186,78 @@ export default BasicInformation = () => {
             disabled={false}
             maximumDate={new Date()}
           />
-        </View> */}
+        </View>
+        <RadioButton
+          data={['MALE', 'FEMALE']}
+          selected={formik.values.gender}
+          setSelected={formik.handleChange('gender')}
+          invalidInput={showInvalidInput && formik.errors.gender}
+          style={style.buttonView}
+        />
+        <View style={style.activeContributorView}>
+          <CustomCheckBox
+            isChecked={formik.values.activeContributor}
+            callOnPress={() =>
+              formik.setFieldValue(
+                'activeContributor',
+                !formik.values.activeContributor,
+              )
+            }
+          />
+          <ResponsiveText size={13} style={style.activeContributorText}>
+            I want to be shown as an active contributor
+          </ResponsiveText>
+        </View>
+        <View>
+          <ResponsiveText size={13} style={style.fieldTitle}>
+            Center
+          </ResponsiveText>
+          <InputField
+            type="text"
+            value={formik.values.center}
+            setValue={formik.handleChange('center')}
+            invalidInput={showInvalidInput && formik.errors.center}
+            disabled={true}
+          />
+        </View>
+        <View>
+          <ResponsiveText size={13} style={style.fieldTitle}>
+            City
+          </ResponsiveText>
+          <InputField
+            type="text"
+            value={formik.values.city}
+            setValue={formik.handleChange('city')}
+            invalidInput={showInvalidInput && formik.errors.city}
+          />
+        </View>
+        <View>
+          <ResponsiveText size={13} style={style.fieldTitle}>
+            Country
+          </ResponsiveText>
+          <SelectInputField
+            type="text"
+            value={formik.values.country}
+            setValue={formik.handleChange('country')}
+            invalidInput={showInvalidInput && formik.errors.country}
+            data={countries}
+            title="Select a Country"
+            type="countryList"
+          />
+        </View>
+        <View>
+          <ResponsiveText size={13} style={style.fieldTitle}>
+            About Me
+          </ResponsiveText>
+          <InputField
+            type="text"
+            value={formik.values.aboutMe}
+            setValue={formik.handleChange('aboutMe')}
+            invalidInput={showInvalidInput && formik.errors.aboutMe}
+            multiline={true}
+            maxLength={500}
+          />
+        </View>
       </View>
 
       <ImagePickerActionSheet
@@ -180,7 +273,7 @@ export default BasicInformation = () => {
         setImage={setImage}
         s3Key={`VOLUNTEER/${volunteer?.volunteerId}.webp`}
       />
-    </ScrollView>
+    </View>
   );
 };
 
@@ -206,5 +299,18 @@ const style = StyleSheet.create({
     color: '#212529',
     fontFamily: 'Montserrat-Regular',
     marginBottom: 5,
+  },
+  buttonView: {
+    margin: vw(4),
+  },
+  activeContributorView: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    alignSelf: 'center',
+    margin: vw(3),
+  },
+  activeContributorText: {
+    color: '#212529',
   },
 });

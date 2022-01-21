@@ -25,6 +25,8 @@ import CustomSpinner from './spinner/spinner';
 import Tag from './tag/tag';
 import Tabs from './tabs/tabs';
 import ParticipateContainer from './participantContainer/participantContainer';
+import RadioButton from './radioButton/radioButton';
+
 //cards
 import ActivitiesCard from './cards/activitiesCard/activitiesCard';
 import InfoCard from './cards/infoCard/infoCard';
@@ -79,4 +81,5 @@ export {
   DeclineModal,
   RequestCard,
   VolunteerManagementNavigatorCard,
+  RadioButton,
 };

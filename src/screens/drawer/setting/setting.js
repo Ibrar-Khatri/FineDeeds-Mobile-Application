@@ -1,5 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import {FlatList, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {
+  FlatList,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {
   BasicInformation,
   Skills,
@@ -56,7 +62,7 @@ export default function Settings() {
   return (
     <>
       <VolunteerContext.Provider value={value}>
-        <View style={style.flatListMainView}>
+        <ScrollView style={style.flatListMainView}>
           <FlatList
             data={tabs}
             horizontal={true}
@@ -72,8 +78,8 @@ export default function Settings() {
               </TouchableOpacity>
             )}
           />
-        </View>
-        <View style={style.tabComponentsView}>{tabs[index].component}</View>
+          {tabs[index].component}
+        </ScrollView>
       </VolunteerContext.Provider>
     </>
   );
@@ -94,5 +100,6 @@ let style = StyleSheet.create({
   contentContainerStyle: {
     justifyContent: 'space-around',
     flexGrow: 1,
+    backgroundColor: '#fffaf4',
   },
 });
