@@ -1,14 +1,20 @@
-import {useLazyQuery} from '@apollo/client';
+import {useLazyQuery, useMutation} from '@apollo/client';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useFormik} from 'formik';
+import {useToast} from 'native-base';
 import React, {useContext, useEffect, useState} from 'react';
-import {Dimensions, ScrollView, StyleSheet, View} from 'react-native';
+import {Dimensions,  StyleSheet, View} from 'react-native';
+import {updateVolunteerInfo} from '../../../../../../graphql/mutations';
 import {getOrgCenter} from '../../../../../../graphql/queries';
 import {
   Permission,
   PERMISSION_TYPE,
 } from '../../../../../appPermissions/appPermissions';
 import {
+  CustomButton,
   CustomCheckBox,
+  CustomSpinner,
+  CustomToast,
   DateAndTimePicker,
   ImagePickerActionSheet,
   InputField,
@@ -21,6 +27,7 @@ import {
   widthPercentageToDP as vw,
   heightPercentageToDP as vh,
 } from '../../../../../responsive/responsive';
+import {updateName} from '../../../../../shared/services/authServices';
 import {Countries} from '../../../../../shared/services/countryApi';
 import {VolunteerContext} from '../../../../../shared/services/helper';
 import volunteerBasicInformationValidation from './validation';
@@ -33,8 +40,11 @@ export default BasicInformation = () => {
   let [image, setImage] = useState(null);
   let [showInvalidInput, setShowInvalidInput] = useState(false);
   let [countries, setCountries] = useState([]);
+  let [isLoading, setIsLoading] = useState(false);
+  let [updateVolunteer] = useMutation(updateVolunteerInfo);
+  const [GetCenter, {data, loading}] = useLazyQuery(getOrgCenter);
+  const toast = useToast();
 
-  const [GetCenter, {data}] = useLazyQuery(getOrgCenter);
   useEffect(() => {
     if (volunteer) {
       GetCenter({
@@ -46,7 +56,7 @@ export default BasicInformation = () => {
         .then(res => {
           return res.json();
         })
-        .then( res => {
+        .then(res => {
           let coun = Object.keys(res.result).map((key, i) => ({
             value: res.result[key],
             id: key,
@@ -76,6 +86,7 @@ export default BasicInformation = () => {
   const formik = useFormik({
     initialValues: initialValues,
     validationSchema: volunteerBasicInformationValidation,
+    enableReinitialize: true,
     onSubmit: values => {
       const {
         volunteerName,
@@ -87,47 +98,46 @@ export default BasicInformation = () => {
         activeContributor,
       } = values;
       const {volunteerId} = volunteer;
+
+      setIsLoading(true);
       console.log(values, ' Valuesss');
-      // FinedeedsAppClient.mutate({
-      //   mutation: updateVolunteerInfo,
-      //   variables: {
-      //     input: {
-      //       volunteerId,
-      //       volunteerName,
-      //       dob,
-      //       gender: gender && gender.toUpperCase(),
-      //       city,
-      //       country,
-      //       aboutMe,
-      //       activeContributor,
-      //       designation: user?.designation,
-      //       center: data?.getOrgCenter?.orgCenterId,
-      //     },
-      //   },
-      // })
-      //   .then(async ({data}) => {
-      //     await updateName(volunteerName);
-      //     getVolunteerByIdSuccessAction({
-      //       ...data['updateVolunteerInfo'],
-      //       role: user?.role === 'STAFF' && 'STAFF',
-      //       activeContributor,
-      //       center: {
-      //         orgCenterId: data?.getOrgCenter?.orgCenterId,
-      //         title: data?.getOrgCenter?.title,
-      //       },
-      //       designation: user?.designation,
-      //       organization: {
-      //         orgName: user?.organization?.orgName,
-      //         orgId: user?.organization?.orgId,
-      //       },
-      //     });
-      //     toast.success('Profile has been successfully updated.');
-      //     setLoader(false);
-      //   })
-      //   .catch(error => {
-      //     toast.error(error.message);
-      //     setLoader(false);
-      //   });
+      updateVolunteer({
+        variables: {
+          input: {
+            volunteerId,
+            volunteerName,
+            dob,
+            gender: gender.toUpperCase(),
+            city,
+            country,
+            aboutMe,
+            activeContributor,
+            designation: volunteer?.designation,
+            center: data?.getOrgCenter?.orgCenterId,
+          },
+        },
+      })
+        .then(async ({data}) => {
+          await updateName(volunteerName);
+          let update = {
+            ...volunteer,
+            volunteerName,
+            gender,
+            aboutMe,
+            city,
+            country,
+            dob,
+            activeContributor,
+          };
+          AsyncStorage.setItem('volunteer', JSON.stringify(update)).then(() => {
+            renderToast('success', 'Profile has been successfully updated.');
+            setIsLoading(false);
+          });
+        })
+        .catch(error => {
+          renderToast('error', error.message);
+          setIsLoading(false);
+        });
     },
   });
 
@@ -139,7 +149,15 @@ export default BasicInformation = () => {
     setIsActionSheetOpen(true);
   }
 
-  return (
+  function renderToast(type, description) {
+    toast.show({
+      placement: 'top',
+      duration: 3000,
+      render: () => <CustomToast type={type} description={description} />,
+    });
+  }
+
+  return volunteer && formik?.values?.email ? (
     <View style={style.scrollView}>
       <RenderS3Image
         resizeMode="cover"
@@ -158,7 +176,7 @@ export default BasicInformation = () => {
           </ResponsiveText>
           <InputField
             type="text"
-            value={formik.values.volunteerName}
+            value={formik?.values?.volunteerName}
             setValue={formik.handleChange('volunteerName')}
             invalidInput={showInvalidInput && formik.errors.volunteerName}
           />
@@ -169,7 +187,7 @@ export default BasicInformation = () => {
           </ResponsiveText>
           <InputField
             type="text"
-            value={formik.values.email}
+            value={formik?.values?.email}
             setValue={formik.handleChange('email')}
             invalidInput={showInvalidInput && formik.errors.email}
             disabled={true}
@@ -180,7 +198,7 @@ export default BasicInformation = () => {
             Date Of Birth
           </ResponsiveText>
           <DateAndTimePicker
-            value={formik.values.dob}
+            value={formik?.values?.dob}
             setValue={formik.handleChange('dob')}
             invalidInput={showInvalidInput && formik.errors.dob}
             disabled={false}
@@ -189,18 +207,18 @@ export default BasicInformation = () => {
         </View>
         <RadioButton
           data={['MALE', 'FEMALE']}
-          selected={formik.values.gender}
+          selected={formik?.values?.gender}
           setSelected={formik.handleChange('gender')}
           invalidInput={showInvalidInput && formik.errors.gender}
           style={style.buttonView}
         />
         <View style={style.activeContributorView}>
           <CustomCheckBox
-            isChecked={formik.values.activeContributor}
+            isChecked={formik?.values?.activeContributor}
             callOnPress={() =>
               formik.setFieldValue(
                 'activeContributor',
-                !formik.values.activeContributor,
+                !formik?.values?.activeContributor,
               )
             }
           />
@@ -208,25 +226,42 @@ export default BasicInformation = () => {
             I want to be shown as an active contributor
           </ResponsiveText>
         </View>
-        <View>
-          <ResponsiveText size={13} style={style.fieldTitle}>
-            Center
-          </ResponsiveText>
-          <InputField
-            type="text"
-            value={formik.values.center}
-            setValue={formik.handleChange('center')}
-            invalidInput={showInvalidInput && formik.errors.center}
-            disabled={true}
-          />
-        </View>
+        {volunteer?.role === 'STAFF' && (
+          <>
+            <View>
+              <ResponsiveText size={13} style={style.fieldTitle}>
+                Center
+              </ResponsiveText>
+              <InputField
+                type="text"
+                value={formik?.values?.center}
+                setValue={formik.handleChange('center')}
+                invalidInput={showInvalidInput && formik.errors.center}
+                disabled={true}
+              />
+            </View>
+
+            <View>
+              <ResponsiveText size={13} style={style.fieldTitle}>
+                Designation
+              </ResponsiveText>
+              <InputField
+                type="text"
+                value={formik?.values?.designation}
+                setValue={formik.handleChange('designation')}
+                invalidInput={showInvalidInput && formik.errors.designation}
+                disabled={true}
+              />
+            </View>
+          </>
+        )}
         <View>
           <ResponsiveText size={13} style={style.fieldTitle}>
             City
           </ResponsiveText>
           <InputField
             type="text"
-            value={formik.values.city}
+            value={formik?.values?.city}
             setValue={formik.handleChange('city')}
             invalidInput={showInvalidInput && formik.errors.city}
           />
@@ -237,7 +272,7 @@ export default BasicInformation = () => {
           </ResponsiveText>
           <SelectInputField
             type="text"
-            value={formik.values.country}
+            value={formik.values?.country}
             setValue={formik.handleChange('country')}
             invalidInput={showInvalidInput && formik.errors.country}
             data={countries}
@@ -251,11 +286,21 @@ export default BasicInformation = () => {
           </ResponsiveText>
           <InputField
             type="text"
-            value={formik.values.aboutMe}
+            value={formik.values?.aboutMe}
             setValue={formik.handleChange('aboutMe')}
             invalidInput={showInvalidInput && formik.errors.aboutMe}
             multiline={true}
             maxLength={500}
+          />
+        </View>
+        <View>
+          <CustomButton
+            buttonText="SAVE CHANGES"
+            onClick={() => {
+              formik.handleSubmit();
+              setShowInvalidInput(true);
+            }}
+            isLoading={isLoading}
           />
         </View>
       </View>
@@ -274,6 +319,8 @@ export default BasicInformation = () => {
         s3Key={`VOLUNTEER/${volunteer?.volunteerId}.webp`}
       />
     </View>
+  ) : (
+    <CustomSpinner size="lg" color="#f06d06" center={true} />
   );
 };
 

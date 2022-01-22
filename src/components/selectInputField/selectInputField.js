@@ -8,16 +8,16 @@ import {
 } from 'react-native';
 import Modal from 'react-native-modal';
 import DropShadow from 'react-native-drop-shadow';
+import Icon from 'react-native-vector-icons/AntDesign';
 import {InvalidInput, ResponsiveText} from '../index';
-import {widthPercentageToDP as vw} from '../../responsive/responsive';
+import {
+  normalize,
+  widthPercentageToDP as vw,
+} from '../../responsive/responsive';
 
 export default function SelectInputField(props) {
   let [showModal, setShowModal] = useState(false);
   const {value, setValue, invalidInput, title, data, type} = props;
-  //   function setDate(date) {
-  //     setShowModal(false);
-  //     setValue(moment(date).format('YYYY-MM-DD'));
-  //   }
 
   function closeModal() {
     setShowModal(!showModal);
@@ -27,31 +27,30 @@ export default function SelectInputField(props) {
     setShowModal(!showModal);
   }
 
+  let flagID = data.filter(item => item.value === value)[0]?.id;
+
   return (
     <>
-      <TouchableOpacity
-        activeOpacity={1}
-        style={style.inputView}
-        onPress={() => setShowModal(true)}>
-        <DropShadow style={showModal && style.focusInputStyle}>
-          <View style={[style.inputStyle]}>
-            <ResponsiveText size={14} style={style.selectedValue}>
-              {value}
-            </ResponsiveText>
-            {type === 'countryList' && (
-              <Image
-                source={{
-                  uri: `https://countryflagsapi.com/png/${
-                    data.filter(item => item.value === value)[0]?.id
-                  }`,
-                }}
-                style={style.flagStyle}
-              />
-            )}
-          </View>
-        </DropShadow>
-        {invalidInput && !isCurrent && <InvalidInput error={invalidInput} />}
-      </TouchableOpacity>
+      <View style={style.inputView}>
+        <TouchableOpacity activeOpacity={1} onPress={() => setShowModal(true)}>
+          <DropShadow style={showModal && style.focusInputStyle}>
+            <View style={[style.inputStyle]}>
+              <ResponsiveText size={14} style={style.selectedValue}>
+                {value ? value : 'Select Country'}
+              </ResponsiveText>
+              {type === 'countryList' && (
+                <Image
+                  source={{
+                    uri: `https://countryflagsapi.com/png/${flagID}`,
+                  }}
+                  style={style.flagStyle}
+                />
+              )}
+            </View>
+          </DropShadow>
+        </TouchableOpacity>
+        {invalidInput && <InvalidInput error={invalidInput} />}
+      </View>
       <Modal
         isVisible={showModal}
         hasBackdrop={true}
@@ -63,7 +62,12 @@ export default function SelectInputField(props) {
             <ResponsiveText size={15} style={style.modalTitle}>
               {title}
             </ResponsiveText>
-            
+            <Icon
+              name="close"
+              color="#000"
+              size={normalize(18)}
+              onPress={closeModal}
+            />
           </View>
           <ScrollView>
             {type === 'countryList'
@@ -96,7 +100,7 @@ let style = StyleSheet.create({
   inputView: {
     width: '100%',
     marginTop: 5,
-    marginBottom: 5,
+    marginBottom: 15,
     alignSelf: 'center',
   },
   inputStyle: {
@@ -138,6 +142,10 @@ let style = StyleSheet.create({
     borderBottomColor: '#eaeaea',
     borderBottomWidth: 2,
     marginBottom: vw(2),
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   flagAndTextView: {
     display: 'flex',

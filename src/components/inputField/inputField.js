@@ -3,7 +3,7 @@ import {View, TextInput, TouchableOpacity, StyleSheet} from 'react-native';
 import DropShadow from 'react-native-drop-shadow';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {normalize} from '../../responsive/responsive';
-import {InvalidInput} from '../index';
+import {InvalidInput, ResponsiveText} from '../index';
 
 export default function InputField(props) {
   let [isfocus, setIsFoucs] = useState(false);
@@ -78,7 +78,16 @@ export default function InputField(props) {
             ))}
         </View>
       </DropShadow>
-      {invalidInput && <InvalidInput error={invalidInput} />}
+      <View style={style.textLengthAndErrorView}>
+        <View>{invalidInput && <InvalidInput error={invalidInput} />}</View>
+        <View>
+          {maxLength && (
+            <ResponsiveText size={11} style={style.textLengthStyle}>{`${
+              value ? value?.length : 0
+            }/${maxLength}`}</ResponsiveText>
+          )}
+        </View>
+      </View>
     </View>
   );
 }
@@ -129,5 +138,18 @@ let style = StyleSheet.create({
     alignSelf: 'center',
     color: '#6c757d',
     marginRight: 5,
+  },
+  textLengthAndErrorView: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: 5,
+  },
+  textLengthStyle: {
+    fontFamily: 'Montserrat-Regular',
+    color: '#212529',
+    textAlign: 'right',
+    margin: 1,
   },
 });

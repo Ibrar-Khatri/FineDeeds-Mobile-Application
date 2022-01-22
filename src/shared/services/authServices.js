@@ -94,3 +94,18 @@ export const completeNewPassword = (user, password) => {
     }
   });
 };
+export const updateName = name => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const user = await Auth.currentAuthenticatedUser();
+      const response = await Auth.updateUserAttributes(user, {
+        name,
+        'custom:name': name,
+      });
+      resolve(response);
+    } catch (e) {
+      // ALERT here we can check which error we are receiving
+      reject(e.message);
+    }
+  });
+};

@@ -5,7 +5,7 @@ import {ResponsiveText} from '../index';
 export default function InvalidInput(props) {
   const {error} = props;
   return (
-    <ResponsiveText style={style.invalidInput} size={10}>
+    <ResponsiveText style={style.invalidInput} size={11}>
       {error}
     </ResponsiveText>
   );
@@ -14,6 +14,5 @@ export default function InvalidInput(props) {
 let style = StyleSheet.create({
   invalidInput: {
     color: 'red',
-    paddingTop: 5,
   },
 });

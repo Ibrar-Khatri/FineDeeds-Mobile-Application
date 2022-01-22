@@ -1,32 +1,39 @@
 import React, {useState} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {ResponsiveText} from '..';
+import {InvalidInput, ResponsiveText} from '..';
 import {widthPercentageToDP as vw} from '../../responsive/responsive';
 
 export default function RadioButton(props) {
-  const {data, selected, setSelected, style} = props;
+  const {data, selected, setSelected, style, invalidInput} = props;
 
   return (
-    <View style={[styles.radioButtonView, style]}>
-      {data.map((item, i) => (
-        <TouchableOpacity
-          key={i}
-          style={styles.textAndRadioView}
-          activeOpacity={1}
-          onPress={() => setSelected(item)}>
-          <View
-            style={[
-              styles.radioCircle,
-              selected === item && styles.checkedCircle,
-            ]}>
-            <View style={styles.insideCircle}></View>
-          </View>
-          <ResponsiveText size={14} style={styles.radioLabel}>
-            {item}
-          </ResponsiveText>
-        </TouchableOpacity>
-      ))}
-    </View>
+    <>
+      <View style={style}>
+        <View style={[styles.radioButtonView]}>
+          {data.map((item, i) => (
+            <TouchableOpacity
+              key={i}
+              style={styles.textAndRadioView}
+              activeOpacity={1}
+              onPress={() => setSelected(item)}>
+              <View
+                style={[
+                  styles.radioCircle,
+                  selected === item && styles.checkedCircle,
+                ]}>
+                <View style={styles.insideCircle}></View>
+              </View>
+              <ResponsiveText size={14} style={styles.radioLabel}>
+                {item}
+              </ResponsiveText>
+            </TouchableOpacity>
+          ))}
+        </View>
+        <View style={styles.invalidInputView}>
+          {invalidInput && <InvalidInput error={invalidInput} />}
+        </View>
+      </View>
+    </>
   );
 }
 
@@ -64,4 +71,5 @@ const styles = StyleSheet.create({
     color: '#212529',
     fontFamily: 'Montserrat-Regular',
   },
+  invalidInputView: {alignSelf: 'center'},
 });

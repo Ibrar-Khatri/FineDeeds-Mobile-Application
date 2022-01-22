@@ -64,11 +64,6 @@ export default function DeclineModal(props) {
             multiline={true}
             maxLength={500}
           />
-          <ResponsiveText
-            size={11}
-            style={
-              style.descriptionLengthStyle
-            }>{`${formik.values.note.length}/500`}</ResponsiveText>
         </View>
         <View style={style.modalFooter}>
           <Button
@@ -145,12 +140,6 @@ let style = StyleSheet.create({
   descriptiontitleStyle: {
     fontFamily: 'Montserrat-Regular',
     color: '#212529',
-  },
-  descriptionLengthStyle: {
-    fontFamily: 'Montserrat-Regular',
-    color: '#212529',
-    textAlign: 'right',
-    margin: 1,
   },
   bodyText: {
     color: '#212529',
