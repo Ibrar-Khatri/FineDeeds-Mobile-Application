@@ -1,8 +1,13 @@
+import {useMutation} from '@apollo/client';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useToast} from 'native-base';
 import React, {useContext, useEffect, useState} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import {updateVolunteerSkills} from '../../../../../../graphql/mutations';
 import {
   CustomButton,
   CustomCheckBox,
+  CustomToast,
   ResponsiveText,
 } from '../../../../../components';
 import {widthPercentageToDP as vw} from '../../../../../responsive/responsive';
@@ -11,6 +16,8 @@ import {VolunteerContext} from '../../../../../shared/services/helper';
 export default function Skills() {
   let {volunteer, setVolunteer} = useContext(VolunteerContext);
   let [selected, setSelected] = useState(volunteer?.skills);
+  const [updateSkills, {loading}] = useMutation(updateVolunteerSkills);
+  let toast = useToast();
 
   const skills = [
     'Accounting',
@@ -54,6 +61,27 @@ export default function Skills() {
     'Writing',
   ];
 
+  const handleSaveChanges = () => {
+    updateSkills({
+      variables: {
+        input: {volunteerId: volunteer?.volunteerId, skills: selected},
+      },
+    })
+      .then(_ => {
+        let update = {
+          ...volunteer,
+          skills: selected,
+        };
+        setVolunteer(update)
+        AsyncStorage.setItem('volunteer', JSON.stringify(update)).then(() => {
+          renderToast('success', 'Skills successfully updated!');
+        });
+      })
+      .catch(error => {
+        renderToast('error', error.message);
+      });
+  };
+
   function handleOnChange(item) {
     if (selected?.includes(item)) {
       let filtered = selected?.filter(ite => ite !== item);
@@ -61,6 +89,14 @@ export default function Skills() {
     } else {
       selected ? setSelected([...selected, item]) : setSelected([item]);
     }
+  }
+
+  function renderToast(type, description) {
+    toast.show({
+      placement: 'top',
+      duration: 3000,
+      render: () => <CustomToast type={type} description={description} />,
+    });
   }
 
   return (
@@ -80,7 +116,15 @@ export default function Skills() {
           </ResponsiveText>
         </TouchableOpacity>
       ))}
-      <CustomButton buttonText="SAVE CHANGES" />
+      <CustomButton
+        buttonText="SAVE CHANGES"
+        onClick={() =>
+          selected.length > 0
+            ? handleSaveChanges()
+            : renderToast('warning', 'Please select a skill')
+        }
+        isLoading={loading}
+      />
     </View>
   );
 }

@@ -3,7 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useFormik} from 'formik';
 import {useToast} from 'native-base';
 import React, {useContext, useEffect, useState} from 'react';
-import {Dimensions,  StyleSheet, View} from 'react-native';
+import {Dimensions, StyleSheet, View} from 'react-native';
 import {updateVolunteerInfo} from '../../../../../../graphql/mutations';
 import {getOrgCenter} from '../../../../../../graphql/queries';
 import {
@@ -130,6 +130,7 @@ export default BasicInformation = () => {
             activeContributor,
           };
           AsyncStorage.setItem('volunteer', JSON.stringify(update)).then(() => {
+            setVolunteer(update);
             renderToast('success', 'Profile has been successfully updated.');
             setIsLoading(false);
           });

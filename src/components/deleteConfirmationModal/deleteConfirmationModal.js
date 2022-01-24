@@ -16,6 +16,7 @@ export default function DeleteConfirmationModal(props) {
     confrimDelete,
     isLoading,
     subTitle,
+    buttonText,
   } = props;
   return (
     <Modal
@@ -52,7 +53,7 @@ export default function DeleteConfirmationModal(props) {
             <ResponsiveText
               size={12}
               style={{...style.buttonText, color: '#fff'}}>
-              Delete
+              {buttonText ? buttonText : 'Delete'}
             </ResponsiveText>
           </Button>
         </View>

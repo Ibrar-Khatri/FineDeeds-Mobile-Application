@@ -12,14 +12,21 @@ import {
   Causes,
   ChangePassword,
 } from './component/index';
-import {ResponsiveText} from '../../../components';
+import {DeleteConfirmationModal, ResponsiveText} from '../../../components';
 import {widthPercentageToDP as vw} from '../../../responsive/responsive';
 import {VolunteerContext} from '../../../shared/services/helper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useMutation} from '@apollo/client';
+import {activateOrDeactivateVolunteer} from '../../../../graphql/mutations';
 
-export default function Settings() {
+export default function Settings(props) {
+  const {navigation} = props;
   let [index, setIndex] = useState(0);
   let [volunteer, setVolunteer] = useState();
+  let [modal, setModal] = useState(false);
+  const [deactivateMutationHandler, {loading}] = useMutation(
+    activateOrDeactivateVolunteer,
+  );
 
   let tabs = [
     {
@@ -52,12 +59,40 @@ export default function Settings() {
   tabs[index].isFocused = tabs[index].isFocused ? false : true;
 
   useEffect(() => {
-    AsyncStorage.getItem('volunteer').then(res => {
-      setVolunteer(JSON.parse(res));
+    const unsubscribe = navigation.addListener('focus', () => {
+      AsyncStorage.getItem('volunteer').then(res => {
+        setVolunteer(JSON.parse(res));
+      });
+      setIndex(0);
     });
+
+    return unsubscribe;
   }, []);
 
   let value = {volunteer, setVolunteer};
+
+  function deactivateAccount() {
+    setModal(!modal);
+    // navigation.goBack();
+    // deactivateMutationHandler({
+    //   variables: {
+    //     volunteerId: volunteer?.volunteerId,
+    //     status: 'DEACTIVATE',
+    //   },
+    // })
+    //   .then(({data}) => {
+    //     toast.success('Account Deactivated!');
+    //     if (data) {
+    //       router.push('/');
+    //     }
+    //     console.log(data, 'dataaa');
+    //     setModal(!modal);
+    //   })
+    //   .catch(err => {
+    //     console.log('err.message', err.message);
+    //     setModal(!modal);
+    //   });
+  }
 
   return (
     <>
@@ -69,7 +104,9 @@ export default function Settings() {
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={style.contentContainerStyle}
             renderItem={({item, index: i}) => (
-              <TouchableOpacity onPress={() => setIndex(i)} activeOpacity={0.5}>
+              <TouchableOpacity
+                onPress={() => (i === 4 ? setModal(!modal) : setIndex(i))}
+                activeOpacity={0.5}>
                 <ResponsiveText
                   size={13}
                   style={[style.tabText, item?.isFocused && style.focusedTab]}>
@@ -80,6 +117,15 @@ export default function Settings() {
           />
           {tabs[index].component}
         </ScrollView>
+        <DeleteConfirmationModal
+          isModalOpen={modal}
+          setIsModalOpen={setModal}
+          confrimDelete={deactivateAccount}
+          // isLoading={isLoading}
+          subTitle="Are you sure you want to deactivate your account?"
+          title="Deactivate Account"
+          buttonText="Deactivate"
+        />
       </VolunteerContext.Provider>
     </>
   );
