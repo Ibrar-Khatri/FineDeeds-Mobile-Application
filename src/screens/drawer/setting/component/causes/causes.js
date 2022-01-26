@@ -47,7 +47,7 @@ export default function Causes() {
   ];
 
   const handleSaveChanges = () => {
-    if (selected.length > 0) {
+    if (selected?.length > 0) {
       updateCauses({
         variables: {
           input: {volunteerId: volunteer?.volunteerId, causes: selected},

@@ -62,24 +62,29 @@ export default function Skills() {
   ];
 
   const handleSaveChanges = () => {
-    updateSkills({
-      variables: {
-        input: {volunteerId: volunteer?.volunteerId, skills: selected},
-      },
-    })
-      .then(_ => {
-        let update = {
-          ...volunteer,
-          skills: selected,
-        };
-        setVolunteer(update)
-        AsyncStorage.setItem('volunteer', JSON.stringify(update)).then(() => {
-          renderToast('success', 'Skills successfully updated!');
-        });
+    console.log(selected,"selected?.length")
+    if (selected?.length > 0) {
+      updateSkills({
+        variables: {
+          input: {volunteerId: volunteer?.volunteerId, skills: selected},
+        },
       })
-      .catch(error => {
-        renderToast('error', error.message);
-      });
+        .then(_ => {
+          let update = {
+            ...volunteer,
+            skills: selected,
+          };
+          setVolunteer(update);
+          AsyncStorage.setItem('volunteer', JSON.stringify(update)).then(() => {
+            renderToast('success', 'Skills successfully updated!');
+          });
+        })
+        .catch(error => {
+          renderToast('error', error.message);
+        });
+    } else {
+      renderToast('warning', 'Please select a causes');
+    }
   };
 
   function handleOnChange(item) {
