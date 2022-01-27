@@ -1,12 +1,24 @@
 import React from 'react';
 import {ImageBackground, StyleSheet, View} from 'react-native';
 import {widthPercentageToDP as vw} from '../../../../../responsive/responsive';
-import {
-  CustomButton,
-  ResponsiveText,
-} from '../../../../../components/index';
+import {CustomButton, ResponsiveText} from '../../../../../components/index';
+import PushNotification from 'react-native-push-notification';
 
 export default function JoinAsNonProfit() {
+  // function hello() {
+  //   PushNotification.localNotificationSchedule({
+  //     //... You can use all the options from localNotifications
+  //     title: 'Event 001 ',
+  //     message: 'Only three days left', // (required)
+  //     date: new Date(), // in 60 secs
+  //     allowWhileIdle: false, // (optional) set notification to work while on doze, default: false
+  //     channelId: '001',
+  //     /* Android Only Properties */
+  //     repeatTime: 1, // (optional) Increment of configured repeatType. Check 'Repeating Notifications' section for more info.
+  //   });
+  //   console.log('Notification');
+  // }
+
   return (
     <View style={style.joinAsNonProfitView}>
       <ImageBackground
@@ -25,7 +37,7 @@ export default function JoinAsNonProfit() {
             and high-level of transparency of operations.
           </ResponsiveText>
           <View style={style.registerNowButtonView}>
-            <CustomButton buttonText="Register Now" />
+            <CustomButton buttonText="Register Now" onClick={hello} />
           </View>
         </View>
       </ImageBackground>
